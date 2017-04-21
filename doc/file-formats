@@ -1,0 +1,96 @@
+example package:
+----------------
+	Package: apache2-mpm-event
+	Source: apache2
+	Version: 2.4.10-10+deb8u8
+	Installed-Size: 22
+	Maintainer: Debian Apache Maintainers <debian-apache@lists.debian.org>
+	Architecture: amd64
+	Provides: httpd, httpd-cgi
+	Depends: apache2 (= 2.4.10-10+deb8u8)
+	Description: transitional event MPM package for apache2
+	Homepage: http://httpd.apache.org/
+	Description-md5: e8836e8c2c34524fb11cc83011803e4e
+	Section: httpd
+	Priority: optional
+	Filename: pool/updates/main/a/apache2/apache2-mpm-event_2.4.10-10+deb8u8_amd64.deb
+	Size: 1520
+	MD5sum: e82aa67838c581d8217795dd6dbcb614
+	SHA1: a0d59e70ea06d145af068f46649ba80a75bb75cf
+	SHA256: e756d82ab7111a9c76291c91e344bbbddc0d9945704ad42f1140af0594c74cad
+
+example source:
+---------------
+
+	Package: apache2
+	Binary: apache2, apache2-data, apache2-bin, apache2-mpm-worker, apache2-mpm-prefork, apache2-mpm-event, apache2-mpm-itk, apache2.2-bin, apache2.2-commo
+	n, libapache2-mod-proxy-html, libapache2-mod-macro, apache2-utils, apache2-suexec, apache2-suexec-pristine, apache2-suexec-custom, apache2-doc, apache2
+	-dev, apache2-dbg
+	Version: 2.4.10-10+deb8u8
+	Maintainer: Debian Apache Maintainers <debian-apache@lists.debian.org>
+	Uploaders: Stefan Fritsch <sf@debian.org>, Arno Töll <arno@debian.org>
+	Build-Depends: debhelper (>= 9.20131213~), lsb-release, dpkg-dev (>= 1.16.1~), libaprutil1-dev (>= 1.5.0), libapr1-dev (>= 1.5.0), libpcre3-dev, zlib1g
+	-dev, libssl-dev (>= 0.9.8m), perl, liblua5.1-0-dev, libxml2-dev, autotools-dev, gawk | awk
+	Architecture: any all
+	Standards-Version: 3.9.6
+	Format: 3.0 (quilt)
+	Files:
+	 4cc0006932cbdb7a2597691505f39424 3277 apache2_2.4.10-10+deb8u8.dsc
+	 44543dff14a4ebc1e9e2d86780507156 5031834 apache2_2.4.10.orig.tar.bz2
+	 7d43a85707568321b98305fe61e386d5 555484 apache2_2.4.10-10+deb8u8.debian.tar.xz
+	Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-apache/apache2.git
+	Vcs-Git: git://anonscm.debian.org/pkg-apache/apache2.git
+	Checksums-Sha1:
+	 dd6e773c03c22eb97beffe56e39b9f4b17eea31e 3277 apache2_2.4.10-10+deb8u8.dsc
+	 00f5c3f8274139bd6160eda2cf514fa9b74549e5 5031834 apache2_2.4.10.orig.tar.bz2
+	 a789b374f989dfe3734cb9b1895e7d2891b5fd04 555484 apache2_2.4.10-10+deb8u8.debian.tar.xz
+	Checksums-Sha256:
+	 c20dc666e6192c3db716e1dfb60afed3248aabd9a2d3232301a11fe8d936dac6 3277 apache2_2.4.10-10+deb8u8.dsc
+	 176c4dac1a745f07b7b91e7f4fd48f9c48049fa6f088efe758d61d9738669c6a 5031834 apache2_2.4.10.orig.tar.bz2
+	 352be8c8245c162a9d97cf167a904fd1684904ffede565f23a654935701b40fa 555484 apache2_2.4.10-10+deb8u8.debian.tar.xz
+	Homepage: http://httpd.apache.org/
+	Build-Conflicts: autoconf2.13
+	Package-List:
+	 apache2 deb httpd optional arch=any
+	 apache2-bin deb httpd optional arch=any
+	 apache2-data deb httpd optional arch=all
+	 apache2-dbg deb debug extra arch=any
+	 apache2-dev deb httpd optional arch=any
+	 apache2-doc deb doc optional arch=all
+	 apache2-mpm-event deb oldlibs extra arch=any
+	 apache2-mpm-itk deb oldlibs extra arch=any
+	 apache2-mpm-prefork deb oldlibs extra arch=any
+	 apache2-mpm-worker deb oldlibs extra arch=any
+	 apache2-suexec deb oldlibs extra arch=any
+	 apache2-suexec-custom deb httpd extra arch=any
+	 apache2-suexec-pristine deb httpd optional arch=any
+	 apache2-utils deb httpd optional arch=any
+	 apache2.2-bin deb oldlibs extra arch=any
+	 apache2.2-common deb oldlibs extra arch=any
+	 libapache2-mod-macro deb oldlibs extra arch=any
+	 libapache2-mod-proxy-html deb oldlibs extra arch=any
+	Directory: pool/updates/main/a/apache2
+	Priority: source
+	Section: httpd
+
+example translation:
+--------------------
+
+	Package: libactivemq-java
+	Description-md5: b7875bda385f5f6b4e36597054392132
+	Description-en: Java message broker core libraries
+	 Apache ActiveMQ is a message broker built around Java Message Service (JMS)
+	 API : allow sending messages between two or more clients in a loosely coupled,
+	 reliable, and asynchronous way.
+	 .
+	 This message broker supports :
+	  * JMS 1.1 and J2EE 1.4 with support for transient, persistent, transactional
+		and XA messaging
+	  * Spring Framework, CXF and Axis integration
+	  * pluggable transport protocols such as in-VM, TCP, SSL, NIO, UDP, multicast,
+		JGroups and JXTA
+	  * persistence using JDBC along with journaling
+	  * OpenWire (cross language wire protocol) and
+		Stomp (Streaming Text Orientated Messaging Protocol) protocols
+	 .
+	 This package contains a core Java library for ActiveMQ.

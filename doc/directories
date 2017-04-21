@@ -1,0 +1,26 @@
+example aliases(?)
+http://packages.devuan.org/devuan/dists/
+
+1.0 -> jessie
+2.0 -> ascii
+ascii
+ascii-backports
+ascii-proposed-updates
+ascii-security
+ascii-updates
+ceres -> unstable
+jessie
+jessie-backports
+jessie-proposed-updates
+jessie-security
+jessie-updates
+sid -> unstable
+stable -> jessie
+stable-backports -> jessie-backports
+stable-proposed-updates -> jessie-proposed-updates/
+stable-updates -> jessie-updates/
+testing -> ascii
+testing-backports -> ascii-backports
+testing-proposed-updates -> ascii-proposed-updates/
+testing-updates -> ascii-updates
+unstable

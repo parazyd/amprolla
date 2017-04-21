@@ -1,0 +1,62 @@
+#!/usr/bin/env python2
+# copyright (c) 2017 - Ivan J. <parazyd@dyne.org>
+# see LICENSE file for copyright and license details
+
+import os
+#import re
+import requests
+import sys
+import threading
+
+import lib.config as config
+import lib.delta as delta
+import lib.fs as fs
+import lib.net as net
+from lib.log import die, notice, warn, cleanexit
+
+
+def popDirs():
+    paths = fs.crawl()
+
+    notice("creating initial directory structure")
+    for i in range(0, len(paths)):
+        baseurl = "http://" + "/".join([config.repos[i]["host"], config.repos[i]["dists"]])
+        basepath = "/".join([config.amprolla["spooldir"], config.repos[i]["dists"]])
+
+        for j in paths[config.repos[i]["name"]]:
+            suiteurl = "/".join([baseurl, j])
+            suitepath = "/".join([basepath, j])
+            if not os.path.exists(suitepath):
+                os.makedirs(suitepath)
+
+            for k in config.mainrepofiles:
+                relurl = "/".join([suiteurl, k])
+                relfile = "/".join([suitepath, k])
+                if not os.path.isfile(relfile):
+                    net.download(relurl, relfile)
+
+            try:
+                with open(suitepath + "/Release", "rb") as frel:
+                    rels = frel.read()
+                relmap = delta.parseRel(rels)
+            except IOError:
+                warn("no Release file for %s" % suitepath)
+
+            try:
+                for k in relmap:
+                    if relmap[k] == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855":
+                        continue   # ^ this is /dev/null
+                    fileurl = "/".join([suiteurl, k])
+                    filepath = "/".join([suitepath, k])
+                    if not os.path.exists(os.path.dirname(filepath)):
+                        os.makedirs(os.path.dirname(filepath))
+                    if not os.path.isfile(filepath):
+                        net.download(fileurl, filepath)
+            except TypeError:
+                warn("Typeerror")
+
+def merge():
+    for i in config.amprolla["mergedsubdirs"]:
+        mdir = "/".join([config.amprolla["mergedir"], i])
+        if not os.path.exists(mdir):
+            os.makedirs(mdir)
