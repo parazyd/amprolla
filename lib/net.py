@@ -18,9 +18,10 @@ def download(url, path):
         die("fail!")
 
     with open(path, "wb") as f:
-        for chunk in r.iter_content(chunk_size=1024): # XXX: should be more on gbit servers
+        # XXX: should be more on gbit servers
+        for chunk in r.iter_content(chunk_size=1024):
             if chunk:
                 f.write(chunk)
-                #f.flush()
+                # f.flush()
     print("\033[1;32m .  done\033[0m")
     return

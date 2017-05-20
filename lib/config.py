@@ -6,13 +6,13 @@ amprolla = {
     "spooldir": "./spool",
     "sign_key": "fa1b0274",
     "mergedir": "./merged",
-    "mergedsubdirs": [ "dists", "pool"],
-    "banpkgs": [ 'systemd', 'systemd-sysv' ]
+    "mergedsubdirs": ["dists", "pool"],
+    "banpkgs": ['systemd', 'systemd-sysv']
     #"checksums": [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
 }
 
 repos = {
-    ## key name is priority, first is 0
+    # key name is priority, first is 0
     0: {
         "name": "DEVUAN",
         "host": "packages.devuan.org",
@@ -73,7 +73,7 @@ aliases = {
     }
 }
 
-categories = [ 'main', 'contrib', 'non-free' ]
+categories = ['main', 'contrib', 'non-free']
 
 
 releases = {

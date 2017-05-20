@@ -3,10 +3,7 @@
 # see LICENSE file for copyright and license details
 
 import os
-#import re
-import requests
 import sys
-import threading
 
 import lib.config as config
 import lib.delta as delta
@@ -20,8 +17,10 @@ def popDirs():
 
     notice("creating initial directory structure")
     for i in range(0, len(paths)):
-        baseurl = "http://" + "/".join([config.repos[i]["host"], config.repos[i]["dists"]])
-        basepath = "/".join([config.amprolla["spooldir"], config.repos[i]["dists"]])
+        baseurl = "http://" + \
+            "/".join([config.repos[i]["host"], config.repos[i]["dists"]])
+        basepath = "/".join([config.amprolla["spooldir"],
+                             config.repos[i]["dists"]])
 
         for j in paths[config.repos[i]["name"]]:
             suiteurl = "/".join([baseurl, j])
@@ -38,7 +37,7 @@ def popDirs():
             try:
                 with open(suitepath + "/Release", "rb") as frel:
                     rels = frel.read()
-                relmap = delta.parseRel(rels)
+                relmap = delta.parse_release(rels)
             except IOError:
                 warn("no Release file for %s" % suitepath)
 
@@ -54,6 +53,7 @@ def popDirs():
                         net.download(fileurl, filepath)
             except TypeError:
                 warn("Typeerror")
+
 
 def merge():
     for i in config.amprolla["mergedsubdirs"]:
