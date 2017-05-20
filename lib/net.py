@@ -4,7 +4,6 @@
 
 import requests
 
-import config
 from log import die, notice, warn, cleanexit
 
 
@@ -12,10 +11,10 @@ def download(url, path):
     print("\tdownloading: %s\n\tto: %s" % (url, path))
     r = requests.get(url, stream=True)
     if r.status_code == 404:
-        warn("not found!")
+        warn("download of %s failed: not found!", url)
         return
     elif r.status_code != 200:
-        die("fail!")
+        die("download of %s failed", url)
 
     with open(path, "wb") as f:
         # XXX: should be more on gbit servers

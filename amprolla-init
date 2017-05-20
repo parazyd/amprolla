@@ -9,10 +9,10 @@ import lib.config as config
 import lib.delta as delta
 import lib.fs as fs
 import lib.net as net
-from lib.log import die, notice, warn, cleanexit
+from lib.log import notice, warn
 
 
-def popDirs():
+def pop_dirs():
     paths = fs.crawl()
 
     notice("creating initial directory structure")
