@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+from os.path import join
+from time import time
+
+from lib.package import (write_packages, load_packages_file,
+        merge_packages, merge_packages_many)
+from lib.parse import parse_release
+from lib.config import banpkgs
+
+roots = {
+    'devuan': 'spool/devuan/dists/jessie',
+    'debian': 'spool/debian/dists/jessie',
+    'debian-sec': 'spool/dists/jessie/updates/',
+}
+
+#devuan_release_contents = open(join(roots['devuan'], 'Release')).read()
+#debian_release_contents = open(join(roots['debian'], 'Release')).read()
+#devuan_release = parse_release(devuan_release_contents)
+#debian_release = parse_release(debian_release_contents)
+#devuan_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, devuan_release.keys()))
+#debian_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, debian_release.keys()))
+
+packages_file = 'main/binary-armhf/Packages.gz'
+
+t1 = time()
+print('Loading packages')
+
+devuan = load_packages_file(join(roots['devuan'], packages_file))
+debian = load_packages_file(join(roots['debian'], packages_file))
+debian_sec = load_packages_file(join(roots['debian-sec'], packages_file))
+
+all_repos = [devuan, debian_sec, debian]
+
+print('Merging packages')
+new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs)
+
+print('Writing packages')
+write_packages(new_pkgs, 'Packages.merged')
+
+t2 = time()
+print('time:', t2-t1)

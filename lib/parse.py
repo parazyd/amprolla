@@ -5,11 +5,11 @@
 import ast
 import gzip
 import re
-import requests
+#import requests
 import time
 
-import config
-from log import notice
+from . import config
+from .log import notice
 
 
 def get_time(date):
@@ -25,35 +25,32 @@ def get_date(relfile):
 
 
 def parse_release(reltext):
-    hash = {}
+    _hash = {}
     match = re.search('SHA256:+', reltext)
     if match:
         line = reltext[match.start():-1]
         for i in line.split('\n'):
             if i == 'SHA256:' or i == '\n':  # XXX: hack
                 continue
-            hash[(i.split()[2])] = i.split()[0]
-        return hash
+            _hash[(i.split()[2])] = i.split()[0]
+        return _hash
 
+PACKAGES_REGEX = re.compile('([A-Za-z0-9\-]+): ')
 
 def parse_package(entry):
-    # for parsing a single package
-    values = re.split('\\n[A-Z].+?:', entry)[0:]
-    values[0] = values[0].split(':')[1]
-    keys = re.findall('\\n[A-Z].+?:', '\n' + entry)
-    both = zip(keys, values)
-    return {key.lstrip(): value for key, value in both}
+    """ Parses a single Packages entry """
+    contents = PACKAGES_REGEX.split(entry)[1:]  # Throw away the first ''
+
+    keys = contents[::2]
+    vals = map(lambda x: x.strip(), contents[1::2])
+
+    return dict(zip(keys, vals))
 
 
 def parse_packages(pkgtext):
     # this parses our package file into a hashmap
     # key: package name, value: entire package paragraph as a hashmap
     map = {}
-
-    # TODO: consider also this approach
-    # def parse_packages(pkgfilepath):
-    # with gzip.open(pkgfilepath, "rb") as f:
-    #    pkgs = f.read().split("\n\n")
 
     pkgs = pkgtext.split("\n\n")
     for pkg in pkgs:
@@ -62,7 +59,39 @@ def parse_packages(pkgtext):
             line = pkg[m.start():m.end()]
             key = line.split(': ')[1]
             map[key] = parse_package(pkg)
+
     return map
+
+def parse_dependencies(dependencies):
+    """
+    Parses a dependency line from a debian Packages file.
+
+    Example line::
+
+        'lib6 (>= 2.4), libdbus-1-3 (>= 1.0.2), foo'
+
+    Output::
+
+        {'lib6': '(>= 2.4)', 'libdbus-1-3': '(>= 1.0.2)', 'foo': None}
+    """
+    r = {}
+
+    for pkg_plus_version in dependencies.split(', '):
+        v = pkg_plus_version.split(' ', 1)
+        name = v[0]
+
+        # If we get passed an empty string, the name is '', and we just outright
+        # stop
+        if not name:
+            return {}
+
+        if len(v) == 2:
+            version = v[1]
+            r[name] = version
+        else:
+            r[name] = None
+
+    return r
 
 
 def print_package(map, pkgname):
