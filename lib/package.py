@@ -51,7 +51,8 @@ def package_banned(pkg, banned_pkgs):
     return bool(deps.intersection(banned_pkgs))
 
 
-def merge_packages(pkg1, pkg2, banned_packages=set()):
+def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
+                   rewriter=None):
     """
     Merges two previously loaded/parsed (using load_packages_file) packages
     dictionaries, preferring `pkg1` over `pkg2`, and optionally discarding any
@@ -65,19 +66,26 @@ def merge_packages(pkg1, pkg2, banned_packages=set()):
         pkg2_pkg = pkg2.get(pkg)
 
         if pkg1_pkg and pkg2_pkg:
+            if rewriter:
+                pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
+                if rewriter:
+                    pkg1_pkg = rewriter(pkg1_pkg, name1)
+
                 new_pkgs[pkg] = pkg1_pkg
         elif pkg2_pkg:
             if not package_banned(pkg2_pkg, banned_packages):
+                if rewriter:
+                    pkg2_pkg = rewriter(pkg2_pkg, name2)
                 new_pkgs[pkg] = pkg2_pkg
         else:
             assert False, 'Impossibru'
 
     return new_pkgs
 
-def merge_packages_many(packages, banned_packages=set()): # TODO: Make generic
+def merge_packages_many(packages, banned_packages=set(), rewriter=None):
     """
     Merges two (or more) previously loaded/parsed (using load_packages_file)
     packages dictionaries, priority is defined by the order of the `packages`
@@ -90,9 +98,13 @@ def merge_packages_many(packages, banned_packages=set()): # TODO: Make generic
     pkg1 = packages[0]
     pkg2 = packages[1]
 
-    new_pkgs = merge_packages(pkg1, pkg2, banned_packages=banned_packages)
+    new_pkgs = merge_packages(pkg1['packages'], pkg2['packages'],
+                              pkg1['name'], pkg2['name'],
+                              banned_packages=banned_packages,
+                              rewriter=rewriter)
 
     for pkg in packages[2:]:
-        new_pkgs = merge_packages(new_pkgs, pkg, banned_packages=banned_packages)
+        new_pkgs = merge_packages(new_pkgs, pkg['packages'], '', pkg['name'],
+                                  banned_packages=banned_packages)
 
     return new_pkgs

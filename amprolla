@@ -30,10 +30,20 @@ devuan = load_packages_file(join(roots['devuan'], packages_file))
 debian = load_packages_file(join(roots['debian'], packages_file))
 debian_sec = load_packages_file(join(roots['debian-sec'], packages_file))
 
-all_repos = [devuan, debian_sec, debian]
+all_repos = [{'name': 'devuan', 'packages': devuan},
+        {'name': 'debian-sec', 'packages': debian_sec},
+        {'name': 'debian', 'packages': debian}]
+
+def devuan_rewrite(pkg, repo_name):
+    if repo_name == 'devuan':
+        pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
+                repo_name.upper())
+
+    return pkg
+
 
 print('Merging packages')
-new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs)
+new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs, rewriter=devuan_rewrite)
 
 print('Writing packages')
 write_packages(new_pkgs, 'Packages.merged')
