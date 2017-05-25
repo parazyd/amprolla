@@ -35,9 +35,33 @@ def parse_release(reltext):
             _hash[(i.split()[2])] = i.split()[0]
         return _hash
 
-PACKAGES_REGEX = re.compile('([A-Za-z0-9\-]+): ')
 
 def parse_package(entry):
+    """ Parses a single Packages entry """
+    pkgs = {}
+
+    contents = entry.split('\n')
+
+    key = ''
+    value = ''
+    for line in contents:
+        if line.startswith(' '):
+            value += '\n' + line
+        else:
+            pkgs[key] = value
+
+            v = line.split(':', 1)
+            key = v[0]
+            value = v[1][1:]
+
+    if key:
+        pkgs[key] = value
+
+    return pkgs
+
+
+PACKAGES_REGEX = re.compile('([A-Za-z0-9\-]+): ')
+def parse_package_re(entry):
     """ Parses a single Packages entry """
     contents = PACKAGES_REGEX.split(entry)[1:]  # Throw away the first ''
 
