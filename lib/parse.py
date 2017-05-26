@@ -17,14 +17,37 @@ def get_time(date):
 
 
 def get_date(relfile):
-    match = re.search('Date: .+', relfile)
-    if match:
-        line = relfile[match.start():match.end()]
-        relfile = line.split(': ')[1]
-    return relfile
+    date = None
+    contents = relfile.split('\n')
+    for line in contents:
+        if line.startswith('Date: '):
+            date = line.split(': ')[1]
+            break
+    return date
 
 
 def parse_release(reltext):
+    """
+    Parses a Release file and returns a dict of the files we need
+    key = filename, value = sha256 checksum
+    """
+    hashes = {}
+
+    contents = reltext.split('\n')
+
+    sha256 = False
+    for line in contents:
+        if sha256 is True and line != '':
+            filename = line.split()[2]
+            checksum = line.split()[0]
+            hashes[filename] = checksum
+        elif line.startswith('SHA256:'):
+            sha256 = True
+
+    return hashes
+
+
+def parse_release_re(reltext):
     _hash = {}
     match = re.search('SHA256:+', reltext)
     if match:

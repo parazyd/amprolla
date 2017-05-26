@@ -3,7 +3,7 @@ from gzip import open as gzip_open
 from lib.parse import (parse_packages, parse_dependencies)
 from lib.config import packages_keys
 
-def write_packages(packages, filename, sort=False):
+def write_packages(packages, filename, sort=True):
     """
     Writes `packages` to a file (per debian Packages format)
     If sort=True, the packages are sorted by name.
