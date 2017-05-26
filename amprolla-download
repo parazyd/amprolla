@@ -50,6 +50,7 @@ def merge_files(repo, relfile):
 local_rel = join(roots['devuan']['local'], release_file)
 remote_rel = join(roots['devuan']['remote'], release_file)
 
+# Possibly use this var to check for changed hashes
 local_contents = open(local_rel).read()
 local_date = get_date(local_contents)
 
