@@ -3,6 +3,7 @@
 Amprolla main module
 """
 
+import sys
 from os.path import join
 from time import time
 
@@ -13,7 +14,7 @@ from lib.config import banpkgs
 roots = {
     'devuan': 'spool/devuan/dists/jessie',
     'debian': 'spool/debian/dists/jessie',
-    'debian-sec': 'spool/dists/jessie/updates/',
+    'debian-sec': 'spool/dists/jessie/updates',
 }
 
 #devuan_release_contents = open(join(roots['devuan'], 'Release')).read()
@@ -23,10 +24,11 @@ roots = {
 #devuan_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, devuan_release.keys()))
 #debian_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, debian_release.keys()))
 
-packages_file = 'main/binary-armhf/Packages.gz'
+#packages_file = 'main/binary-armhf/Packages.gz'
+packages_file = sys.argv[1]
 
 t1 = time()
-print('Loading packages')
+print('Loading packages: %s' % packages_file)
 
 devuan = load_packages_file(join(roots['devuan'], packages_file))
 debian = load_packages_file(join(roots['debian'], packages_file))
