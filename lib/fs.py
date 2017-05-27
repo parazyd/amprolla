@@ -31,4 +31,4 @@ def crawl():
         paths[repo] = sts
     return paths
 
-# print(crawl())
+print(crawl())

@@ -1,21 +1,23 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # copyright (c) 2017 - Ivan J. <parazyd@dyne.org>
 # see LICENSE file for copyright and license details
 
 import requests
+import os
 
-from log import die, notice, warn, cleanexit
+from .log import die, notice, warn, cleanexit
 
 
 def download(url, path):
     print("\tdownloading: %s\n\tto: %s" % (url, path))
     r = requests.get(url, stream=True)
     if r.status_code == 404:
-        warn("download of %s failed: not found!", url)
+        warn("download of %s failed: not found!" % url)
         return
     elif r.status_code != 200:
         die("download of %s failed", url)
 
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "wb") as f:
         # XXX: should be more on gbit servers
         for chunk in r.iter_content(chunk_size=1024):
