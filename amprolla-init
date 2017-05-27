@@ -1,12 +1,26 @@
 #!/usr/bin/env python3
+"""
+This module will download the initial Release files used to populate
+the spooldir, along with all the files hashed inside the Release files
+"""
 
 from os.path import join
 
 import lib.config as config
 from lib.net import download
+from lib.parse import parse_release
 
 
 def pop_dirs(repo):
+    """
+    Crawls through the directories to come up with complete needed
+    directory structure.
+    Returns a list of tuples holding the remote and local locations
+    of the files
+    Example:
+        (http://auto.mirror.devuan.org/devuan/dists/jessie/main/binary-armhf/Packages.gz,
+         ./spool/devuan/dists/unstable/contrib/binary-armhf/Packages.gz)
+    """
     print('Downloading %s directory structure' % repo)
     repodata = config.repos[repo]
 
@@ -31,6 +45,7 @@ def pop_dirs(repo):
 
     return urls
 
+
 for dist in config.repos:
     dlurls = pop_dirs(dist)
     for url in dlurls:
@@ -38,3 +53,11 @@ for dist in config.repos:
             remote = join(url[0], file)
             local = join(url[1], file)
             download(remote, local)
+
+        release_contents = open(join(url[1], 'Release')).read()
+        release_contents = parse_release(release_contents)
+        for k in release_contents.keys():
+            if k.endswith('/binary-armhf/Packages.gz'):
+                remote = join(url[0], k)
+                local = join(url[1], k)
+                download(remote, local)

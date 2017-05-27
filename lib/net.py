@@ -9,7 +9,7 @@ from .log import die, notice, warn, cleanexit
 
 
 def download(url, path):
-    print("\tdownloading: %s\n\tto: %s" % (url, path))
+    print("downloading: %s\nto: %s" % (url, path))
     r = requests.get(url, stream=True)
     if r.status_code == 404:
         warn("download of %s failed: not found!" % url)
