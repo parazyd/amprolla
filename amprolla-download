@@ -25,6 +25,7 @@ roots = {
 
 release_file = 'Release'
 
+
 def merge_files(repo, relfile):
     """
     Loads the local release and call the merge process

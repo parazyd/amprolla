@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from os.path import join
-from pprint import pprint
 
 import lib.config as config
 from lib.net import download
@@ -22,18 +21,19 @@ def pop_dirs(repo):
                     suite = config.aliases[repodata['name']][j]
                 elif repodata['skipmissing'] is True:
                     continue
-                skips = ['jessie-security', 'ascii-security'] # XXX: hack
+                skips = ['jessie-security', 'ascii-security']  # XXX: hack
                 if repo == 'debian' and j in skips:
                     continue
-            pair = (join(baseurl, suite), join(baseurl.replace(repodata['host'],
-                   config.spooldir), suite))
+            pair = (join(baseurl, suite),
+                    join(baseurl.replace(repodata['host'],
+                         config.spooldir), suite))
             urls.append(pair)
 
     return urls
 
 for dist in config.repos:
-    urls = pop_dirs(dist)
-    for url in urls:
+    dlurls = pop_dirs(dist)
+    for url in dlurls:
         for file in config.mainrepofiles:
             remote = join(url[0], file)
             local = join(url[1], file)
