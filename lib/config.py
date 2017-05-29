@@ -62,14 +62,14 @@ suites = {
 
 aliases = {
     'DEBIAN-SECURITY': {
-        'ascii-security': 'testing/updates',
+        'ascii-security': 'stretch/updates',
         'jessie-security': 'jessie/updates',
     },
     'DEBIAN': {
-        'ascii': 'testing',
-        'ascii-backports': 'testing-backports',
-        'ascii-proposed-updates': 'testing-proposed-updates',
-        'ascii-updates': 'testing-updates',
+        'ascii': 'stretch',
+        'ascii-backports': 'stretch-backports',
+        'ascii-proposed-updates': 'stretch-proposed-updates',
+        'ascii-updates': 'stretch-updates',
     }
 }
 
