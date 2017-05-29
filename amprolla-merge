@@ -52,7 +52,7 @@ def devuan_rewrite(pkg, repo_name):
     """
     if repo_name == 'devuan':
         pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
-                                                  repo_name.upper())
+                                                  repos[repo_name]['name'])
 
     return pkg
 
