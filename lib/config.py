@@ -5,7 +5,7 @@
 spooldir = './spool'
 sign_key = 'fa1b0274'
 mergedir = './merged'
-mergedsubdirs = ['dists', 'pool']
+mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
 # checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
 

@@ -1,3 +1,4 @@
+import os
 from gzip import open as gzip_open
 
 from lib.parse import (parse_packages, parse_dependencies)
@@ -9,6 +10,7 @@ def write_packages(packages, filename, sort=True):
     Writes `packages` to a file (per debian Packages format)
     If sort=True, the packages are sorted by name.
     """
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
     f = open(filename, 'w+')
 
     pkg_items = packages.items()

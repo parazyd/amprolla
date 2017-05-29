@@ -9,7 +9,7 @@ from time import time
 from lib.package import (write_packages, load_packages_file,
                          merge_packages_many)
 from lib.config import (aliases, banpkgs, repo_order, repos,
-                        spooldir, suites)
+                        spooldir, suites , mergedir, mergesubdir)
 
 
 def prepare_merge_dict():
@@ -18,7 +18,7 @@ def prepare_merge_dict():
     that need to be merged in an ordered fashion. Orders them using the
     repo_order list found in lib.config
     Example output:
-        { ascii: ['ascii', None, 'stretch'] },
+        {'ascii': ['ascii', None, 'stretch']},
     """
     merge_dict = {}
 
@@ -79,7 +79,11 @@ def merge(packages_list):
     new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs, rewriter=devuan_rewrite)
 
     print('Writing packages')
-    write_packages(new_pkgs, 'Packages.merged')
+    # replace the devuan subdir with our mergedir that we plan to fill
+    new_out = packages_list[0].replace(join(spooldir,
+                                            repos['devuan']['dists']),
+                                       join(mergedir, mergesubdir))
+    write_packages(new_pkgs, new_out)
 
     t2 = time()
     print('time:', t2-t1)
