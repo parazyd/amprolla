@@ -7,7 +7,9 @@ sign_key = 'fa1b0274'
 mergedir = './merged'
 mergedsubdirs = ['dists', 'pool']
 banpkgs = {'systemd', 'systemd-sysv'}
-#checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
+# checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
+
+repo_order = ['devuan', 'debian-sec', 'debian']
 
 repos = {
     'devuan': {
@@ -17,7 +19,6 @@ repos = {
         'pool': 'devuan/pool',
         'aliases': False,
         'skipmissing': False,
-        'priority': 0,
     },
     'debian-sec': {
         'name': 'DEBIAN-SECURITY',
@@ -26,17 +27,14 @@ repos = {
         'pool': 'pool',
         'aliases': True,
         'skipmissing': True,
-        'priority': 1,
     },
     'debian': {
         'name': 'DEBIAN',
-        #'host': 'httpredir.debian.org',
         'host': 'http://ftp.debian.org',
         'dists': 'debian/dists',
         'pool': 'debian/pool',
         'aliases': True,
         'skipmissing': False,
-        'priority': 2,
     }
 }
 

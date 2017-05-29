@@ -3,40 +3,46 @@
 Amprolla main module
 """
 
-import sys
 from os.path import join
 from time import time
 
 from lib.package import (write_packages, load_packages_file,
                          merge_packages_many)
-from lib.config import banpkgs
+from lib.config import (aliases, banpkgs, repo_order, repos,
+                        spooldir, suites)
 
-roots = {
-    'devuan': 'spool/devuan/dists/jessie',
-    'debian': 'spool/debian/dists/jessie',
-    'debian-sec': 'spool/dists/jessie/updates',
-}
 
-#devuan_release_contents = open(join(roots['devuan'], 'Release')).read()
-#debian_release_contents = open(join(roots['debian'], 'Release')).read()
-#devuan_release = parse_release(devuan_release_contents)
-#debian_release = parse_release(debian_release_contents)
-#devuan_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, devuan_release.keys()))
-#debian_files = list(filter(lambda x: x.endswith('Packages.gz') and 'armhf' in x, debian_release.keys()))
+def prepare_merge_dict():
+    """
+    This function will prepare a dict of lists that contain the repos
+    that need to be merged in an ordered fashion. Orders them using the
+    repo_order list found in lib.config
+    Example output:
+        { ascii: ['ascii', None, 'stretch'] },
+    """
+    merge_dict = {}
 
-#packages_file = 'main/binary-armhf/Packages.gz'
-packages_file = sys.argv[1]
+    for suite in suites:
+        for i in suites[suite]:
+            merge_dict[i] = []
 
-t1 = time()
-print('Loading packages: %s' % packages_file)
+    for suite in merge_dict:
+        for repo in repo_order:
+            tmpsuite = suite
+            if repos[repo]['aliases'] is True:
+                if tmpsuite in aliases[repos[repo]['name']]:
+                    tmpsuite = aliases[repos[repo]['name']][suite]
+                elif repos[repo]['skipmissing'] is True:
+                    tmpsuite = None
+                skips = ['jessie-security', 'ascii-security']
+                if repo == 'debian' and suite in skips:
+                    tmpsuite = None
+            if tmpsuite:  # make it a proper path
+                tmpsuite = join(spooldir, repos[repo]['dists'], tmpsuite)
+            merge_dict[suite].append(tmpsuite)
 
-devuan = load_packages_file(join(roots['devuan'], packages_file))
-debian = load_packages_file(join(roots['debian'], packages_file))
-debian_sec = load_packages_file(join(roots['debian-sec'], packages_file))
+    return merge_dict
 
-all_repos = [{'name': 'devuan', 'packages': devuan},
-             {'name': 'debian-sec', 'packages': debian_sec},
-             {'name': 'debian', 'packages': debian}]
 
 def devuan_rewrite(pkg, repo_name):
     """
@@ -51,11 +57,47 @@ def devuan_rewrite(pkg, repo_name):
     return pkg
 
 
-print('Merging packages')
-new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs, rewriter=devuan_rewrite)
+def merge(packages_list):
+    t1 = time()
 
-print('Writing packages')
-write_packages(new_pkgs, 'Packages.merged')
+    all_repos = []
+    print('Loading packages: %s' % packages_list)
 
-t2 = time()
-print('time:', t2-t1)
+    devuan = load_packages_file(packages_list[0])
+    if devuan:
+        all_repos.append({'name': 'devuan', 'packages': devuan})
+
+    debian_sec = load_packages_file(packages_list[1])
+    if debian_sec:
+        all_repos.append({'name': 'debian-sec', 'packages': debian_sec})
+
+    debian = load_packages_file(packages_list[2])
+    if debian:
+        all_repos.append({'name': 'debian', 'packages': debian})
+
+    print('Merging packages')
+    new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs, rewriter=devuan_rewrite)
+
+    print('Writing packages')
+    write_packages(new_pkgs, 'Packages.merged')
+
+    t2 = time()
+    print('time:', t2-t1)
+
+
+packages_file = 'main/binary-armhf/Packages.gz'
+to_merge = prepare_merge_dict()
+
+tt1 = time()
+for suite in to_merge:
+    pkg_list = []
+    for rep in to_merge[suite]:
+        if rep:
+            pkg_list.append(join(rep, packages_file))
+        else:
+            pkg_list.append(None)
+
+    merge(pkg_list)
+
+tt2 = time()
+print('total time:', tt2-tt1)

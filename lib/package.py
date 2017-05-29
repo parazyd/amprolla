@@ -3,6 +3,7 @@ from gzip import open as gzip_open
 from lib.parse import (parse_packages, parse_dependencies)
 from lib.config import packages_keys
 
+
 def write_packages(packages, filename, sort=True):
     """
     Writes `packages` to a file (per debian Packages format)
@@ -22,20 +23,24 @@ def write_packages(packages, filename, sort=True):
 
     f.close()
 
+
 def load_packages_file(filename):
     """ Load a gzip'd packages file.
     Returns a dictionary of package name and package key-values.
     """
-    packages_contents = gzip_open(filename).read()
-    packages_contents = packages_contents.decode('utf-8')
-    return parse_packages(packages_contents)
+    if filename is not None:
+        packages_contents = gzip_open(filename).read()
+        packages_contents = packages_contents.decode('utf-8')
+        return parse_packages(packages_contents)
+
+    return None
 
 
 def package_banned(pkg, banned_pkgs):
     """
     Returns True is the package contains a banned dependency.
-    Currently checks and parses both the 'Depends:' and the 'Pre-Depends' fields
-    of the package.
+    Currently checks and parses both the 'Depends:' and the 'Pre-Depends'
+    fields of the package.
     """
     if pkg.get('Package') in banned_pkgs:
         return True
@@ -85,13 +90,16 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
 
     return new_pkgs
 
+
 def merge_packages_many(packages, banned_packages=set(), rewriter=None):
     """
     Merges two (or more) previously loaded/parsed (using load_packages_file)
     packages dictionaries, priority is defined by the order of the `packages`
     list, optionally discarding any banned packages.
     """
-    assert len(packages) > 1
+    assert len(packages) > 1  # TODO: what to do when there is only one?
+    # a situation arises when the file exists, but it just has the gzip
+    # header, rather than any content
 
     new_pkgs = {}
 
