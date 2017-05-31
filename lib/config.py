@@ -21,7 +21,7 @@ repos = {
         'skipmissing': False,
     },
     'debian-sec': {
-        'name': 'DEBIAN-SECURITY',
+        'name': 'DEBIAN-SEC',
         'host': 'http://security.debian.org',
         'dists': 'dists',
         'pool': 'pool',
@@ -59,7 +59,7 @@ suites = {
 }
 
 aliases = {
-    'DEBIAN-SECURITY': {
+    'DEBIAN-SEC': {
         'ascii-security': 'stretch/updates',
         'jessie-security': 'jessie/updates',
     },
