@@ -1,22 +1,24 @@
-#!/usr/bin/env python
-# copyright (c) 2017 - Ivan J. <parazyd@dyne.org>
 # see LICENSE file for copyright and license details
 
-import ast
-import gzip
-import re
-#import requests
-import time
+"""
+Parsing functions/helpers
+"""
 
-from . import config
-from .log import notice
+import re
+import time
 
 
 def get_time(date):
+    """
+    Gets epoch time
+    """
     return time.mktime(time.strptime(date, "%a, %d %b %Y %H:%M:%S %Z"))
 
 
 def get_date(relfile):
+    """
+    Gets the date from the contents of a Release file
+    """
     date = None
     contents = relfile.split('\n')
     for line in contents:
@@ -48,6 +50,11 @@ def parse_release(reltext):
 
 
 def parse_release_re(reltext):
+    """
+    Parses a Release file using regular expressions and returns a dict
+    of the files we keed
+    key = filename, value = sha256 checksum
+    """
     _hash = {}
     match = re.search('SHA256:+', reltext)
     if match:
@@ -95,9 +102,11 @@ def parse_package_re(entry):
 
 
 def parse_packages(pkgtext):
-    # this parses our package file into a hashmap
-    # key: package name, value: entire package paragraph as a hashmap
-    map = {}
+    """
+    Parses our package file contents into a hashmap
+    key: package name, value: entire package paragraph as a hashmap
+    """
+    _map = {}
 
     pkgs = pkgtext.split("\n\n")
     for pkg in pkgs:
@@ -105,9 +114,10 @@ def parse_packages(pkgtext):
         if m:
             line = pkg[m.start():m.end()]
             key = line.split(': ')[1]
-            map[key] = parse_package(pkg)
+            _map[key] = parse_package(pkg)
 
-    return map
+    return _map
+
 
 def parse_dependencies(dependencies):
     """
@@ -127,8 +137,8 @@ def parse_dependencies(dependencies):
         v = pkg_plus_version.split(' ', 1)
         name = v[0]
 
-        # If we get passed an empty string, the name is '', and we just outright
-        # stop
+        # If we get passed an empty string, the name is '', and we just
+        # outright stop
         if not name:
             return {}
 
@@ -141,44 +151,12 @@ def parse_dependencies(dependencies):
     return r
 
 
-def print_package(map, pkgname):
-    try:
-        pkg = ast.literal_eval(map[pkgname])
-        sin = []
-        for i in config.pkgfmt:
-            if config.pkgfmt[i] in pkg.keys():
-                sin.append(config.pkgfmt[i] + pkg[config.pkgfmt[i]])
-        return sin
-    except:
-        log.die("nonexistent package")
-
-
 def compare_dict(d1, d2):
+    """
+    Compares two dicts
+    """
     d1_keys = set(d1.keys())
     d2_keys = set(d2.keys())
     intersect_keys = d1_keys.intersection(d2_keys)
     modified = {o: (d1[o], d2[o]) for o in intersect_keys if d1[o] != d2[o]}
     return modified
-
-
-def compare_release(oldrel, newrel):
-    r = requests.get(newrel)
-    new = r.text
-    with open(oldrel, "rb") as f:
-        old = f.read()
-
-    oldtime = get_time(get_date(old))
-    newtime = get_time(get_date(new))
-    if newtime > oldtime:
-        notice("Update available")
-        newhashes = parse_release(new)
-        oldhashes = parse_release(old)
-        changes = compare_dict(newhashes, oldhashes)
-        # k = pkg name, v = sha256
-        return changes
-
-
-# relmap = compare_release("../spool/dists/jessie/updates/Release", "http://security.debian.org/dists/jessie/updates/Release")
-# print relmap
-# for k,v in relmap.iteritems():
-#    print(k)

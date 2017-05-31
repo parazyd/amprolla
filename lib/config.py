@@ -1,12 +1,17 @@
-#!/usr/bin/env python
-# copyright (c) 2017 - Ivan J. <parazyd@dyne.org>
 # see LICENSE file for copyright and license details
+
+"""
+amprolla configuration file
+"""
+
+# from hashlib import md5, sha1, sha256
 
 spooldir = './spool'
 sign_key = 'fa1b0274'
 mergedir = './merged'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
+# checksums = [{'name': 'MD5Sum', 'f': md5}, sha1, sha256]
 # checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
 
 repo_order = ['devuan', 'debian-sec', 'debian']
@@ -73,7 +78,27 @@ aliases = {
 
 categories = ['main', 'contrib', 'non-free']
 
-arches = ['binary-armhf']
+arches = [
+    # 'binary-all',
+    # 'binary-alpha',
+    # 'binary-amd64',
+    # 'binary-arm64',
+    # 'binary-armel',
+    'binary-armhf',
+    # 'binary-hppa',
+    # 'binary-hurd-i386',
+    # 'binary-i386',
+    # 'binary-ia64',
+    # 'binary-kfreebsd-amd64',
+    # 'binary-kfreebsd-i386',
+    # 'binary-mips',
+    # 'binary-mips64el',
+    # 'binary-mipsel',
+    # 'binary-powerpc',
+    # 'binary-ppc64el',
+    # 'binary-s390x',
+    # 'binary-sparc'
+]
 
 mainrepofiles = [
     'InRelease',

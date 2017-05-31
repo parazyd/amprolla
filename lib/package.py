@@ -1,3 +1,9 @@
+# see LICENSE file for copyright and license details
+
+"""
+Package merging functions and helpers
+"""
+
 import os
 from gzip import open as gzip_open
 
