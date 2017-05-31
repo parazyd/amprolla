@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# see LICENSE file for copyright and license details
+
 """
 This module will download the initial Release files used to populate
 the spooldir, along with all the files hashed inside the Release files

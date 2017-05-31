@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# see LICENSE file for copyright and license details
+
 """
 Amprolla main module
 """

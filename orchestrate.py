@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# see LICENSE file for copyright and license details
 
 from os.path import join
 from lib.config import arches, categories
