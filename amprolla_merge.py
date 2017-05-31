@@ -53,9 +53,9 @@ def devuan_rewrite(pkg, repo_name):
     any attributes. Currently only changes the filename if we include a package
     when repo_name == 'devuan'.
     """
-    if repo_name == 'devuan':
-        pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
-                                                  repos[repo_name]['name'])
+    # if repo_name == 'devuan':
+    pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
+                                              repos[repo_name]['name'])
 
     return pkg
 

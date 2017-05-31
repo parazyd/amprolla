@@ -65,11 +65,11 @@ def main():
             release_contents = parse_release(release_contents)
             # for k in release_contents.keys():
             for k in release_contents:
-                # if k.endswith('/binary-armhf/Packages.gz'):
+                if k.endswith('/binary-armhf/Packages.gz'):
                 # if k.endswith('Packages.gz'):
-                remote = join(url[0], k)
-                local = join(url[1], k)
-                download(remote, local)
+                    remote = join(url[0], k)
+                    local = join(url[1], k)
+                    download(remote, local)
 
 
 if __name__ == '__main__':
