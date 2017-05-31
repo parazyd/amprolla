@@ -35,29 +35,40 @@ def pop_dirs(repo):
                     suite = config.aliases[repodata['name']][j]
                 elif repodata['skipmissing'] is True:
                     continue
-                skips = ['jessie-security', 'ascii-security']  # XXX: hack
+                skips = ['jessie-security', 'ascii-security']  # hack
                 if repo == 'debian' and j in skips:
                     continue
             pair = (join(baseurl, suite),
                     join(baseurl.replace(repodata['host'],
-                         config.spooldir), suite))
+                                         config.spooldir), suite))
             urls.append(pair)
 
     return urls
 
 
-for dist in config.repos:
-    dlurls = pop_dirs(dist)
-    for url in dlurls:
-        for file in config.mainrepofiles:
-            remote = join(url[0], file)
-            local = join(url[1], file)
-            download(remote, local)
+def main():
+    """
+    Loops through all repositories, and downloads their *Release* files, along
+    with all the files listed within those Release files.
+    """
+    for dist in config.repos:
+        dlurls = pop_dirs(dist)
+        for url in dlurls:
+            for file in config.mainrepofiles:
+                remote = join(url[0], file)
+                local = join(url[1], file)
+                download(remote, local)
 
-        release_contents = open(join(url[1], 'Release')).read()
-        release_contents = parse_release(release_contents)
-        for k in release_contents.keys():
-            if k.endswith('/binary-armhf/Packages.gz'):
+            release_contents = open(join(url[1], 'Release')).read()
+            release_contents = parse_release(release_contents)
+            # for k in release_contents.keys():
+            for k in release_contents:
+                # if k.endswith('/binary-armhf/Packages.gz'):
+                # if k.endswith('Packages.gz'):
                 remote = join(url[0], k)
                 local = join(url[1], k)
                 download(remote, local)
+
+
+if __name__ == '__main__':
+    main()
