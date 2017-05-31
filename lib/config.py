@@ -73,6 +73,8 @@ aliases = {
 
 categories = ['main', 'contrib', 'non-free']
 
+arches = ['binary-armhf']
+
 mainrepofiles = [
     'InRelease',
     'Release',

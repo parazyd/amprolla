@@ -3,6 +3,7 @@
 Amprolla main module
 """
 
+import sys
 from os.path import join
 from time import time
 
@@ -89,19 +90,27 @@ def merge(packages_list):
     print('time:', t2-t1)
 
 
-packages_file = 'main/binary-armhf/Packages.gz'
-to_merge = prepare_merge_dict()
+def main(packages_file):
+    #packages_file = 'main/binary-armhf/Packages.gz'
+    #packages_file = argv[1]
+    print(packages_file)
+    to_merge = prepare_merge_dict()
 
-tt1 = time()
-for suite in to_merge:
-    pkg_list = []
-    for rep in to_merge[suite]:
-        if rep:
-            pkg_list.append(join(rep, packages_file))
-        else:
-            pkg_list.append(None)
+    tt1 = time()
+    for suite in to_merge:
+        pkg_list = []
+        for rep in to_merge[suite]:
+            if rep:
+                pkg_list.append(join(rep, packages_file))
+            else:
+                pkg_list.append(None)
 
-    merge(pkg_list)
+        # print(pkg_list)
+        merge(pkg_list)
 
-tt2 = time()
-print('total time:', tt2-tt1)
+    tt2 = time()
+    print('total time:', tt2-tt1)
+
+
+if __name__ == '__main__':
+    main(sys.argv[1])
