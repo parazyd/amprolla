@@ -99,9 +99,9 @@ def merge_packages_many(packages, banned_packages=set(), rewriter=None):
     packages dictionaries, priority is defined by the order of the `packages`
     list, optionally discarding any banned packages.
     """
-    assert len(packages) > 1  # TODO: what to do when there is only one?
-    # a situation arises when the file exists, but it just has the gzip
-    # header, rather than any content
+    if not len(packages) > 1:
+        while not len(packages) > 1:
+            packages.append({'name': '', 'packages': {}})
 
     new_pkgs = {}
 
