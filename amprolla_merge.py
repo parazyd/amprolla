@@ -5,14 +5,14 @@
 Amprolla main module
 """
 
-import sys
+from sys import argv
 from os.path import join
 from time import time
 
 from lib.package import (write_packages, load_packages_file,
                          merge_packages_many)
 from lib.config import (aliases, banpkgs, repo_order, repos,
-                        spooldir, suites , mergedir, mergesubdir)
+                        spooldir, suites, mergedir, mergesubdir)
 
 
 def prepare_merge_dict():
@@ -61,6 +61,9 @@ def devuan_rewrite(pkg, repo_name):
 
 
 def merge(packages_list):
+    """
+    Merges the Packages files given in the package list
+    """
     t1 = time()
 
     all_repos = []
@@ -79,7 +82,8 @@ def merge(packages_list):
         all_repos.append({'name': 'debian', 'packages': debian})
 
     print('Merging packages')
-    new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs, rewriter=devuan_rewrite)
+    new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs,
+                                   rewriter=devuan_rewrite)
 
     print('Writing packages')
     # replace the devuan subdir with our mergedir that we plan to fill
@@ -93,9 +97,10 @@ def merge(packages_list):
 
 
 def main(packages_file):
-    #packages_file = 'main/binary-armhf/Packages.gz'
-    #packages_file = argv[1]
-    print(packages_file)
+    """
+    Main function that calls the actual merge
+    """
+    # print(packages_file)
     to_merge = prepare_merge_dict()
 
     tt1 = time()
@@ -115,4 +120,4 @@ def main(packages_file):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main(argv[1])

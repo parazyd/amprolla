@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # see LICENSE file for copyright and license details
 
+"""
+module to pool and download Release files when needed
+"""
+
 import subprocess
 from os.path import join
 import requests
@@ -37,7 +41,7 @@ def merge_files(repo, relfile):
 
     hashes = parse_release(release_contents)
 
-    for k in hashes.keys():
+    for k in hashes:
         # if k.endswith('Packages.gz'):
         if k.endswith('/binary-armhf/Packages.gz'):
             # skip empty files

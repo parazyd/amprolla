@@ -14,7 +14,7 @@ for i in arches:
 
 
 #print(pkg)
-am = __import__('amprolla-merge')
+am = __import__('amprolla_merge')
 
 p = Pool(4)
 p.map(am.main, pkg)
