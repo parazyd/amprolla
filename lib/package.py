@@ -11,7 +11,7 @@ def write_packages(packages, filename, sort=True):
     If sort=True, the packages are sorted by name.
     """
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    f = open(filename, 'w+')
+    f = gzip_open(filename, 'w')
 
     pkg_items = packages.items()
     if sort:
@@ -20,8 +20,9 @@ def write_packages(packages, filename, sort=True):
     for pkg_name, pkg_contents in pkg_items:
         for key in packages_keys:
             if key in pkg_contents:
-                f.write('%s: %s\n' % (key, pkg_contents[key]))
-        f.write('\n')
+                s = '%s: %s\n' % (key, pkg_contents[key])
+                f.write(s.encode('utf-8'))
+        f.write(b'\n')
 
     f.close()
 
