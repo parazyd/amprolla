@@ -6,6 +6,7 @@ Package merging functions and helpers
 
 import os
 from gzip import open as gzip_open
+from lzma import open as lzma_open
 
 from lib.parse import (parse_packages, parse_dependencies)
 from lib.config import packages_keys
@@ -17,7 +18,9 @@ def write_packages(packages, filename, sort=True):
     If sort=True, the packages are sorted by name.
     """
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    f = gzip_open(filename, 'w')
+    gzf = gzip_open(filename, 'w')
+    xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
+    f = open(filename.replace('.gz', ''), 'w')
 
     pkg_items = packages.items()
     if sort:
@@ -27,9 +30,15 @@ def write_packages(packages, filename, sort=True):
         for key in packages_keys:
             if key in pkg_contents:
                 s = '%s: %s\n' % (key, pkg_contents[key])
-                f.write(s.encode('utf-8'))
-        f.write(b'\n')
+                gzf.write(s.encode('utf-8'))
+                xzf.write(s.encode('utf-8'))
+                f.write(s)
+        gzf.write(b'\n')
+        xzf.write(b'\n')
+        f.write('\n')
 
+    gzf.close()
+    xzf.close()
     f.close()
 
 
