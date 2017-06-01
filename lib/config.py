@@ -4,14 +4,18 @@
 amprolla configuration file
 """
 
-# from hashlib import md5, sha1, sha256
+from hashlib import md5, sha1, sha256
 
 spooldir = './spool'
 sign_key = 'fa1b0274'
 mergedir = './merged'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
-# checksums = [{'name': 'MD5Sum', 'f': md5}, sha1, sha256]
+checksums = [
+    {'name': 'MD5Sum', 'f': md5},
+    {'name': 'SHA1', 'f': sha1},
+    {'name': 'SHA256', 'f': sha256},
+]
 # checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
 
 repo_order = ['devuan', 'debian-sec', 'debian']
