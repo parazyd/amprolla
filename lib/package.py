@@ -46,7 +46,8 @@ def load_packages_file(filename):
     """ Load a gzip'd packages file.
     Returns a dictionary of package name and package key-values.
     """
-    if filename is not None:
+    # TODO: should we skip files like this if they don't exist?
+    if filename is not None and os.path.isfile(filename):
         packages_contents = gzip_open(filename).read()
         packages_contents = packages_contents.decode('utf-8')
         return parse_packages(packages_contents)
