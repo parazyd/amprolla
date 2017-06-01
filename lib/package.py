@@ -5,11 +5,13 @@ Package merging functions and helpers
 """
 
 import os
+from os.path import join
 from gzip import open as gzip_open
 from lzma import open as lzma_open
+from shutil import copyfile
 
 from lib.parse import (parse_packages, parse_dependencies)
-from lib.config import packages_keys
+from lib.config import packages_keys, mergedir, spooldir
 
 
 def write_packages(packages, filename, sort=True):
@@ -18,6 +20,12 @@ def write_packages(packages, filename, sort=True):
     If sort=True, the packages are sorted by name.
     """
     os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+    # Copy the arch-specific Release file from devuan if it's not there
+    rl = filename.replace('Packages.gz', 'Release')
+    if not os.path.isfile(rl):
+        copyfile(rl.replace(mergedir, join(spooldir, 'devuan')), rl)
+
     gzf = gzip_open(filename, 'w')
     xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
     f = open(filename.replace('.gz', ''), 'w')
@@ -97,7 +105,6 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
                     pkg1_pkg = rewriter(pkg1_pkg, name1)
-
                 new_pkgs[pkg] = pkg1_pkg
         elif pkg2_pkg:
             if not package_banned(pkg2_pkg, banned_packages):
