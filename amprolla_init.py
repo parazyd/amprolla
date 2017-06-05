@@ -7,6 +7,7 @@ the spooldir, along with all the files hashed inside the Release files
 """
 
 from os.path import join
+from multiprocessing import Pool
 
 import lib.config as config
 from lib.net import download
@@ -56,20 +57,24 @@ def main():
     for dist in config.repos:
         dlurls = pop_dirs(dist)
         for url in dlurls:
+            tpl = []
             for file in config.mainrepofiles:
-                remote = join(url[0], file)
-                local = join(url[1], file)
-                download(remote, local)
+                uu = (join(url[0], file), join(url[1], file))
+                tpl.append(uu)
+            p = Pool(4)
+            p.map(download, tpl)
+            p.close()
 
             release_contents = open(join(url[1], 'Release')).read()
             release_contents = parse_release(release_contents)
-            # for k in release_contents.keys():
+            tpl = []
             for k in release_contents:
                 # if k.endswith('/binary-armhf/Packages.gz'):
-                # if k.endswith('Packages.gz'):
-                remote = join(url[0], k)
-                local = join(url[1], k)
-                download(remote, local)
+                uu = (join(url[0], k), join(url[1], k))
+                tpl.append(uu)
+            p = Pool(4)
+            p.map(download, tpl)
+            p.close()
 
 
 if __name__ == '__main__':
