@@ -113,7 +113,7 @@ def main(packages_file):
     # print(packages_file)
     to_merge = prepare_merge_dict()
 
-    tt1 = time()
+    #tt1 = time()
     for suite in to_merge:
         pkg_list = []
         for rep in to_merge[suite]:
@@ -122,11 +122,10 @@ def main(packages_file):
             else:
                 pkg_list.append(None)
 
-        # print(pkg_list)
         merge(pkg_list)
 
-    tt2 = time()
-    print('total time:', tt2-tt1)
+    #tt2 = time()
+    #print('total time:', tt2-tt1)
 
 
 if __name__ == '__main__':

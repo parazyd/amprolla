@@ -16,7 +16,6 @@ checksums = [
     {'name': 'SHA1', 'f': sha1},
     {'name': 'SHA256', 'f': sha256},
 ]
-# checksums = [ 'md5sum', 'sha1', 'sha256', 'sha512' ]
 
 repo_order = ['devuan', 'debian-sec', 'debian']
 
@@ -109,6 +108,33 @@ mainrepofiles = [
     'InRelease',
     'Release',
     'Release.gpg'
+]
+
+pkgfiles = [
+    # 'Packages',
+    'Packages.gz',
+    # 'Packages.xz',
+    'Release'
+]
+
+srcfiles = [
+    # 'Sources',
+    'Sources.gz',
+    # 'Sources.xz,
+    'Release'
+]
+
+release_keys = [
+    'Origin',
+    'Label',
+    'Suite',
+    'Version',
+    'Codename',
+    'Date',
+    'Valid-Until',
+    'Architectures',
+    'Components',
+    'Description'
 ]
 
 packages_keys = [

@@ -48,6 +48,29 @@ def parse_release(reltext):
 
     return hashes
 
+def parse_release_head(reltext):
+    """
+    Parses the header of the release file to grab potentially needed
+    metadata
+    """
+    metadata = {}
+
+    contents = reltext.split('\n')
+
+    md5sum = False
+    for line in contents:
+        if md5sum is True:
+            break
+        elif line.startswith('MD5Sum:'):
+            md5sum = True
+        else:
+            k = line.split(': ')[0]
+            v = line.split(': ')[1]
+            metadata[k] = v
+
+    return metadata
+
+
 
 def parse_release_re(reltext):
     """
