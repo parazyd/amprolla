@@ -11,10 +11,10 @@ from lzma import open as lzma_open
 from shutil import copyfile
 
 from lib.parse import (parse_packages, parse_dependencies)
-from lib.config import packages_keys, mergedir, spooldir
+from lib.config import packages_keys, sources_keys, mergedir, spooldir
 
 
-def write_packages(packages, filename, sort=True):
+def write_packages(packages, filename, sort=True, sources=False):
     """
     Writes `packages` to a file (per debian Packages format)
     If sort=True, the packages are sorted by name.
@@ -22,32 +22,40 @@ def write_packages(packages, filename, sort=True):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
 
     # Copy the arch-specific Release file from devuan if it's not there
-    rl = filename.replace('Packages.gz', 'Release')
+    bsnm = 'Packages.gz'
+    if sources:
+        bsnm = 'Sources.gz'
+    rl = filename.replace(bsnm, 'Release')
     if not os.path.isfile(rl):
         copyfile(rl.replace(mergedir, join(spooldir, 'devuan')), rl)
 
     gzf = gzip_open(filename, 'w')
-    xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
-    f = open(filename.replace('.gz', ''), 'w')
+    #xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
+    #f = open(filename.replace('.gz', ''), 'w')
 
     pkg_items = packages.items()
     if sort:
         pkg_items = sorted(pkg_items, key=lambda x: x[0])
 
+    if sources:
+        keylist = sources_keys
+    else:
+        keylist = packages_keys
+
     for pkg_name, pkg_contents in pkg_items:
-        for key in packages_keys:
+        for key in keylist:
             if key in pkg_contents:
                 s = '%s: %s\n' % (key, pkg_contents[key])
                 gzf.write(s.encode('utf-8'))
-                xzf.write(s.encode('utf-8'))
-                f.write(s)
+                #xzf.write(s.encode('utf-8'))
+                #f.write(s)
         gzf.write(b'\n')
-        xzf.write(b'\n')
-        f.write('\n')
+        #xzf.write(b'\n')
+        #f.write('\n')
 
     gzf.close()
-    xzf.close()
-    f.close()
+    #xzf.close()
+    #f.close()
 
 
 def load_packages_file(filename):

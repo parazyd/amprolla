@@ -9,11 +9,14 @@ from multiprocessing import Pool
 pkg = []
 for i in arches:
     for j in categories:
-        pkg.append(join(j, i, 'Packages.gz'))
-        pkg.append(join(j, 'debian-installer', i, 'Packages.gz'))
+        if i == 'source':
+            mrgfile = 'Sources.gz'
+        else:
+            mrgfile = 'Packages.gz'
+            pkg.append(join(j, 'debian-installer', i, mrgfile))
 
+        pkg.append(join(j, i, mrgfile))
 
-#print(pkg)
 am = __import__('amprolla_merge')
 
 p = Pool(4)

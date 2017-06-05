@@ -83,6 +83,7 @@ aliases = {
 categories = ['main', 'contrib', 'non-free']
 
 arches = [
+    'source',
     # 'binary-all',
     # 'binary-alpha',
     # 'binary-amd64',
@@ -169,4 +170,48 @@ packages_keys = [
     'MD5sum',
     'SHA1',
     'SHA256'
+]
+
+sources_keys = [
+    'Package',
+    'Binary',
+    'Version',
+    'Maintainer',
+    'Uploaders',
+    'Build-Depends',
+    'Architecture',
+    'Standards-Version',
+    'Format',
+    'Files',
+    'Vcs-Browser',
+    'Vcs-Svn',
+    'Checksums-Sha1',
+    'Checksums-Sha256',
+    'Homepage',
+    'Package-List',
+    'Directory',
+    'Priority',
+    'Section',
+    'Vcs-Git',
+    'Dm-Upload-Allowed',
+    'Build-Conflicts',
+    'Testsuite',
+    'Build-Depends-Indep',
+    'Vcs-Bzr',
+    'Vcs-Mtn',
+    'Vcs-Hg',
+    'Ruby-Versions',
+    'Dgit',
+    'Vcs-Darcs',
+    'Extra-Source-Only',
+    'Python-Version',
+    'Testsuite-Triggers',
+    'Autobuild',
+    'Build-Conflicts-Indep',
+    'Vcs-Cvs',
+    'Comment',
+    'Origin',
+    'Vcs-Arch',
+    'Original-Maintainer',
+    'Python3-Version'
 ]

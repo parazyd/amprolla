@@ -6,7 +6,7 @@ Amprolla main module
 """
 
 from sys import argv
-from os.path import join
+from os.path import basename, join
 from time import time
 
 from lib.package import (write_packages, load_packages_file,
@@ -62,7 +62,7 @@ def devuan_rewrite(pkg, repo_name):
 
 def merge(packages_list):
     """
-    Merges the Packages files given in the package list
+    Merges the Packages/Sources files given in the package list
     """
     t1 = time()
 
@@ -81,16 +81,26 @@ def merge(packages_list):
     if debian:
         all_repos.append({'name': 'debian', 'packages': debian})
 
-    print('Merging packages')
-    new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs,
-                                   rewriter=devuan_rewrite)
+
+    if basename(packages_list[0]) == 'Packages.gz':
+        print('Merging packages')
+        src = False
+        new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs,
+                                       rewriter=devuan_rewrite)
+    elif basename(packages_list[0]) == 'Sources.gz':
+        print('Merging sources')
+        src = True
+        new_pkgs = merge_packages_many(all_repos)
 
     print('Writing packages')
     # replace the devuan subdir with our mergedir that we plan to fill
     new_out = packages_list[0].replace(join(spooldir,
                                             repos['devuan']['dists']),
                                        join(mergedir, mergesubdir))
-    write_packages(new_pkgs, new_out)
+    if src:
+        write_packages(new_pkgs, new_out, sources=True)
+    else:
+        write_packages(new_pkgs, new_out)
 
     t2 = time()
     print('time:', t2-t1)
