@@ -6,8 +6,9 @@ Release file functions and helpers
 
 from datetime import datetime, timedelta
 from os.path import getsize
+import gnupg
 
-from lib.config import release_keys, checksums
+from lib.config import release_keys, checksums, signingkey
 from lib.parse import parse_release_head
 
 
@@ -47,3 +48,22 @@ def write_release(oldrel, newrel, filelist, r):
                                         getsize(f), f.replace(r+'/', '')))
 
     new.close()
+
+    sign_release(newrel)
+
+def sign_release(infile):
+    """
+    Signs both the clearsign and the detached signature of a Release file
+    """
+    gpg = gnupg.GPG()
+
+    stream = open(infile, 'rb')
+
+    # Clearsign
+    signed_data = gpg.sign_file(stream, keyid=signingkey, clearsign=True,
+                                detach=False,
+                                output=infile.replace('Release', 'InRelease'))
+
+    # Detached signature (somewhat broken?)
+    # signed_data = gpg.sign_file(stream, keyid=signingkey, clearsign=False,
+    #                             detach=True, output=infile + '.gpg')

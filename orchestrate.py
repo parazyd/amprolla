@@ -44,6 +44,7 @@ def gen_release(s):
 
     for suite in suites[s]:
         filelist = []
+        print('Crawling %s' % suite)
         rootdir = join(mergedir, mergesubdir, suite)
         for cat in categories:
             for arch in arches:
@@ -62,8 +63,9 @@ def gen_release(s):
         oldrfl = newrfl.replace(join(mergedir, mergesubdir),
                                 join(spooldir, repos['devuan']['dists']))
 
+        print('Writing Release')
         write_release(oldrfl, newrfl, filelist, rootdir)
-        break
+        # break
 
 
 do_merge()

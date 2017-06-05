@@ -30,8 +30,8 @@ def write_packages(packages, filename, sort=True, sources=False):
         copyfile(rl.replace(mergedir, join(spooldir, 'devuan')), rl)
 
     gzf = gzip_open(filename, 'w')
-    #xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
-    #f = open(filename.replace('.gz', ''), 'w')
+    xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
+    f = open(filename.replace('.gz', ''), 'w')
 
     pkg_items = packages.items()
     if sort:
@@ -47,15 +47,15 @@ def write_packages(packages, filename, sort=True, sources=False):
             if key in pkg_contents:
                 s = '%s: %s\n' % (key, pkg_contents[key])
                 gzf.write(s.encode('utf-8'))
-                #xzf.write(s.encode('utf-8'))
-                #f.write(s)
+                xzf.write(s.encode('utf-8'))
+                f.write(s)
         gzf.write(b'\n')
-        #xzf.write(b'\n')
-        #f.write('\n')
+        xzf.write(b'\n')
+        f.write('\n')
 
     gzf.close()
-    #xzf.close()
-    #f.close()
+    xzf.close()
+    f.close()
 
 
 def load_packages_file(filename):

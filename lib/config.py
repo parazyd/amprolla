@@ -7,7 +7,7 @@ amprolla configuration file
 from hashlib import md5, sha1, sha256
 
 spooldir = './spool'
-sign_key = 'fa1b0274'
+signingkey = 'B876CB44FA1B0274'
 mergedir = './merged'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
@@ -111,16 +111,16 @@ mainrepofiles = [
 ]
 
 pkgfiles = [
-    # 'Packages',
+    'Packages',
     'Packages.gz',
-    # 'Packages.xz',
+    'Packages.xz',
     'Release'
 ]
 
 srcfiles = [
-    # 'Sources',
+    'Sources',
     'Sources.gz',
-    # 'Sources.xz,
+    'Sources.xz',
     'Release'
 ]
 
