@@ -7,7 +7,7 @@ Amprolla main module
 
 from sys import argv
 from os.path import basename, join
-from time import time
+# from time import time
 
 from lib.package import (write_packages, load_packages_file,
                          merge_packages_many)
@@ -64,7 +64,7 @@ def merge(packages_list):
     """
     Merges the Packages/Sources files given in the package list
     """
-    t1 = time()
+    # t1 = time()
 
     all_repos = []
     print('Loading packages: %s' % packages_list)
@@ -80,7 +80,6 @@ def merge(packages_list):
     debian = load_packages_file(packages_list[2])
     if debian:
         all_repos.append({'name': 'debian', 'packages': debian})
-
 
     if basename(packages_list[0]) == 'Packages.gz':
         print('Merging packages')
@@ -102,8 +101,8 @@ def merge(packages_list):
     else:
         write_packages(new_pkgs, new_out)
 
-    t2 = time()
-    print('time:', t2-t1)
+    # t2 = time()
+    # print('time:', t2-t1)
 
 
 def main(packages_file):
@@ -113,7 +112,7 @@ def main(packages_file):
     # print(packages_file)
     to_merge = prepare_merge_dict()
 
-    #tt1 = time()
+    # tt1 = time()
     for suite in to_merge:
         pkg_list = []
         for rep in to_merge[suite]:
@@ -124,8 +123,8 @@ def main(packages_file):
 
         merge(pkg_list)
 
-    #tt2 = time()
-    #print('total time:', tt2-tt1)
+    # tt2 = time()
+    # print('total time:', tt2-tt1)
 
 
 if __name__ == '__main__':

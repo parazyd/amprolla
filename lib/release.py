@@ -5,7 +5,7 @@ Release file functions and helpers
 """
 
 from datetime import datetime, timedelta
-from os.path import getsize
+from os.path import getsize, isfile
 import gnupg
 
 from lib.config import release_keys, checksums, signingkey
@@ -43,13 +43,15 @@ def write_release(oldrel, newrel, filelist, r):
     for csum in checksums:
         new.write('%s:\n' % csum['name'])
         for f in filelist:
-            cont = open(f, 'rb').read()
-            new.write(' %s %8s %s\n' % (csum['f'](cont).hexdigest(),
-                                        getsize(f), f.replace(r+'/', '')))
+            if isfile(f):
+                cont = open(f, 'rb').read()
+                new.write(' %s %8s %s\n' % (csum['f'](cont).hexdigest(),
+                                            getsize(f), f.replace(r+'/', '')))
 
     new.close()
 
     sign_release(newrel)
+
 
 def sign_release(infile):
     """

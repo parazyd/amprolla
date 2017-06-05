@@ -7,7 +7,7 @@ amprolla configuration file
 from hashlib import md5, sha1, sha256
 
 spooldir = './spool'
-signingkey = 'B876CB44FA1B0274'
+signingkey = 'CA608125'
 mergedir = './merged'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
@@ -83,15 +83,15 @@ categories = ['main', 'contrib', 'non-free']
 
 arches = [
     'source',
-    # 'binary-all',
+    'binary-all',
     # 'binary-alpha',
-    # 'binary-amd64',
+    'binary-amd64',
     # 'binary-arm64',
     # 'binary-armel',
     'binary-armhf',
     # 'binary-hppa',
     # 'binary-hurd-i386',
-    # 'binary-i386',
+    'binary-i386',
     # 'binary-ia64',
     # 'binary-kfreebsd-amd64',
     # 'binary-kfreebsd-i386',
@@ -175,7 +175,6 @@ packages_keys = [
     'Npp-File',
     'Npp-Mimetype',
     'Npp-Name',
-    'Origin',
     'Original-Maintainer',
     'Original-Source-Maintainer',
     'Package-Type',

@@ -48,6 +48,7 @@ def parse_release(reltext):
 
     return hashes
 
+
 def parse_release_head(reltext):
     """
     Parses the header of the release file to grab potentially needed
@@ -69,7 +70,6 @@ def parse_release_head(reltext):
             metadata[k] = v
 
     return metadata
-
 
 
 def parse_release_re(reltext):
