@@ -5,14 +5,16 @@
 Amprolla main module
 """
 
-from sys import argv
 from os.path import basename, join
-# from time import time
+from multiprocessing import Pool
+# from pprint import pprint
 
 from lib.package import (write_packages, load_packages_file,
                          merge_packages_many)
-from lib.config import (aliases, banpkgs, repo_order, repos,
-                        spooldir, suites, mergedir, mergesubdir)
+from lib.config import (aliases, banpkgs, repo_order, repos, spooldir, suites,
+                        mergedir, mergesubdir, pkgfiles, srcfiles, categories,
+                        arches)
+from lib.release import write_release
 
 
 def prepare_merge_dict():
@@ -64,8 +66,6 @@ def merge(packages_list):
     """
     Merges the Packages/Sources files given in the package list
     """
-    # t1 = time()
-
     all_repos = []
     print('Loading packages: %s' % packages_list)
 
@@ -101,18 +101,44 @@ def merge(packages_list):
     else:
         write_packages(new_pkgs, new_out)
 
-    # t2 = time()
-    # print('time:', t2-t1)
+
+def gen_release(s):
+    """
+    Generates a Release file for a given main suite (jessie/ascii/unstable)
+    """
+
+    for suite in suites[s]:
+        filelist = []
+        print('Crawling %s' % suite)
+        rootdir = join(mergedir, mergesubdir, suite)
+        for cat in categories:
+            for arch in arches:
+                if arch == 'source':
+                    flist = srcfiles
+                else:
+                    flist = pkgfiles
+
+                for fl in flist:
+                    filelist.append(join(rootdir, cat, arch, fl))
+                    if arch != 'source':
+                        filelist.append(join(rootdir, cat,
+                                             'debian-installer', arch, fl))
+
+        newrfl = join(rootdir, 'Release')
+        oldrfl = newrfl.replace(join(mergedir, mergesubdir),
+                                join(spooldir, repos['devuan']['dists']))
+
+        print('Writing Release')
+        write_release(oldrfl, newrfl, filelist, rootdir)
+        # break
 
 
-def main(packages_file):
+def main_merge(packages_file):
     """
     Main function that calls the actual merge
     """
-    # print(packages_file)
     to_merge = prepare_merge_dict()
 
-    # tt1 = time()
     for suite in to_merge:
         pkg_list = []
         for rep in to_merge[suite]:
@@ -123,9 +149,30 @@ def main(packages_file):
 
         merge(pkg_list)
 
-    # tt2 = time()
-    # print('total time:', tt2-tt1)
+
+def main():
+    """
+    Crawls the entire directory structure and orchestrates the merge
+    in a queue using multiprocessing
+    """
+    pkg = []
+    for i in arches:
+        for j in categories:
+            if i == 'source':
+                mrgfile = 'Sources.gz'
+            else:
+                mrgfile = 'Packages.gz'
+                pkg.append(join(j, 'debian-installer', i, mrgfile))
+
+            pkg.append(join(j, i, mrgfile))
+
+    # pprint(pkg)
+    p = Pool(4)  # Set it to the number of CPUs you want to use
+    p.map(main_merge, pkg)
+
+    for st in suites:
+        gen_release(st)
 
 
 if __name__ == '__main__':
-    main(argv[1])
+    main()
