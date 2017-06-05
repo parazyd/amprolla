@@ -2,7 +2,7 @@
 # see LICENSE file for copyright and license details
 
 """
-Module used to orchestrace the entire amprolla merge
+Module used to orchestrate the entire amprolla merge
 """
 
 from os.path import join
@@ -11,8 +11,6 @@ from multiprocessing import Pool
 from lib.config import (arches, categories, suites, mergedir, mergesubdir,
                         pkgfiles, srcfiles, spooldir, repos)
 from lib.release import write_release
-
-# from pprint import pprint
 
 
 def do_merge():
@@ -33,7 +31,7 @@ def do_merge():
 
     am = __import__('amprolla_merge')
 
-    p = Pool(4)
+    p = Pool(4)  # Set it to the number of CPUs you want to use
     p.map(am.main, pkg)
 
 
