@@ -177,6 +177,15 @@ def parse_dependencies(dependencies):
 def compare_dict(d1, d2):
     """
     Compares two dicts
+    Takes two dicts and returns a dict of tuples with the differences.
+
+    Example input:
+
+        d1={'foo': 'bar'}, 22={'foo': 'baz'}
+
+    Example output:
+
+        {'foo': ('bar', 'baz')}
     """
     d1_keys = set(d1.keys())
     d2_keys = set(d2.keys())

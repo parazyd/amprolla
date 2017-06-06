@@ -43,7 +43,7 @@ repos = {
         'pool': 'debian/pool',
         'aliases': True,
         'skipmissing': False,
-    }
+    },
 }
 
 suites = {

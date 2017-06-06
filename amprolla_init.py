@@ -9,7 +9,7 @@ the spooldir, along with all the files hashed inside the Release files
 from os.path import join
 from multiprocessing import Pool
 
-import lib.config as config
+from lib.config import repos, suites, aliases, spooldir, mainrepofiles
 from lib.net import download
 from lib.parse import parse_release
 
@@ -24,18 +24,17 @@ def pop_dirs(repo):
         (http://auto.mirror.devuan.org/devuan/dists/jessie/main/binary-armhf/Packages.gz,
          ./spool/devuan/dists/unstable/contrib/binary-armhf/Packages.gz)
     """
-    print('Downloading %s directory structure' % repo)
-    repodata = config.repos[repo]
+    repodata = repos[repo]
 
     urls = []
 
-    for i in config.suites:
-        for j in config.suites[i]:
+    for i in suites:
+        for j in suites[i]:
             baseurl = join(repodata['host'], repodata['dists'])
             suite = j
             if repodata['aliases'] is True:
-                if j in config.aliases[repodata['name']]:
-                    suite = config.aliases[repodata['name']][j]
+                if j in aliases[repodata['name']]:
+                    suite = aliases[repodata['name']][j]
                 elif repodata['skipmissing'] is True:
                     continue
                 skips = ['jessie-security', 'ascii-security']  # hack
@@ -43,7 +42,7 @@ def pop_dirs(repo):
                     continue
             pair = (join(baseurl, suite),
                     join(baseurl.replace(repodata['host'],
-                                         config.spooldir), suite))
+                                         spooldir), suite))
             urls.append(pair)
 
     return urls
@@ -54,27 +53,28 @@ def main():
     Loops through all repositories, and downloads their *Release* files, along
     with all the files listed within those Release files.
     """
-    for dist in config.repos:
+    for dist in repos:
+        print('Downloading %s directory structure' % dist)
         dlurls = pop_dirs(dist)
         for url in dlurls:
             tpl = []
-            for file in config.mainrepofiles:
-                uu = (join(url[0], file), join(url[1], file))
-                tpl.append(uu)
-            p = Pool(4)
-            p.map(download, tpl)
-            p.close()
+            for file in mainrepofiles:
+                urls = (join(url[0], file), join(url[1], file))
+                tpl.append(urls)
+            dlpool = Pool(4)
+            dlpool.map(download, tpl)
+            dlpool.close()
 
             release_contents = open(join(url[1], 'Release')).read()
             release_contents = parse_release(release_contents)
             tpl = []
             for k in release_contents:
                 # if k.endswith('/binary-armhf/Packages.gz'):
-                uu = (join(url[0], k), join(url[1], k))
-                tpl.append(uu)
-            p = Pool(4)
-            p.map(download, tpl)
-            p.close()
+                urls = (join(url[0], k), join(url[1], k))
+                tpl.append(urls)
+            dlpool = Pool(4)
+            dlpool.map(download, tpl)
+            dlpool.close()
 
 
 if __name__ == '__main__':
