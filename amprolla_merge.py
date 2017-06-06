@@ -93,6 +93,7 @@ def merge(packages_list):
 
     print('Writing packages')
     # replace the devuan subdir with our mergedir that we plan to fill
+    # FIXME: do not assume Devuan always exists
     new_out = packages_list[0].replace(join(spooldir,
                                             repos['devuan']['dists']),
                                        join(mergedir, mergesubdir))
