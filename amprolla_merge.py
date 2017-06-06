@@ -102,35 +102,33 @@ def merge(packages_list):
         write_packages(new_pkgs, new_out)
 
 
-def gen_release(s):
+def gen_release(suite):
     """
-    Generates a Release file for a given main suite (jessie/ascii/unstable)
+    Generates a Release file for a given suite (jessie/ascii/unstable)
     """
 
-    for suite in suites[s]:
-        filelist = []
-        print('Crawling %s' % suite)
-        rootdir = join(mergedir, mergesubdir, suite)
-        for cat in categories:
-            for arch in arches:
-                if arch == 'source':
-                    flist = srcfiles
-                else:
-                    flist = pkgfiles
+    filelist = []
+    print('Crawling %s' % suite)
+    rootdir = join(mergedir, mergesubdir, suite)
+    for cat in categories:
+        for arch in arches:
+            if arch == 'source':
+                flist = srcfiles
+            else:
+                flist = pkgfiles
 
-                for fl in flist:
-                    filelist.append(join(rootdir, cat, arch, fl))
-                    if arch != 'source':
-                        filelist.append(join(rootdir, cat,
-                                             'debian-installer', arch, fl))
+            for i in flist:
+                filelist.append(join(rootdir, cat, arch, i))
+                if arch != 'source':
+                    filelist.append(join(rootdir, cat,
+                                         'debian-installer', arch, i))
 
-        newrfl = join(rootdir, 'Release')
-        oldrfl = newrfl.replace(join(mergedir, mergesubdir),
-                                join(spooldir, repos['devuan']['dists']))
+    newrfl = join(rootdir, 'Release')
+    oldrfl = newrfl.replace(join(mergedir, mergesubdir),
+                            join(spooldir, repos['devuan']['dists']))
 
-        print('Writing Release')
-        write_release(oldrfl, newrfl, filelist, rootdir)
-        # break
+    print('Writing Release')
+    write_release(oldrfl, newrfl, filelist, rootdir)
 
 
 def main_merge(packages_file):
@@ -167,11 +165,19 @@ def main():
             pkg.append(join(j, i, mrgfile))
 
     # pprint(pkg)
-    p = Pool(4)  # Set it to the number of CPUs you want to use
-    p.map(main_merge, pkg)
+    mrgpool = Pool(4)  # Set it to the number of CPUs you want to use
+    mrgpool.map(main_merge, pkg)
+    mrgpool.close()
 
-    for st in suites:
-        gen_release(st)
+    rel_list = []
+    for i in suites:
+        for j in suites[i]:
+            rel_list.append(j)
+            # gen_release(j)
+
+    relpool = Pool(4)  # Set it to the number of CPUs you want to use
+    relpool.map(gen_release, rel_list)
+    relpool.close()
 
 
 if __name__ == '__main__':
