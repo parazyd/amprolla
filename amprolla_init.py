@@ -8,6 +8,7 @@ the spooldir, along with all the files hashed inside the Release files
 
 from os.path import join
 from multiprocessing import Pool
+from time import time
 
 from lib.config import repos, suites, aliases, spooldir, mainrepofiles
 from lib.net import download
@@ -78,4 +79,7 @@ def main():
 
 
 if __name__ == '__main__':
+    t1 = time()
     main()
+    t2 = time()
+    print('total time: %s' % (t2 - t1))

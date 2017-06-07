@@ -38,7 +38,7 @@ repos = {
     },
     'debian': {
         'name': 'DEBIAN',
-        'host': 'http://ftp.debian.org',
+        'host': 'http://deb.debian.org',
         'dists': 'debian/dists',
         'pool': 'debian/pool',
         'aliases': True,
@@ -84,24 +84,24 @@ categories = ['main', 'contrib', 'non-free']
 arches = [
     'source',
     'binary-all',
-    # 'binary-alpha',
+    'binary-alpha',
     'binary-amd64',
-    # 'binary-arm64',
-    # 'binary-armel',
+    'binary-arm64',
+    'binary-armel',
     'binary-armhf',
-    # 'binary-hppa',
-    # 'binary-hurd-i386',
+    'binary-hppa',
+    'binary-hurd-i386',
     'binary-i386',
-    # 'binary-ia64',
-    # 'binary-kfreebsd-amd64',
-    # 'binary-kfreebsd-i386',
-    # 'binary-mips',
-    # 'binary-mips64el',
-    # 'binary-mipsel',
-    # 'binary-powerpc',
-    # 'binary-ppc64el',
-    # 'binary-s390x',
-    # 'binary-sparc'
+    'binary-ia64',
+    'binary-kfreebsd-amd64',
+    'binary-kfreebsd-i386',
+    'binary-mips',
+    'binary-mips64el',
+    'binary-mipsel',
+    'binary-powerpc',
+    'binary-ppc64el',
+    'binary-s390x',
+    'binary-sparc'
 ]
 
 mainrepofiles = [

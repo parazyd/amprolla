@@ -34,9 +34,11 @@ Basic usage
 Edit `lib/config.py` to your needs, and then run `amprolla_init.py`.
 This will download the repositories we will merge afterwards. When this
 is done, you can now run `amprolla_merge.py` which will perform the
-merge, and finally sign the Release files needed.
+merge, and finally sign the Release files needed. To perform incremental
+updates, run `amprolla_update.py` with a cron job in your desired
+intervals.
 
-A `nginx` configuration for the amprolla server can be found in
+An `nginx` configuration for the amprolla server can be found in
 `contrib`.
 
 More information on amprolla should be found in the `doc` directory.

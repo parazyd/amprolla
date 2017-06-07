@@ -7,6 +7,7 @@ Amprolla main module
 
 from os.path import basename, join
 from multiprocessing import Pool
+from time import time
 # from pprint import pprint
 
 from lib.package import (write_packages, load_packages_file,
@@ -182,4 +183,7 @@ def main():
 
 
 if __name__ == '__main__':
+    t1 = time()
     main()
+    t2 = time()
+    print('total time: %s' % (t2 - t1))
