@@ -31,12 +31,12 @@ app-crypt/gnupg dev-python/requests dev-python/python-gnupg
 Basic usage
 -----------
 
-Edit `lib/config.py` to your needs, and then run `amprolla_init.py`.
-This will download the repositories we will merge afterwards. When this
-is done, you can now run `amprolla_merge.py` which will perform the
-merge, and finally sign the Release files needed. To perform incremental
-updates, run `amprolla_update.py` with a cron job in your desired
-intervals.
+Copy `lib/config.def.py` to `lib/config.py` and edit `lib/config.py` to
+your needs, and then run `amprolla_init.py`. This will download the
+repositories we will merge afterwards. When this is done, you can run
+`amprolla_merge.py` which will perform the actual merge, and finally
+sign the Release files needed. To perform incremental updates, run
+`amprolla_update.py` with a cron job in your desired intervals.
 
 An `nginx` configuration for the amprolla server can be found in
 `contrib`.
