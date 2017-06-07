@@ -10,7 +10,7 @@ from os.path import join
 from multiprocessing import Pool
 from time import time
 
-from lib.config import repos, suites, aliases, spooldir, mainrepofiles
+from lib.config import aliases, cpunm, mainrepofiles, repos, spooldir, suites
 from lib.net import download
 from lib.parse import parse_release
 
@@ -21,9 +21,10 @@ def pop_dirs(repo):
     directory structure.
     Returns a list of tuples holding the remote and local locations
     of the files
+
     Example:
-        (http://auto.mirror.devuan.org/devuan/dists/jessie/main/binary-armhf/Packages.gz,
-         ./spool/devuan/dists/unstable/contrib/binary-armhf/Packages.gz)
+    (http://deb.debian.org/debian/dists/jessie/main/binary-all/Packages.gz,
+     ./spool/debian/dists/jessie/main/binary-all/Packages.gz)
     """
     repodata = repos[repo]
 
@@ -51,7 +52,7 @@ def pop_dirs(repo):
 
 def main():
     """
-    Loops through all repositories, and downloads their *Release* files, along
+    Loops through all repositories, and downloads their Release files, along
     with all the files listed within those Release files.
     """
     for dist in repos:
@@ -62,7 +63,7 @@ def main():
             for file in mainrepofiles:
                 urls = (join(url[0], file), join(url[1], file))
                 tpl.append(urls)
-            dlpool = Pool(4)
+            dlpool = Pool(cpunm)
             dlpool.map(download, tpl)
             dlpool.close()
 
@@ -73,7 +74,7 @@ def main():
                 # if k.endswith('/binary-armhf/Packages.gz'):
                 urls = (join(url[0], k), join(url[1], k))
                 tpl.append(urls)
-            dlpool = Pool(4)
+            dlpool = Pool(cpunm)
             dlpool.map(download, tpl)
             dlpool.close()
 

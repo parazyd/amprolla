@@ -10,8 +10,8 @@ from gzip import open as gzip_open
 from lzma import open as lzma_open
 from shutil import copyfile
 
-from lib.parse import (parse_packages, parse_dependencies)
-from lib.config import packages_keys, sources_keys, mergedir, spooldir
+from lib.config import mergedir, packages_keys, sources_keys, spooldir
+from lib.parse import parse_dependencies, parse_packages
 
 
 def write_packages(packages, filename, sort=True, sources=False):

@@ -8,13 +8,13 @@ Amprolla main module
 from os.path import basename, join
 from multiprocessing import Pool
 from time import time
-# from pprint import pprint
 
-from lib.package import (write_packages, load_packages_file,
-                         merge_packages_many)
-from lib.config import (aliases, banpkgs, repo_order, repos, spooldir, suites,
-                        mergedir, mergesubdir, pkgfiles, srcfiles, categories,
-                        arches)
+
+from lib.config import (aliases, arches, banpkgs, categories, cpunm, mergedir,
+                        mergesubdir, pkgfiles, repos, repo_order, spooldir,
+                        srcfiles, suites)
+from lib.package import (load_packages_file, merge_packages_many,
+                         write_packages)
 from lib.release import write_release
 
 
@@ -61,7 +61,7 @@ def devuan_rewrite(pkg, repo_name):
                                                   repos[repo_name]['name'])
     if 'Directory' in pkg:
         pkg['Directory'] = pkg['Directory'].replace('pool/', 'pool/%s/' %
-                                                  repos[repo_name]['name'])
+                                                    repos[repo_name]['name'])
 
     return pkg
 
@@ -171,8 +171,7 @@ def main():
 
             pkg.append(join(j, i, mrgfile))
 
-    # pprint(pkg)
-    mrgpool = Pool(4)  # Set it to the number of CPUs you want to use
+    mrgpool = Pool(cpunm)
     mrgpool.map(main_merge, pkg)
     mrgpool.close()
 
@@ -180,9 +179,8 @@ def main():
     for i in suites:
         for j in suites[i]:
             rel_list.append(j)
-            # gen_release(j)
 
-    relpool = Pool(4)  # Set it to the number of CPUs you want to use
+    relpool = Pool(cpunm)
     relpool.map(gen_release, rel_list)
     relpool.close()
 

@@ -50,10 +50,7 @@ def parse_release(reltext):
 
 
 def parse_release_head(reltext):
-    """
-    Parses the header of the release file to grab potentially needed
-    metadata
-    """
+    """Parses the header of the release file to grab needed metadata"""
     metadata = {}
 
     contents = reltext.split('\n')
@@ -70,23 +67,6 @@ def parse_release_head(reltext):
             metadata[k] = v
 
     return metadata
-
-
-def parse_release_re(reltext):
-    """
-    Parses a Release file using regular expressions and returns a dict
-    of the files we keed
-    key = filename, value = sha256 checksum
-    """
-    _hash = {}
-    match = re.search('SHA256:+', reltext)
-    if match:
-        line = reltext[match.start():-1]
-        for i in line.split('\n'):
-            if i == 'SHA256:' or i == '\n':  # XXX: hack
-                continue
-            _hash[(i.split()[2])] = i.split()[0]
-        return _hash
 
 
 def parse_package(entry):
@@ -111,17 +91,6 @@ def parse_package(entry):
         pkgs[key] = value
 
     return pkgs
-
-
-PACKAGES_REGEX = re.compile('([A-Za-z0-9\-]+): ')
-def parse_package_re(entry):
-    """ Parses a single Packages entry """
-    contents = PACKAGES_REGEX.split(entry)[1:]  # Throw away the first ''
-
-    keys = contents[::2]
-    vals = map(lambda x: x.strip(), contents[1::2])
-
-    return dict(zip(keys, vals))
 
 
 def parse_packages(pkgtext):

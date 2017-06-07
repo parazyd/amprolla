@@ -17,7 +17,9 @@ def download(uris):
     url = uris[0]
     path = uris[1]
     print("downloading: %s\nto: %s" % (url, path))
+
     r = requests.get(url, stream=True)
+
     if r.status_code == 404:
         warn("download of %s failed: not found!" % url)
         return
@@ -32,5 +34,3 @@ def download(uris):
             f.write(chunk)
             # f.flush()
     f.close()
-    print("\033[1;32m .  done\033[0m")
-    return

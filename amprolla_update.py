@@ -10,9 +10,9 @@ from multiprocessing import Pool
 from time import time
 import requests
 
-from amprolla_merge import prepare_merge_dict, gen_release, merge
-from lib.config import repos, spooldir, repo_order, aliases
-from lib.parse import parse_release, get_time, get_date, compare_dict
+from amprolla_merge import gen_release, merge, prepare_merge_dict
+from lib.config import aliases, cpunm, repos, repo_order, spooldir
+from lib.parse import compare_dict, get_date, get_time, parse_release
 from lib.net import download
 
 
@@ -77,7 +77,7 @@ def perform_update(suite, paths):
     # download what needs to be downloaded
     if needsmerge['downloads']:
         print('Downloading updates...')
-        dlpool = Pool(4)
+        dlpool = Pool(cpunm)
         dlpool.map(download, needsmerge['downloads'])
 
     # create union of our Packages.gz and Sources.gz files we will merge
@@ -112,7 +112,7 @@ def perform_update(suite, paths):
     # perform the actual merge
     if merge_list:
         print('Merging files...')
-        mrgpool = Pool(4)
+        mrgpool = Pool(cpunm)
         mrgpool.map(merge, merge_list)
 
     # generate Release files if we got any new files

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from os.path import getsize, isfile
 import gnupg
 
-from lib.config import release_keys, checksums, signingkey
+from lib.config import checksums, release_keys, signingkey
 from lib.parse import parse_release_head
 
 
