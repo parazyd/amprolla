@@ -7,6 +7,7 @@ Perform incremental updates
 
 from os.path import join
 from multiprocessing import Pool
+from time import time
 import requests
 
 from amprolla_merge import prepare_merge_dict, gen_release, merge
@@ -114,7 +115,7 @@ def perform_update(suite, paths):
         mrgpool = Pool(4)
         mrgpool.map(merge, merge_list)
 
-    # generate release files
+    # generate Release files if we got any new files
     if needsmerge['downloads']:
         print('Generating Release...')
         gen_release(suite)
@@ -127,8 +128,11 @@ def main():
     roots = prepare_merge_dict()
     for suite, paths in roots.items():
         perform_update(suite, paths)
-        break
+        # break
 
 
 if __name__ == '__main__':
+    t1 = time()
     main()
+    t2 = time()
+    print('total time: %s' % (t2 - t1))
