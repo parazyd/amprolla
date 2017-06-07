@@ -53,12 +53,15 @@ def prepare_merge_dict():
 def devuan_rewrite(pkg, repo_name):
     """
     Function to be called when including a certain package. Allows for changing
-    any attributes. Currently only changes the filename if we include a package
-    when repo_name == 'devuan'.
+    any attributes.
     """
-    # if repo_name == 'devuan':
-    pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
-                                              repos[repo_name]['name'])
+
+    if 'Filename' in pkg:
+        pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
+                                                  repos[repo_name]['name'])
+    if 'Directory' in pkg:
+        pkg['Directory'] = pkg['Directiry'].replace('pool/', 'pool/%s/' %
+                                                  repos[repo_name]['name'])
 
     return pkg
 
@@ -92,7 +95,7 @@ def merge(packages_list):
     elif basename(packages_list[0]) == 'Sources.gz':
         print('Merging sources')
         src = True
-        new_pkgs = merge_packages_many(all_repos)
+        new_pkgs = merge_packages_many(all_repos, rewriter=devuan_rewrite)
 
     print('Writing packages')
     # replace the devuan subdir with our mergedir that we plan to fill
