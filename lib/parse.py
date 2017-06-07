@@ -4,7 +4,6 @@
 Parsing functions/helpers
 """
 
-import re
 import time
 
 
@@ -100,13 +99,14 @@ def parse_packages(pkgtext):
     """
     _map = {}
 
-    pkgs = pkgtext.split("\n\n")
+    pkgs = pkgtext.split('\n\n')
     for pkg in pkgs:
-        m = re.match('Package: .+', pkg)
-        if m:
-            line = pkg[m.start():m.end()]
-            key = line.split(': ')[1]
-            _map[key] = parse_package(pkg)
+        single = pkg.split('\n')
+        for line in single:
+            if line.startswith('Package: '):
+                key = line.split(': ')[1]
+                _map[key] = parse_package(pkg)
+                break
 
     return _map
 
