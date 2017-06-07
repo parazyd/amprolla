@@ -66,6 +66,8 @@ def devuan_rewrite(pkg, repo_name):
 def merge(packages_list):
     """
     Merges the Packages/Sources files given in the package list
+
+    ['path/to/devuan/Packages.gz', None, 'path/to/debian/Packages.gz']
     """
     all_repos = []
     print('Loading packages: %s' % packages_list)
