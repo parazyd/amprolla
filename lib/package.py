@@ -92,6 +92,20 @@ def package_banned(pkg, banned_pkgs):
     return bool(deps.intersection(banned_pkgs))
 
 
+def package_newer(pkg1, pkg2):
+    """
+    Checks whether the package of a lower priority is newer than the package
+    of the higher priority and returns True if so.
+    """
+    higher_prio = pkg1.get('Version').split('+')
+    lower_prio = pkg2.get('Version').split('+')
+
+    if lower_prio[0] > higher_prio[0]:
+        return True
+
+    return False
+
+
 def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                    rewriter=None):
     """
@@ -110,6 +124,12 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
             if rewriter:
                 pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
+            if package_newer(pkg1_pkg, pkg2_pkg):
+                # TODO: proper logfile
+                print('There is a newer version of "%s"' %
+                      pkg1_pkg.get('Package'))
+                print('Old version: %s' % pkg1_pkg.get('Version'))
+                print('New version: %s' % pkg2_pkg.get('Version'))
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
