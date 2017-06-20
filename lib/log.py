@@ -6,6 +6,7 @@ Logging functions
 
 # TODO: Replace with logging
 
+import os
 import sys
 
 
@@ -27,3 +28,9 @@ def warn(msg):
 def cleanexit():
     notice("exiting cleanly...")
     sys.exit(0)
+
+def logtofile(filename, text, redo=False):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    lf = open(filename, 'a')
+    lf.write(text)
+    lf.close()

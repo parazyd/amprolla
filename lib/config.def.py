@@ -7,6 +7,7 @@ amprolla configuration file
 from hashlib import md5, sha1, sha256
 
 cpunm = 4  # number of cpus you want to use for multiprocessing
+logdir = './log'
 spooldir = './spool'
 signingkey = 'CA608125'
 mergedir = './merged'

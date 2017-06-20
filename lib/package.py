@@ -10,7 +10,8 @@ from gzip import open as gzip_open
 from lzma import open as lzma_open
 from shutil import copyfile
 
-from lib.config import mergedir, packages_keys, sources_keys, spooldir
+from lib.config import mergedir, packages_keys, sources_keys, spooldir, logdir
+from lib.log import logtofile
 from lib.parse import parse_dependencies, parse_packages
 
 
@@ -125,11 +126,10 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                 pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
             if package_newer(pkg1_pkg, pkg2_pkg):
-                # TODO: proper logfile
-                print('There is a newer version of "%s"' %
-                      pkg1_pkg.get('Package'))
-                print('Old version: %s' % pkg1_pkg.get('Version'))
-                print('New version: %s' % pkg2_pkg.get('Version'))
+                logtofile(join(logdir, 'oldpackages.txt'),
+                          '%s,%s,%s\n' % (pkg1_pkg.get('Package'),
+                                          pkg1_pkg.get('Version'),
+                                          pkg2_pkg.get('Version')))
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
