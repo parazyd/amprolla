@@ -41,8 +41,17 @@ Copy `lib/config.def.py` to `lib/config.py` and edit `lib/config.py` to
 your needs, and then run `amprolla_init.py`. This will download the
 repositories we will merge afterwards. When this is done, you can run
 `amprolla_merge.py` which will perform the actual merge, and finally
-sign the Release files needed. To perform incremental updates, run
-`amprolla_update.py` with a cron job in your desired intervals.
+sign the Release files needed. The first time this is done, it is
+advisable to run the script found in `contrib/populate_aliases.sh` so
+it can fill in the needed symlinks to the different suites. Make sure
+you set the correct path in the script.
+
+To perform incremental updates, run `orchestrate.sh` with a cron job
+in your desired intervals. Edit the script to set the correct paths.
+
+**NOTE:** in the current testing phase, `orchestrate.sh` contains a while
+loop in order to be ran in tmux to catch unhandled exceptions and fix
+the codebase.
 
 An `nginx` configuration for the amprolla server can be found in
 `contrib`.
