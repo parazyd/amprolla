@@ -24,10 +24,10 @@ def write_release(oldrel, newrel, filelist, r, sign=True):
         * string to remove from the path of the hashed file
     """
     t1 = datetime.utcnow()
-    t2 = datetime.utcnow() + timedelta(days=7)
+    # t2 = datetime.utcnow() + timedelta(days=7)
 
     prettyt1 = t1.strftime('%a, %d %b %Y %H:%M:%S UTC')
-    prettyt2 = t2.strftime('%a, %d %b %Y %H:%M:%S UTC')
+    # prettyt2 = t2.strftime('%a, %d %b %Y %H:%M:%S UTC')
 
     old = open(oldrel).read()
     new = open(newrel, 'w')
@@ -35,7 +35,7 @@ def write_release(oldrel, newrel, filelist, r, sign=True):
     rel_cont = parse_release_head(old)
 
     rel_cont['Date'] = prettyt1
-    rel_cont['Valid-Until'] = prettyt2
+    # rel_cont['Valid-Until'] = prettyt2
 
     for k in release_keys:
         if k in rel_cont:
