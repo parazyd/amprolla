@@ -4,8 +4,8 @@
 Package merging functions and helpers
 """
 
-import os
-from os.path import join
+from os import makedirs
+from os.path import dirname, isfile, join
 from gzip import open as gzip_open
 from lzma import open as lzma_open
 from shutil import copyfile
@@ -20,7 +20,7 @@ def write_packages(packages, filename, sort=True, sources=False):
     Writes `packages` to a file (per debian Packages format)
     If sort=True, the packages are sorted by name.
     """
-    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    makedirs(dirname(filename), exist_ok=True)
 
     # Copy the arch-specific Release file from devuan if it's not there
     bsnm = 'Packages.gz'
@@ -28,7 +28,7 @@ def write_packages(packages, filename, sort=True, sources=False):
         bsnm = 'Sources.gz'
     rl = filename.replace(bsnm, 'Release')
     sprl = rl.replace(mergedir, join(spooldir, 'devuan'))
-    if not os.path.isfile(rl) and os.path.isfile(sprl):
+    if not isfile(rl) and isfile(sprl):
         copyfile(sprl, rl)
 
     gzf = gzip_open(filename, 'w')
@@ -65,7 +65,7 @@ def load_packages_file(filename):
     Returns a dictionary of package name and package key-values.
     """
     # TODO: should we skip files like this if they don't exist?
-    if filename is not None and os.path.isfile(filename):
+    if filename is not None and isfile(filename):
         packages_contents = gzip_open(filename).read()
         packages_contents = packages_contents.decode('utf-8')
         return parse_packages(packages_contents)
@@ -126,7 +126,7 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                 pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
             if package_newer(pkg1_pkg, pkg2_pkg):
-                logtofile(join(logdir, 'oldpackages.txt'),
+                logtofile('oldpackages.txt',
                           '%s,%s,%s\n' % (pkg1_pkg.get('Package'),
                                           pkg1_pkg.get('Version'),
                                           pkg2_pkg.get('Version')))
