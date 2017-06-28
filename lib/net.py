@@ -4,10 +4,11 @@
 Network functions/helpers
 """
 
-import os
+from os import makedirs
+from os.path import dirname
 import requests
 
-from .log import die, warn
+from lib.log import die, info, warn
 
 
 def download(uris):
@@ -16,17 +17,17 @@ def download(uris):
     """
     url = uris[0]
     path = uris[1]
-    print("downloading: %s\nto: %s" % (url, path))
+    info("dl: %s" % url)
 
     r = requests.get(url, stream=True)
 
     if r.status_code == 404:
-        warn("download of %s failed: not found!" % url)
+        warn("failed: 404 not found!")
         return
     elif r.status_code != 200:
-        die("download of %s failed" % url)
+        die("failed: %d" % r.status_code)
 
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    makedirs(dirname(path), exist_ok=True)
     f = open(path, 'wb')
     # chunk_size {sh,c}ould be more on gbit servers
     for chunk in r.iter_content(chunk_size=1024):

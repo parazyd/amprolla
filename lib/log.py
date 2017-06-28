@@ -4,33 +4,53 @@
 Logging functions
 """
 
-# TODO: Replace with logging
-
-import os
+from time import time
+from os import makedirs, remove
+from os.path import join
 import sys
 
+from lib.config import logdir
 
-def die(msg):
-    print("\033[1;31m[E] %s\033[0m" % msg)
+
+def die(msg, tofile=True):
+    """
+    Log error and exit with exitcode 1
+    """
+    msg = "%d [ERR] %s\n" % (int(time()), msg)
+    print(msg)
+    if tofile:
+        logtofile('amprolla.txt', msg)
     sys.exit(1)
 
 
-def notice(msg):
-    print("\033[1;32m(*) %s\033[0m" % msg)
-    return
+def warn(msg, tofile=True):
+    """
+    Log warning and continue
+    """
+    msg = "%d [WARN] %s\n" % (int(time()), msg)
+    print(msg)
+    if tofile:
+        logtofile('amprolla.txt', msg)
 
 
-def warn(msg):
-    print("\033[1;33m[W] %s\033[0m" % msg)
-    return
+def info(msg, tofile=True):
+    """
+    Log informational message and continue
+    """
+    msg = "%d [INFO] %s\n" % (int(time()), msg)
+    print(msg)
+    if tofile:
+        logtofile('amprolla.txt', msg)
 
-
-def cleanexit():
-    notice("exiting cleanly...")
-    sys.exit(0)
 
 def logtofile(filename, text, redo=False):
-    os.makedirs(os.path.dirname(filename), exist_ok=True)
-    lf = open(filename, 'a')
+    """
+    Log given text to a given file.
+    If redo is True, rewrites the file
+    """
+    makedirs(logdir, exist_ok=True)
+    if redo:
+        remove(join(logdir, filename))
+    lf = open(join(logdir, filename), 'a')
     lf.write(text)
     lf.close()

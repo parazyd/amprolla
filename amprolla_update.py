@@ -12,6 +12,7 @@ import requests
 
 from amprolla_merge import gen_release, merge, prepare_merge_dict
 from lib.config import aliases, cpunm, repos, repo_order, spooldir
+from lib.log import info
 from lib.parse import compare_dict, get_date, get_time, parse_release
 from lib.net import download
 
@@ -23,11 +24,11 @@ def remote_is_newer(remote, local):
     rem_date = get_date(remote)
     loc_date = get_date(local)
 
-    print('Remote date: %s' % rem_date)
-    print('Local  date: %s' % loc_date)
+    # print('Remote date: %s' % rem_date)
+    # print('Local  date: %s' % loc_date)
 
     if get_time(rem_date) > get_time(loc_date):
-        print('Remote Release is newer!')
+        info('Remote Release is newer!')
         return True
 
     return False
@@ -37,8 +38,8 @@ def perform_update(suite, paths):
     """
     Performs an incremental update and merge of a given suite
     """
-    print('Checking for updates in %s' % suite)
-    print(paths)
+    info('Checking for updates in %s' % suite)
+    # print(paths)
 
     needsmerge = {}
     needsmerge['downloads'] = []  # all files that have to be downloaded
@@ -49,7 +50,7 @@ def perform_update(suite, paths):
         needsmerge[i]['mergelist'] = []
 
         if paths[c]:
-            print('Working on %s repo' % i)
+            info('Working on %s repo' % i)
             remote_path = paths[c].replace(spooldir, repos[i]['host'])
             remote_rel = requests.get(join(remote_path, 'Release'))
 
@@ -76,7 +77,7 @@ def perform_update(suite, paths):
 
     # download what needs to be downloaded
     if needsmerge['downloads']:
-        print('Downloading updates...')
+        info('Downloading updates...')
         dlpool = Pool(cpunm)
         dlpool.map(download, needsmerge['downloads'])
 
@@ -111,13 +112,13 @@ def perform_update(suite, paths):
 
     # perform the actual merge
     if merge_list:
-        print('Merging files...')
+        info('Merging files...')
         mrgpool = Pool(cpunm)
         mrgpool.map(merge, merge_list)
 
     # generate Release files if we got any new files
     if needsmerge['downloads']:
-        print('Generating Release...')
+        info('Generating Release...')
         gen_release(suite)
 
 
