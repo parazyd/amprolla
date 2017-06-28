@@ -24,13 +24,13 @@ amprolla requires at least Python 3.5, and some external modules for it.
 ### Devuan Ascii/Debian Stretch
 
 ```
-gnupg2 python3-requests python3-gnupg
+rsync gnupg2 python3-requests python3-gnupg
 ```
 
 ### Gentoo:
 
 ```
-app-crypt/gnupg dev-python/requests dev-python/python-gnupg
+net-misc/rsync app-crypt/gnupg dev-python/requests dev-python/python-gnupg
 ```
 
 
