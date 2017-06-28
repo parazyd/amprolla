@@ -10,7 +10,7 @@ cpunm = 4  # number of cpus you want to use for multiprocessing
 logdir = './log'
 spooldir = './spool'
 signingkey = 'CA608125'
-mergedir = './merged'
+mergedir = './merged-volatile'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
 checksums = [
@@ -40,7 +40,7 @@ repos = {
     },
     'debian': {
         'name': 'DEBIAN',
-        'host': 'http://deb.debian.org',
+        'host': 'http://ftp.debian.org',
         'dists': 'debian/dists',
         'pool': 'debian/pool',
         'aliases': True,
