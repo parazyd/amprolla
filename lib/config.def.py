@@ -81,6 +81,20 @@ aliases = {
     }
 }
 
+release_aliases = {
+    'ascii': 'testing',
+    'ascii-backports': 'testing-backports',
+    'ascii-proposed-updates': 'testing-proposed-updates',
+    'ascii-security': 'testing-security',
+    'ascii-updates': 'testing-updates',
+
+    'jessie': 'stable',
+    'jessie-backports': 'stable-backports',
+    'jessie-proposed-updates': 'stable-proposed-updates',
+    'jessie-security': 'stable-security',
+    'jessie-updates': 'stable-updates',
+}
+
 categories = ['main', 'contrib', 'non-free']
 
 arches = [
