@@ -9,6 +9,12 @@ third iteration of the software. The original version of amprolla was
 not performing well in terms of speed, and the second version was never
 finished - therefore this version has emerged.
 
+amprolla is a tool that will merge a number of different apt-based
+repositories into one, while giving control over (not) including given
+packages, architectures, or any specific package metadata. Upon completing
+the merge, amprolla will generate and optionally create GnuPG signatures
+of the according `Release` files.
+
 
 Dependencies
 ------------
@@ -40,5 +46,3 @@ sign the Release files needed. To perform incremental updates, run
 
 An `nginx` configuration for the amprolla server can be found in
 `contrib`.
-
-More information on amprolla should be found in the `doc` directory.
