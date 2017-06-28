@@ -19,7 +19,7 @@ checksums = [
     {'name': 'SHA256', 'f': sha256},
 ]
 
-repo_order = ['devuan', 'debian-sec', 'debian']
+repo_order = ['devuan', 'debian-security', 'debian']
 
 repos = {
     'devuan': {
@@ -30,8 +30,8 @@ repos = {
         'aliases': False,
         'skipmissing': False,
     },
-    'debian-sec': {
-        'name': 'DEBIAN-SEC',
+    'debian-security': {
+        'name': 'DEBIAN-SECURITY',
         'host': 'http://security.debian.org',
         'dists': 'dists',
         'pool': 'pool',
@@ -69,7 +69,7 @@ suites = {
 }
 
 aliases = {
-    'DEBIAN-SEC': {
+    'DEBIAN-SECURITY': {
         'ascii-security': 'stretch/updates',
         'jessie-security': 'jessie/updates',
     },

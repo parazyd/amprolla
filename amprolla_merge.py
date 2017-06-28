@@ -81,7 +81,7 @@ def merge(packages_list):
 
     debian_sec = load_packages_file(packages_list[1])
     if debian_sec:
-        all_repos.append({'name': 'debian-sec', 'packages': debian_sec})
+        all_repos.append({'name': 'debian-security', 'packages': debian_sec})
 
     debian = load_packages_file(packages_list[2])
     if debian:
