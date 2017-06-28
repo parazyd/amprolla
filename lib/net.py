@@ -23,7 +23,7 @@ def download(uris):
         r = requests.get(url, stream=True)
     except requests.exceptions.ConnectionError:
         warn("Caught exception: Connection reset. Retrying.")
-        download(uris)
+        return download(uris)
 
     if r.status_code == 404:
         warn("failed: 404 not found!")
