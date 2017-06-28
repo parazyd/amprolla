@@ -43,6 +43,7 @@ def perform_update(suite, paths):
 
     needsmerge = {}
     needsmerge['downloads'] = []  # all files that have to be downloaded
+    regenrelease = False
     c = 0
     for i in repo_order:
         # i = repository name
@@ -60,6 +61,7 @@ def perform_update(suite, paths):
             if remote_is_newer(remote_rel.text, local_rel_text):
                 download((join(remote_path, 'Release'),
                           join(paths[c], 'Release')))
+                regenrelease = True
 
                 diffs = compare_dict(parse_release(remote_rel.text),
                                      parse_release(local_rel_text))
@@ -117,7 +119,7 @@ def perform_update(suite, paths):
         mrgpool.map(merge, merge_list)
 
     # generate Release files if we got any new files
-    if needsmerge['downloads']:
+    if needsmerge['downloads'] or regenrelease:
         info('Generating Release...')
         gen_release(suite)
 
