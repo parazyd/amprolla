@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 from os.path import getsize, isfile
 import gnupg
 
-from lib.config import (checksums, gpgdir, release_aliases, release_keys,
-                        signingkey)
+from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
+                        release_keys, signingkey)
 from lib.parse import parse_release_head
 
 
@@ -41,6 +41,8 @@ def write_release(oldrel, newrel, filelist, r, sign=True):
     # rewrite Suite to allow for being on stable/testing rather than
     # jessie/ascii/...
     if rel_cont['Suite'] in release_aliases:
+        rel_cont['Label'] = distrolabel
+        rel_cont['Codename'] = rel_cont['Suite']
         rel_cont['Suite'] = release_aliases[rel_cont['Suite']]
 
     for k in release_keys:

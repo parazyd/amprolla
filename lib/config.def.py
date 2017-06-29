@@ -20,6 +20,7 @@ checksums = [
     {'name': 'SHA256', 'f': sha256},
 ]
 
+distrolabel = 'Devuan'
 repo_order = ['devuan', 'debian-security', 'debian']
 
 repos = {
@@ -142,7 +143,7 @@ srcfiles = [
 ]
 
 release_keys = [
-    'Origin',
+    # 'Origin',
     'Label',
     'Suite',
     'Version',
