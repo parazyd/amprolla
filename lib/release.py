@@ -70,8 +70,11 @@ def sign_release(infile):
     stream = open(infile, 'rb')
 
     # Clearsign
-    gpg.sign_file(stream, keyid=signingkey, clearsign=True, detach=False,
-                  output=infile.replace('Release', 'InRelease'))
+    signed_data = gpg.sign_file(stream, keyid=signingkey, clearsign=True,
+                                detach=False)
+    inrel = open(infile.replace('Release', 'InRelease'), 'wb')
+    inrel.write(signed_data.data)
+    inrel.close()
 
     # Detached signature (somewhat broken?)
     # gpg.sign_file(stream, keyid=signingkey, clearsign=False, detach=True,
