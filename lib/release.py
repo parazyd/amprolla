@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from os.path import getsize, isfile
 import gnupg
 
-from lib.config import checksums, release_aliases, release_keys, signingkey
+from lib.config import (checksums, gpgdir, release_aliases, release_keys,
+                        signingkey)
 from lib.parse import parse_release_head
 
 
@@ -64,7 +65,7 @@ def sign_release(infile):
     """
     Signs both the clearsign and the detached signature of a Release file
     """
-    gpg = gnupg.GPG()
+    gpg = gnupg.GPG(gnupghome=gpgdir)
 
     stream = open(infile, 'rb')
 
