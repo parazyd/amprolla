@@ -10,7 +10,10 @@ REPO_ROOT=/srv/amprolla
 while true; do
 	ln -snf "$REPO_ROOT"/merged-staging "$REPO_ROOT"/merged
 	# the break call is temporary to catch unhandled exceptions in the testing phase
-	python3 "$AMPROLLA_UPDATE" || break
+	python3 "$AMPROLLA_UPDATE" || {
+		ln -snf "$REPO_ROOT"/merged-production "$REPO_ROOT"/merged
+		break
+	}
 	printf "rsyncing volatile to production...\n"
 	rsync --delete -raX "$REPO_ROOT"/merged-volatile/* "$REPO_ROOT"/merged-production
 	printf "done!\n"
