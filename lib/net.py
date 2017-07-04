@@ -20,7 +20,7 @@ def download(uris):
     info("dl: %s" % url)
 
     try:
-        r = requests.get(url, stream=True)
+        r = requests.get(url, stream=True, timeout=20)
     except requests.exceptions.ConnectionError:
         warn("Caught exception: Connection reset. Retrying.")
         return download(uris)
