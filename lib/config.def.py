@@ -11,6 +11,7 @@ logdir = './log'
 spooldir = './spool'
 gpgdir= './gnupg'
 signingkey = 'CA608125'
+signrelease = True
 mergedir = './merged-volatile'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
