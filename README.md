@@ -55,3 +55,5 @@ the codebase.
 
 An `nginx` configuration for the amprolla server can be found in
 `contrib`.
+
+More documentation should be found in the `doc` directory.
