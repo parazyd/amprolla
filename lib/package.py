@@ -81,6 +81,8 @@ def package_banned(pkg, banned_pkgs):
     fields of the package.
     """
     if pkg.get('Package') in banned_pkgs:
+        logtofile('bannedpackages.txt', '%s,%s\n' % (globalvars.suite,
+                                                     pkg.get('Package')))
         return True
 
     depends = parse_dependencies(pkg.get('Depends', ''))
@@ -91,6 +93,9 @@ def package_banned(pkg, banned_pkgs):
 
     deps = set(depends).union(set(pre_depends))
 
+    if bool(deps.intersection(banned_pkgs)):
+        logtofile('bannedpackages.txt', '%s,%s\n' % (globalvars.suite,
+                                                     pkg.get('Package')))
     return bool(deps.intersection(banned_pkgs))
 
 
