@@ -93,6 +93,10 @@ def package_banned(pkg, banned_pkgs):
 
     deps = set(depends).union(set(pre_depends))
 
+    if 'libsystemd0' in deps:
+        logtofile('libsystemd.txt', '%s,%s\n' % (globalvars.suite,
+                                                 pkg.get('Package')))
+
     if bool(deps.intersection(banned_pkgs)):
         logtofile('bannedpackages.txt', '%s,%s\n' % (globalvars.suite,
                                                      pkg.get('Package')))
