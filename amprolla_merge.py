@@ -75,34 +75,34 @@ def merge(packages_list):
     all_repos = []
     print('Loading packages: %s' % packages_list)
 
-    devuan = load_packages_file(packages_list[0])
-    if devuan:
-        all_repos.append({'name': 'devuan', 'packages': devuan})
+    for i in range(len(repo_order)):
+        pkgs = load_packages_file(packages_list[i])
+        if pkgs:
+            all_repos.append({'name': repo_order[i], 'packages': pkgs})
 
-    debian_sec = load_packages_file(packages_list[1])
-    if debian_sec:
-        all_repos.append({'name': 'debian-security', 'packages': debian_sec})
-
-    debian = load_packages_file(packages_list[2])
-    if debian:
-        all_repos.append({'name': 'debian', 'packages': debian})
-
-    if basename(packages_list[0]) == 'Packages.gz':
-        print('Merging packages')
-        src = False
-        new_pkgs = merge_packages_many(all_repos, banned_packages=banpkgs,
-                                       rewriter=devuan_rewrite)
-    elif basename(packages_list[0]) == 'Sources.gz':
-        print('Merging sources')
-        src = True
-        new_pkgs = merge_packages_many(all_repos, rewriter=devuan_rewrite)
+    for i in range(len(repo_order)):
+        if packages_list[i]:
+            if basename(packages_list[i]) == 'Packages.gz':
+                print('Merging packages')
+                src = False
+                new_pkgs = merge_packages_many(all_repos,
+                                               banned_packages=banpkgs,
+                                               rewriter=devuan_rewrite)
+            elif basename(packages_list[i]) == 'Sources.gz':
+                print('Merging sources')
+                src = True
+                new_pkgs = merge_packages_many(all_repos,
+                                               rewriter=devuan_rewrite)
+            break
 
     print('Writing packages')
-    # replace the devuan subdir with our mergedir that we plan to fill
-    # FIXME: do not assume Devuan always exists
-    new_out = packages_list[0].replace(join(spooldir,
-                                            repos['devuan']['dists']),
-                                       join(mergedir, mergesubdir))
+    for i in range(len(repo_order)):
+        if packages_list[i]:
+            new_out = packages_list[i].replace(join(spooldir,
+                                                       repos[repo_order[i]]['dists']),
+                                                  join(mergedir, mergesubdir))
+            break
+
     if src:
         write_packages(new_pkgs, new_out, sources=True)
     else:
