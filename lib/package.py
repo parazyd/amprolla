@@ -85,8 +85,8 @@ def package_banned(pkg, banned_pkgs):
     depends = parse_dependencies(pkg.get('Depends', ''))
     pre_depends = parse_dependencies(pkg.get('Pre-Depends', ''))
 
-    depends = [v[0] for v in depends]
-    pre_depends = [v[0] for v in pre_depends]
+    depends = [v for v in depends]
+    pre_depends = [v for v in pre_depends]
 
     deps = set(depends).union(set(pre_depends))
 
