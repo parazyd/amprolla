@@ -99,8 +99,8 @@ def merge(packages_list):
     for i in range(len(repo_order)):
         if packages_list[i]:
             new_out = packages_list[i].replace(join(spooldir,
-                                                       repos[repo_order[i]]['dists']),
-                                                  join(mergedir, mergesubdir))
+                                                    repos[repo_order[i]]['dists']),
+                                               join(mergedir, mergesubdir))
             break
 
     if src:
