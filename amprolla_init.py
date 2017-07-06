@@ -10,8 +10,8 @@ from os.path import join
 from multiprocessing import Pool
 from time import time
 
-from lib.config import (aliases, arches, cpunm, mainrepofiles, repos, spooldir,
-                        suites)
+from lib.config import (aliases, arches, categories, cpunm, mainrepofiles,
+                        repos, spooldir, suites)
 from lib.net import download
 from lib.parse import parse_release
 
@@ -74,9 +74,10 @@ def main():
             for k in release_contents:
                 # if k.endswith('/binary-armhf/Packages.gz'):
                 for a in arches:
-                    if a in k:
-                        urls = (join(url[0], k), join(url[1], k))
-                        tpl.append(urls)
+                    for c in categories:
+                        if a in k and ("/%s/" % c) in k:
+                            urls = (join(url[0], k), join(url[1], k))
+                            tpl.append(urls)
             dlpool = Pool(cpunm)
             dlpool.map(download, tpl)
             dlpool.close()
