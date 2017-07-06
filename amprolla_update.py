@@ -10,6 +10,7 @@ from multiprocessing import Pool
 from time import time
 import requests
 
+import lib.globalvars as globalvars
 from amprolla_merge import gen_release, merge, prepare_merge_dict
 from lib.config import aliases, cpunm, repos, repo_order, spooldir
 from lib.log import info
@@ -40,6 +41,7 @@ def perform_update(suite, paths):
     """
     info('Checking for updates in %s' % suite)
     # print(paths)
+    globalvars.suite = suite
 
     needsmerge = {}
     needsmerge['downloads'] = []  # all files that have to be downloaded

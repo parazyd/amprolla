@@ -10,6 +10,7 @@ from multiprocessing import Pool
 from time import time
 
 
+import lib.globalvars as globalvars
 from lib.config import (aliases, arches, banpkgs, categories, cpunm, mergedir,
                         mergesubdir, pkgfiles, repos, repo_order, signrelease,
                         spooldir, srcfiles, suites)
@@ -145,6 +146,7 @@ def main_merge(packages_file):
     to_merge = prepare_merge_dict()
 
     for suite in to_merge:
+        globalvars.suite = suite
         pkg_list = []
         for rep in to_merge[suite]:
             if rep:

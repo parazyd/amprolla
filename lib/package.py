@@ -10,6 +10,7 @@ from gzip import open as gzip_open
 from lzma import open as lzma_open
 from shutil import copyfile
 
+import lib.globalvars as globalvars
 from lib.config import mergedir, packages_keys, sources_keys, spooldir, logdir
 from lib.log import logtofile
 from lib.parse import parse_dependencies, parse_packages
@@ -127,9 +128,10 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
             new_pkgs[pkg] = pkg1_pkg
             if package_newer(pkg1_pkg, pkg2_pkg):
                 logtofile('oldpackages.txt',
-                          '%s,%s,%s\n' % (pkg1_pkg.get('Package'),
-                                          pkg1_pkg.get('Version'),
-                                          pkg2_pkg.get('Version')))
+                          '%s,%s,%s,%s\n' % (globalvars.suite,
+                                             pkg1_pkg.get('Package'),
+                                             pkg1_pkg.get('Version'),
+                                             pkg2_pkg.get('Version')))
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
