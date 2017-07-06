@@ -40,10 +40,14 @@ def write_release(oldrel, newrel, filelist, r, sign=True):
 
     # rewrite Suite to allow for being on stable/testing rather than
     # jessie/ascii/...
-    # if rel_cont['Suite'] in release_aliases:
-    #    rel_cont['Label'] = distrolabel
-    #    rel_cont['Codename'] = rel_cont['Suite']
-    #    rel_cont['Suite'] = release_aliases[rel_cont['Suite']]
+    if rel_cont['Suite'] in release_aliases:
+        if rel_cont['Suite'] == 'ascii':
+            rel_cont['Version'] = '2.0'
+        elif rel_cont['Suite'] == 'jessie':
+            rel_cont['Version'] = '1.0'
+        rel_cont['Label'] = distrolabel
+        rel_cont['Codename'] = rel_cont['Suite']
+        rel_cont['Suite'] = release_aliases[rel_cont['Suite']]
 
     for k in release_keys:
         if k in rel_cont:
