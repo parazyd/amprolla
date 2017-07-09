@@ -43,7 +43,7 @@ repos = {
     },
     'debian': {
         'name': 'DEBIAN',
-        'host': 'http://ftp.debian.org',
+        'host': 'http://deb.debian.org',
         'dists': 'debian/dists',
         'pool': 'debian/pool',
         'aliases': True,
