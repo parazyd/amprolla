@@ -11,7 +11,7 @@ from lzma import open as lzma_open
 from shutil import copyfile
 
 import lib.globalvars as globalvars
-from lib.config import mergedir, packages_keys, sources_keys, spooldir, logdir
+from lib.config import mergedir, packages_keys, sources_keys, spooldir
 from lib.log import logtofile
 from lib.parse import parse_dependencies, parse_packages
 
