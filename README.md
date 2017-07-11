@@ -19,9 +19,9 @@ of the according `Release` files.
 Dependencies
 ------------
 
-amprolla requires at least Python 3.5, and some external modules for it.
+amprolla requires at least Python 3.4, and some external modules for it.
 
-### Devuan Ascii/Debian Stretch
+### Devuan/Debian
 
 ```
 rsync gnupg2 python3-requests python3-gnupg
