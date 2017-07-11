@@ -124,6 +124,12 @@ def gen_release(suite):
                 flist = srcfiles
             else:
                 flist = pkgfiles
+                cont = arch.replace('binary', 'Contents')
+                cont_udeb = arch.replace('binary', 'Contents-udeb')
+                filelist.append(join(rootdir, cat, cont+'.gz'))
+                filelist.append(join(rootdir, cat, cont))
+                filelist.append(join(rootdir, cat, cont_udeb+'.gz'))
+                filelist.append(join(rootdir, cat, cont_udeb))
 
             for i in flist:
                 filelist.append(join(rootdir, cat, arch, i))
