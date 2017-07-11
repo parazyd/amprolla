@@ -13,10 +13,25 @@ from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
 from lib.parse import parse_release_head
 
 
-def write_release(oldrel, newrel, filelist, r, sign=True):
+def rewrite_release_head(headers):
+    """
+    Rewrites the necessary headers in a Release file
+    Used to override needed values defined in config.release_aliases
+    """
+    if headers['Suite'] in release_aliases:
+        headers['Label'] = distrolabel
+        suitename = headers['Suite']
+        for var in release_aliases[suitename]:
+            headers[var] = release_aliases[suitename][var]
+
+    return headers
+
+
+def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
     """
     Generates a valid Release file
     if sign=False: do not use gnupg to sign the file
+    if rewrite=True: rewrite the Release headers as defined in the config
 
     Arguments taken: oldrel, newrel, filelist, r
         * location of the old Release file (used to take metadata)
@@ -38,16 +53,8 @@ def write_release(oldrel, newrel, filelist, r, sign=True):
     rel_cont['Date'] = prettyt1
     # rel_cont['Valid-Until'] = prettyt2
 
-    # rewrite Suite to allow for being on stable/testing rather than
-    # jessie/ascii/...
-    if rel_cont['Suite'] in release_aliases:
-        if rel_cont['Suite'] == 'ascii':
-            rel_cont['Version'] = '2.0'
-        elif rel_cont['Suite'] == 'jessie':
-            rel_cont['Version'] = '1.0'
-        rel_cont['Label'] = distrolabel
-        rel_cont['Codename'] = rel_cont['Suite']
-        rel_cont['Suite'] = release_aliases[rel_cont['Suite']]
+    if rewrite:
+        rel_cont = rewrite_release_head(rel_cont)
 
     for k in release_keys:
         if k in rel_cont:

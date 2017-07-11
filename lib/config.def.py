@@ -9,7 +9,7 @@ from hashlib import md5, sha1, sha256
 cpunm = 4  # number of cpus you want to use for multiprocessing
 logdir = './log'
 spooldir = './spool'
-gpgdir= './gnupg'
+gpgdir = './gnupg'
 signingkey = 'CA608125'
 signrelease = True
 mergedir = './merged-volatile'
@@ -85,17 +85,49 @@ aliases = {
 }
 
 release_aliases = {
-    'ascii': 'testing',
-    'ascii-backports': 'testing-backports',
-    'ascii-proposed-updates': 'testing-proposed-updates',
-    'ascii-security': 'testing-security',
-    'ascii-updates': 'testing-updates',
+    'ascii': {
+        'Suite': 'testing',
+        'Codename': 'ascii',
+        'Version': '2.0',
+    },
+    'ascii-backports': {
+        'Suite': 'testing-backports',
+        'Codename': 'ascii-backports',
+    },
+    'ascii-proposed-updates': {
+        'Suite': 'testing-proposed-updates',
+        'Codename': 'ascii-proposed-updates',
+    },
+    'ascii-security': {
+        'Suite': 'testing-security',
+        'Codename': 'ascii-security',
+    },
+    'ascii-updates': {
+        'Suite': 'testing-updates',
+        'Codename': 'ascii-updates',
+    },
 
-    'jessie': 'stable',
-    'jessie-backports': 'stable-backports',
-    'jessie-proposed-updates': 'stable-proposed-updates',
-    'jessie-security': 'stable-security',
-    'jessie-updates': 'stable-updates',
+    'jessie': {
+        'Suite': 'stable',
+        'Codename': 'jessie',
+        'Version': '1.0',
+    },
+    'jessie-backports': {
+        'Suite': 'stable-backports',
+        'Codename': 'jessie-backports',
+    },
+    'jessie-proposed-updates': {
+        'Suite': 'stable-proposed-updates',
+        'Codename': 'jessie-proposed-updates'
+    },
+    'jessie-security': {
+        'Suite': 'stable-security',
+        'Codename': 'jessie-security',
+    },
+    'jessie-updates': {
+        'Suite': 'stable-updates',
+        'Codename': 'jessie-updates',
+    }
 }
 
 categories = ['main', 'contrib', 'non-free']
