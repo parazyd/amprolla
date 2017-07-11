@@ -57,10 +57,10 @@ def devuan_rewrite(pkg, repo_name):
     any attributes.
     """
 
-    if 'Filename' in pkg:
+    if 'Filename' in pkg and repos[repo_name]['name'] not in pkg['Filename']:
         pkg['Filename'] = pkg['Filename'].replace('pool/', 'pool/%s/' %
                                                   repos[repo_name]['name'])
-    if 'Directory' in pkg:
+    if 'Directory' in pkg and repos[repo_name]['name'] not in pkg['Directory']:
         pkg['Directory'] = pkg['Directory'].replace('pool/', 'pool/%s/' %
                                                     repos[repo_name]['name'])
 
