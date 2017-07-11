@@ -5,7 +5,9 @@ Release file functions and helpers
 """
 
 from datetime import datetime, timedelta
-from os.path import getsize, isfile
+from gzip import decompress as gzip_decomp
+from lzma import compress as lzma_comp
+from os.path import basename, getsize, isfile
 import gnupg
 
 from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
@@ -67,6 +69,18 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
                 cont = open(f, 'rb').read()
                 new.write(' %s %8s %s\n' % (csum['f'](cont).hexdigest(),
                                             getsize(f), f.replace(r+'/', '')))
+            elif f.endswith('.xz') and isfile(f.replace('.xz', '.gz')):
+                xzstr = lzma_comp(open(f.replace('.xz', '.gz'), 'rb').read())
+                new.write(' %s %8s %s\n' % (csum['f'](xzstr).hexdigest(),
+                                            len(xzstr), f.replace(r+'/', '')))
+            elif not f.endswith('.gz') and isfile(f+'.gz'):
+                uncomp = gzip_decomp(open(f+'.gz', 'rb').read())
+                new.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
+                                            len(uncomp), f.replace(r+'/', '')))
+            # elif basename(f).startswith('Contents') and isfile(f+'.gz'):
+            #    uncomp = gzip_decomp(open(f+'.gz', 'rb').read())
+            #    new.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
+            #                                len(uncomp), f.replace(r+'/', '')))
 
     new.close()
 
