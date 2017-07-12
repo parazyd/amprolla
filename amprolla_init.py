@@ -73,11 +73,13 @@ def main():
             tpl = []
             for k in release_contents:
                 # if k.endswith('/binary-armhf/Packages.gz'):
-                for a in arches:
-                    for c in categories:
-                        if a in k and ("/%s/" % c) in k:
-                            urls = (join(url[0], k), join(url[1], k))
-                            tpl.append(urls)
+                # for a in arches:
+                #     for c in categories:
+                #        if a in k and ("/%s/" % c) in k:
+                #            urls = (join(url[0], k), join(url[1], k))
+                #            tpl.append(urls)
+                urls = (join(url[0], k), join(url[1], k))
+                tpl.append(urls)
             dlpool = Pool(cpunm)
             dlpool.map(download, tpl)
             dlpool.close()
