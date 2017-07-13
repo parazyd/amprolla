@@ -84,7 +84,10 @@ def main():
     cont = []
     for i in arches:
         for j in categories:
-            cont.append(join(j, i.replace('binary', 'Contents')+'.gz'))
+            if i != 'source':
+                cont.append(join(j, i.replace('binary', 'Contents')+'.gz'))
+            else:
+                cont.append(join(j, 'Contents-'+i+'.gz'))
 
     mrgpool = Pool(cpunm)
     mrgpool.map(main_merge, cont)
@@ -96,4 +99,3 @@ if __name__ == '__main__':
     main()
     t2 = time()
     print('total time: %s' % (t2 - t1))
-
