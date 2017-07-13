@@ -27,7 +27,10 @@ def merge_contents(filelist):
             contents = cfile.split('\n')
 
             for line in contents:
-                if line != '':
+                if line.startswith('This file maps each file'):
+                    while not line.startswith('FILE'):
+                        continue
+                if line != '' and not line.startswith('FILE'):
                     sin = line.split()
                     if sin[-1] not in pkgs.keys():
                         pkgs[sin[-1]] = []
