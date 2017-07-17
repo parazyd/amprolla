@@ -19,7 +19,8 @@ of the according `Release` files.
 Dependencies
 ------------
 
-amprolla requires at least Python 3.4, and some external modules for it.
+amprolla requires Python 3, and some external modules for it. The lowest
+version it's been tested on was Python 3.4.
 
 ### Devuan/Debian
 
@@ -44,7 +45,7 @@ repositories we will merge afterwards. When this is done, you can run
 sign the Release files needed. The first time this is done, it is
 advisable to run the script found in `contrib/populate_aliases.sh` so
 it can fill in the needed symlinks to the different suites. Make sure
-you set the correct path in the script.
+you set the correct paths and names in the script.
 
 To perform incremental updates, run `orchestrate.sh` with a cron job
 in your desired intervals. Edit the script to set the correct paths.
@@ -53,7 +54,6 @@ in your desired intervals. Edit the script to set the correct paths.
 loop in order to be ran in tmux to catch unhandled exceptions and fix
 the codebase.
 
-An `nginx` configuration for the amprolla server can be found in
-`contrib`.
+`nginx` and `lighttpd` configurations can be found in `contrib`.
 
 More documentation should be found in the `doc` directory.

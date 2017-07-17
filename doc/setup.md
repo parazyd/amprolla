@@ -110,6 +110,10 @@ and fill out the proper names needed. It will populate the merged
 directory with symlinks to certain versions such as `1.0`, `stable`, or
 `testing`.
 
+To merge Contents files, run `amprolla_merge_contents.py`. This module
+does not do incremental updates and should not be ran often due to its
+heavy IO/RAM requirements.
+
 Incremental updates are performed through `amprolla_update.py`, however,
 for more stable performance and uptime, the incremental updating is
 being orchestrated by a shell script called `orchestrate.sh`. This shell
@@ -124,4 +128,5 @@ If you prefer, you can remove this loop and run the shell script through
 a cron job based on your needs.
 
 To actually serve the merged directory over HTTP, a basic nginx
-configuration is provided as `contrib/nginx.conf`.
+configuration is provided as `contrib/nginx.conf`, and a lighttpd conf
+is provided in `contrib/lighttpd.conf`.
