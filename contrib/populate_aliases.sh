@@ -2,27 +2,34 @@
 # helper script to be ran once after the initial mass merge in order
 # to populate the structure with the needed symlinks
 
-# make sure these correlate to lib/config.py
-REPO_ROOT=/srv/amprolla
+dryrun=""
+[ "$1" = "-d" ] && dryrun="echo"
 
-REPOS="
-	backports
-	proposed-updates
-	security
-	updates
+# make sure these correlate to lib/config.py
+REPO_ROOT="/srv/amprolla"
+
+PAIRS="
+	jessie                   1.0
+	jessie                   stable
+	jessie-backports         stable-backports
+	jessie-proposed-updates  stable-proposed-updates
+	jessie-security          stable-security
+	jessie-updates           stable-updates
+
+	ascii                    2.0
+	ascii                    testing
+	ascii-backports          testing-backports
+	ascii-proposed-updates   testing-proposed-updates
+	ascii-security           testing-security
+	ascii-updates            testing-updates
+
+	unstable                 ceres
 "
 
-cd "$REPO_ROOT"/merged-volatile/dists
+$dryrun cd "$REPO_ROOT" || exit 1
 
-for i in $REPOS; do
-	ln -snfv "ascii-$i" "testing-$i"
-	ln -snfv "jessie-$i" "stable-$i"
+echo "$PAIRS" | while read codename suite; do
+	[ -n "$codename" ] && [ -n "$suite" ] && [ $(echo "$codename" | grep -v '^#') ] && {
+		$dryrun ln -snfv "$codename" "$suite"
+	} || continue
 done
-
-ln -snfv "ascii" "testing"
-ln -snfv "jessie" "stable"
-ln -snfv "unstable" "ceres"
-ln -snfv "jessie" "1.0"
-ln -snfv "ascii" "2.0"
-
-cd - >/dev/null
