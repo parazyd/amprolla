@@ -16,8 +16,8 @@ mergedir = './merged-volatile'
 mergesubdir = 'dists'
 banpkgs = {'systemd', 'systemd-sysv'}
 checksums = [
-    {'name': 'MD5Sum', 'f': md5},
-    {'name': 'SHA1', 'f': sha1},
+    # {'name': 'MD5Sum', 'f': md5},
+    # {'name': 'SHA1', 'f': sha1},
     {'name': 'SHA256', 'f': sha256},
 ]
 
