@@ -21,15 +21,16 @@ def download(uris):
 
     try:
         r = requests.get(url, stream=True, timeout=20)
-    except requests.exceptions.ConnectionError:
-        warn("Caught exception: Connection reset. Retrying.")
+    except (requests.exceptions.ConnectionError,
+            requests.exceptions.ReadTimeout) as e:
+        warn('Caught exception: "%s". Retrying...' % e)
         return download(uris)
 
     if r.status_code == 404:
-        warn("failed: 404 not found!")
+        warn('failed: 404 not found!')
         return
     elif r.status_code != 200:
-        die("failed: %d" % r.status_code)
+        die('failed: %d' % r.status_code)
 
     makedirs(dirname(path), exist_ok=True)
     f = open(path, 'wb')
