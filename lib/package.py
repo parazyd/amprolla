@@ -1,4 +1,4 @@
-# see LICENSE file for copyright and license details
+# See LICENSE file for copyright and license details.
 
 """
 Package merging functions and helpers
@@ -62,7 +62,8 @@ def write_packages(packages, filename, sort=True, sources=False):
 
 
 def load_packages_file(filename):
-    """ Load a gzip'd packages file.
+    """
+    Load a gzip'd packages file.
     Returns a dictionary of package name and package key-values.
     """
     # TODO: should we skip files like this if they don't exist?

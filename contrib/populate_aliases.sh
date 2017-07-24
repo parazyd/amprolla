@@ -1,6 +1,8 @@
 #!/bin/sh
-# helper script to be ran once after the initial mass merge in order
-# to populate the structure with the needed symlinks
+# See LICENSE file for copyright and license details.
+
+# Helper script to be ran once after the initial mass merge in
+# order to populate the structure with the needed symlinks.
 
 dryrun=""
 [ "$1" = "-d" ] && dryrun="echo"

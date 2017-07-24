@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# see LICENSE file for copyright and license details
+# See LICENSE file for copyright and license details.
 
 """
 This module will download the initial Release files used to populate

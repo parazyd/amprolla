@@ -1,4 +1,4 @@
-# see LICENSE file for copyright and license details
+# See LICENSE file for copyright and license details.
 
 """
 amprolla configuration file

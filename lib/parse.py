@@ -1,4 +1,4 @@
-# see LICENSE file for copyright and license details
+# See LICENSE file for copyright and license details.
 
 """
 Parsing functions/helpers
@@ -49,7 +49,9 @@ def parse_release(reltext):
 
 
 def parse_release_head(reltext):
-    """Parses the header of the release file to grab needed metadata"""
+    """
+    Parses the header of the release file to grab needed metadata
+    """
     metadata = {}
 
     contents = reltext.split('\n')
@@ -69,7 +71,9 @@ def parse_release_head(reltext):
 
 
 def parse_package(entry):
-    """ Parses a single Packages entry """
+    """
+    Parses a single Packages entry
+    """
     pkgs = {}
 
     contents = entry.split('\n')

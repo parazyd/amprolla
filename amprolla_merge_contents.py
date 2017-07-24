@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# See LICENSE file for copyright and license details.
+
 """
 Amprolla module for merging Contents files
 """
