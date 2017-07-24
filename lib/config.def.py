@@ -4,7 +4,8 @@
 amprolla configuration file
 """
 
-from hashlib import md5, sha1, sha256
+# from hashlib import md5, sha1, sha256
+from hashlib import sha256
 
 cpunm = 4  # number of cpus you want to use for multiprocessing
 logdir = './log'

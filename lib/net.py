@@ -8,7 +8,7 @@ from os import makedirs
 from os.path import dirname
 import requests
 
-from lib.log import die, info, warn
+from lib.log import info, warn
 
 
 def download(uris):
@@ -20,21 +20,21 @@ def download(uris):
     info("dl: %s" % url)
 
     try:
-        r = requests.get(url, stream=True, timeout=20)
+        rfile = requests.get(url, stream=True, timeout=20)
     except (requests.exceptions.ConnectionError,
-            requests.exceptions.ReadTimeout) as e:
-        warn('Caught exception: "%s". Retrying...' % e)
+            requests.exceptions.ReadTimeout) as err:
+        warn('Caught exception: "%s". Retrying...' % err)
         return download(uris)
 
-    if r.status_code != 200:
-        warn('%s failed: %d' % (url, r.status_code))
+    if rfile.status_code != 200:
+        warn('%s failed: %d' % (url, rfile.status_code))
         return
 
     makedirs(dirname(path), exist_ok=True)
-    f = open(path, 'wb')
+    lfile = open(path, 'wb')
     # chunk_size {sh,c}ould be more on gbit servers
-    for chunk in r.iter_content(chunk_size=1024):
+    for chunk in rfile.iter_content(chunk_size=1024):
         if chunk:
-            f.write(chunk)
+            lfile.write(chunk)
             # f.flush()
-    f.close()
+    lfile.close()

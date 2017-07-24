@@ -51,6 +51,6 @@ def logtofile(filename, text, redo=False):
     makedirs(logdir, exist_ok=True)
     if redo:
         remove(join(logdir, filename))
-    lf = open(join(logdir, filename), 'a')
-    lf.write(text)
-    lf.close()
+    lfile = open(join(logdir, filename), 'a')
+    lfile.write(text)
+    lfile.close()

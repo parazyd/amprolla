@@ -7,7 +7,7 @@ Package merging functions and helpers
 from os import makedirs
 from os.path import dirname, isfile, join
 from gzip import open as gzip_open
-from lzma import open as lzma_open
+# from lzma import open as lzma_open
 from shutil import copyfile
 
 import lib.globalvars as globalvars

@@ -52,9 +52,9 @@ def write_contents(pkgs, filename):
     gzf = gzip_open(filename, 'w')
 
     for pkg, files in sorted(pkgs.items()):
-        for f in files:
-            ln = "%s %s\n" % (f, pkg)
-            gzf.write(ln.encode('utf-8'))
+        for file in files:
+            line = "%s %s\n" % (file, pkg)
+            gzf.write(line.encode('utf-8'))
 
     gzf.write(b'\n')
     gzf.close()

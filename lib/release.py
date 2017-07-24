@@ -77,11 +77,6 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
                 uncomp = gzip_decomp(open(f+'.gz', 'rb').read())
                 new.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
                                             len(uncomp), f.replace(r+'/', '')))
-            # elif basename(f).startswith('Contents') and isfile(f+'.gz'):
-            #    uncomp = gzip_decomp(open(f+'.gz', 'rb').read())
-            #    new.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
-            #                                len(uncomp), f.replace(r+'/', '')))
-
     new.close()
 
     if sign:
