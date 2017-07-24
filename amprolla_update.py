@@ -11,11 +11,11 @@ from time import time
 import requests
 
 import lib.globalvars as globalvars
-from amprolla_merge import gen_release, merge, prepare_merge_dict
 from lib.config import aliases, cpunm, repos, repo_order, spooldir
-from lib.log import info
+from lib.log import info, warn
 from lib.parse import compare_dict, get_date, get_time, parse_release
 from lib.net import download
+from amprolla_merge import gen_release, merge, prepare_merge_dict
 
 
 def remote_is_newer(remote, local):
@@ -55,7 +55,11 @@ def perform_update(suite, paths):
         if paths[c]:
             info('Working on %s repo' % i)
             remote_path = paths[c].replace(spooldir, repos[i]['host'])
-            remote_rel = requests.get(join(remote_path, 'Release'))
+            try:
+                remote_rel = requests.get(join(remote_path, 'Release'))
+            except requests.exceptions.ConnectionError as err:
+                warn('Caught exception: "%s". Retrying...' % err)
+                return perform_update(suite, paths)
 
             local_rel_text = open(join(paths[c], 'Release')).read()
 
