@@ -14,7 +14,7 @@ with the extra needed dependencies is using your package manager.
 You will need the following:
 
 ```
-python3, python-gnupg, python-requests, gnupg2, rsync
+python3, python-requests, gnupg2, rsync
 ```
 
 After installing the required dependencies, clone the amprolla git repo

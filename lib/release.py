@@ -7,11 +7,12 @@ Release file functions and helpers
 from datetime import datetime, timedelta
 from gzip import decompress as gzip_decomp
 from lzma import compress as lzma_comp
-from os.path import basename, getsize, isfile
-import gnupg
+from os.path import getsize, isfile
+from subprocess import Popen
 
 from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
                         release_keys, signingkey)
+from lib.log import info
 from lib.parse import parse_release_head
 
 
@@ -85,19 +86,21 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
 
 def sign_release(infile):
     """
-    Signs both the clearsign and the detached signature of a Release file
+    Signs both the clearsign and the detached signature of a Release file.
+
+    Takes a valid path to a release file as an argument.
     """
-    gpg = gnupg.GPG(gnupghome=gpgdir)
+    args = ['gpg', '-q', '--default-key', signingkey, '--batch', '--yes',
+            '--homedir', gpgdir]
 
-    stream = open(infile, 'rb')
+    clearargs = args + ['--clearsign', '-a', '-o',
+                        infile.replace('Release', 'InRelease'), infile]
+    detachargs = args + ['-sb', '-o', infile+'.gpg', infile]
 
-    # Clearsign
-    signed_data = gpg.sign_file(stream, keyid=signingkey, clearsign=True,
-                                detach=False)
-    inrel = open(infile.replace('Release', 'InRelease'), 'wb')
-    inrel.write(signed_data.data)
-    inrel.close()
+    info('Signing Release (clearsign)')
+    cleargpg = Popen(clearargs)
+    cleargpg.wait(timeout=5)
 
-    # Detached signature (somewhat broken?)
-    # gpg.sign_file(stream, keyid=signingkey, clearsign=False, detach=True,
-    #              output=infile + '.gpg')
+    info('Signing Release (detached sign)')
+    detachgpg = Popen(detachargs)
+    detachgpg.wait(timeout=5)

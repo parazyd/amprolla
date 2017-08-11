@@ -19,19 +19,19 @@ of the according `Release` files.
 Dependencies
 ------------
 
-amprolla requires Python 3, and some external modules for it. The lowest
-version it's been tested on was Python 3.4.
+amprolla requires Python 3, the lowest version it's been tested on was
+Python 3.4. It also requires the python-requests library.
 
 ### Devuan/Debian
 
 ```
-rsync gnupg2 python3-requests python3-gnupg
+rsync gnupg2 python3-requests
 ```
 
 ### Gentoo:
 
 ```
-net-misc/rsync app-crypt/gnupg dev-python/requests dev-python/python-gnupg
+net-misc/rsync app-crypt/gnupg dev-python/requests
 ```
 
 
