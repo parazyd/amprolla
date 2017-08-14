@@ -8,7 +8,7 @@ dryrun=""
 [ "$1" = "-d" ] && dryrun="echo"
 
 # make sure these correlate to lib/config.py
-REPO_ROOT="/srv/amprolla"
+REPO_ROOT="${REPO_ROOT:-/srv/amprolla/merged}"
 
 PAIRS="
 	jessie                   1.0
