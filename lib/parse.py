@@ -56,11 +56,13 @@ def parse_release_head(reltext):
 
     contents = reltext.split('\n')
 
+    splitter = 'MD5Sum:'
+
     md5sum = False
     for line in contents:
         if md5sum is True:
             break
-        elif line.startswith('MD5Sum:'):
+        elif line.startswith(splitter):
             md5sum = True
         else:
             k = line.split(': ')[0]

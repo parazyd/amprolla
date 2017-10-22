@@ -186,7 +186,9 @@ release_keys = [
     'Valid-Until',
     'Architectures',
     'Components',
-    'Description'
+    'Description',
+    'NotAutomatic',
+    'ButAutomaticUpgrades',
 ]
 
 packages_keys = [
