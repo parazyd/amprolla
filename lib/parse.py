@@ -11,6 +11,9 @@ def get_time(date):
     """
     Gets epoch time
     """
+    if not date:
+        # hardcode if something's amiss
+        date = 'Sun, 29 Oct 2017 10:00:00 +0200'
     return time.mktime(time.strptime(date, "%a, %d %b %Y %H:%M:%S %Z"))
 
 
