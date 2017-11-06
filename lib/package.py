@@ -156,7 +156,7 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
             assert False, 'Impossibru'
 
     if obsoletepkgs:
-        obsoletepkgs = '\n'.join(obsoletepkgs)
+        obsoletepkgs = '\n'.join(obsoletepkgs) + '\n'
         logtofile('%s-oldpackages.txt' % globalvars.suite, obsoletepkgs,
                   redo=True)
 
