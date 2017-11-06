@@ -27,5 +27,8 @@ while true; do
 	rsync --delete -raX "$REPO_ROOT"/merged-volatile/* "$REPO_ROOT"/merged-staging
 	printf "done!\n"
 
+	# handle obsolete package logs
+	cat "$REPO_ROOT"/log/*-oldpackages.txt | sort | uniq > "$REPO_ROOT"/log/oldpackages.txt
+
 	sleep 3600
 done
