@@ -49,8 +49,9 @@ def logtofile(filename, text, redo=False):
     If redo is True, rewrites the file
     """
     makedirs(logdir, exist_ok=True)
+    wrt = 'a'
     if redo:
-        remove(join(logdir, filename))
-    lfile = open(join(logdir, filename), 'a')
+        wrt = 'w'
+    lfile = open(join(logdir, filename), wrt)
     lfile.write(text)
     lfile.close()
