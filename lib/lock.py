@@ -20,7 +20,7 @@ def check_lock():
         sys.exit(1)
 
     with open('/tmp/amprolla.lock', 'w') as lock:
-        lock.write(int(time()))
+        lock.write(str(int(time())))
 
 
 def free_lock():
