@@ -11,10 +11,11 @@ from os import makedirs
 from os.path import dirname, join, isfile
 from time import time
 
+import lib.globalvars as globalvars
 from amprolla_merge import prepare_merge_dict
 from lib.config import (arches, categories, cpunm, mergedir, mergesubdir,
                         repos, spooldir)
-import lib.globalvars as globalvars
+from lib.lock import check_lock, free_lock
 
 
 def merge_contents(filelist):
@@ -105,6 +106,8 @@ def main():
 
 if __name__ == '__main__':
     t1 = time()
+    check_lock()
     main()
+    free_lock()
     t2 = time()
     print('total time: %s' % (t2 - t1))

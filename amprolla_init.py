@@ -12,6 +12,7 @@ from time import time
 
 from lib.config import (aliases, arches, categories, cpunm, mainrepofiles,
                         repos, spooldir, suites)
+from lib.lock import check_lock, free_lock
 from lib.net import download
 from lib.parse import parse_release
 
@@ -87,6 +88,8 @@ def main():
 
 if __name__ == '__main__':
     t1 = time()
+    check_lock()
     main()
+    free_lock()
     t2 = time()
     print('total time: %s' % (t2 - t1))

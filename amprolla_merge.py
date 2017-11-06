@@ -14,6 +14,7 @@ import lib.globalvars as globalvars
 from lib.config import (aliases, arches, banpkgs, categories, cpunm, mergedir,
                         mergesubdir, pkgfiles, repos, repo_order, signrelease,
                         spooldir, srcfiles, suites)
+from lib.lock import check_lock, free_lock
 from lib.package import (load_packages_file, merge_packages_many,
                          write_packages)
 from lib.release import write_release
@@ -195,6 +196,8 @@ def main():
 
 if __name__ == '__main__':
     t1 = time()
+    check_lock()
     main()
+    free_lock()
     t2 = time()
     print('total time: %s' % (t2 - t1))

@@ -10,6 +10,7 @@ REPO_ROOT="${REPO_ROOT:-/srv/amprolla}"
 # TODO: Remove the while loop and run with cron after testing phase
 
 while true; do
+	[ -f "/tmp/amprolla.lock" ] || {
 	ln -snf "$REPO_ROOT"/merged-staging "$REPO_ROOT"/merged
 	# The break call is temporary to catch unhandled exceptions in the testing phase
 	python3 "$AMPROLLA_UPDATE" || {
@@ -29,6 +30,7 @@ while true; do
 
 	# handle obsolete package logs
 	cat "$REPO_ROOT"/log/*-oldpackages.txt | sort | uniq > "$REPO_ROOT"/log/oldpackages.txt
+	}
 
 	sleep 3600
 done
