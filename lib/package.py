@@ -127,6 +127,7 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
     """
     new_pkgs = {}
     package_names = set(pkg1.keys()).union(set(pkg2.keys()))
+    obsoletepkgs = []
 
     for pkg in package_names:
         pkg1_pkg = pkg1.get(pkg)
@@ -137,12 +138,10 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                 pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
             if package_newer(pkg1_pkg, pkg2_pkg):
-                logtofile('%s-oldpackages.txt' % globalvars.suite,
-                          '%s,%s,%s,%s\n' % (globalvars.suite,
-                                             pkg1_pkg.get('Package'),
-                                             pkg1_pkg.get('Version'),
-                                             pkg2_pkg.get('Version')),
-                                             redo=True)
+                obsoletepkgs.append('%s,%s,%s,%s' % (globalvars.suite,
+                                                     pkg1_pkg.get('Package'),
+                                                     pkg1_pkg.get('Version'),
+                                                     pkg2_pkg.get('Version')))
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
@@ -155,6 +154,11 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                 new_pkgs[pkg] = pkg2_pkg
         else:
             assert False, 'Impossibru'
+
+    if obsoletepkgs:
+        obsoletepkgs = '\n'.join(obsoletepkgs)
+        logtofile('%s-oldpackages.txt' % globalvars.suite, obsoletepkgs,
+                  redo=True)
 
     return new_pkgs
 
