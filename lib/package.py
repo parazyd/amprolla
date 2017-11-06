@@ -137,11 +137,12 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
                 pkg1_pkg = rewriter(pkg1_pkg, name1)
             new_pkgs[pkg] = pkg1_pkg
             if package_newer(pkg1_pkg, pkg2_pkg):
-                logtofile('oldpackages.txt',
+                logtofile('%s-oldpackages.txt' % globalvars.suite,
                           '%s,%s,%s,%s\n' % (globalvars.suite,
                                              pkg1_pkg.get('Package'),
                                              pkg1_pkg.get('Version'),
-                                             pkg2_pkg.get('Version')))
+                                             pkg2_pkg.get('Version')),
+                                             redo=True)
         elif pkg1_pkg:
             if not package_banned(pkg1_pkg, banned_packages):
                 if rewriter:
