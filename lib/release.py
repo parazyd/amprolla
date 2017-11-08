@@ -72,8 +72,10 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
         rehash_release(filelist, new, r)
     else:
         info('Reusing old checksums')
-        for i, j in local_rel.items():
-            new.write(' %s %8s %s\n' % (j[0], j[1], i))
+        for csum in checksums:
+            new.write('%s:\n' % csum['name'])
+            for i, j in local_rel.items():
+                new.write(' %s %8s %s\n' % (j[0], j[1], i))
 
     new.close()
 
