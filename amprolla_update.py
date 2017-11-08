@@ -73,6 +73,7 @@ def perform_update(suite, paths):
                 diffs = compare_dict(parse_release(remote_rel.text),
                                      parse_release(local_rel_text))
             if diffs:
+                globalvars.rehash = True
                 for k in diffs:
                     if k.endswith('Packages.gz') or k.endswith('Sources.gz'):
                         needsmerge[i]['mergelist'].append(k)
