@@ -94,6 +94,8 @@ release_aliases = {
     'ascii-backports': {
         'Suite': 'testing-backports',
         'Codename': 'ascii-backports',
+        'Origin': 'Devuan Backports',
+        'Label': 'Devuan Backports',
     },
     'ascii-proposed-updates': {
         'Suite': 'testing-proposed-updates',
@@ -102,6 +104,7 @@ release_aliases = {
     'ascii-security': {
         'Suite': 'testing-security',
         'Codename': 'ascii-security',
+        'Label': 'Devuan-Security',
     },
     'ascii-updates': {
         'Suite': 'testing-updates',
@@ -116,6 +119,7 @@ release_aliases = {
     'jessie-backports': {
         'Suite': 'stable-backports',
         'Codename': 'jessie-backports',
+        'Origin': 'Devuan Backports',
     },
     'jessie-proposed-updates': {
         'Suite': 'stable-proposed-updates',
@@ -124,6 +128,7 @@ release_aliases = {
     'jessie-security': {
         'Suite': 'stable-security',
         'Codename': 'jessie-security',
+        'Label': 'Devuan-Security',
     },
     'jessie-updates': {
         'Suite': 'stable-updates',
