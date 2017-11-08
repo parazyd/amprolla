@@ -5,7 +5,7 @@ Logging functions
 """
 
 from time import time
-from os import makedirs, remove
+from os import makedirs
 from os.path import join
 import sys
 
@@ -16,10 +16,10 @@ def die(msg, tofile=True):
     """
     Log error and exit with exitcode 1
     """
-    msg = "%d [ERR] %s\n" % (int(time()), msg)
+    msg = "%d [ERR] %s" % (int(time()), msg)
     print(msg)
     if tofile:
-        logtofile('amprolla.txt', msg)
+        logtofile('amprolla.txt', msg+'\n')
     sys.exit(1)
 
 
@@ -27,20 +27,20 @@ def warn(msg, tofile=True):
     """
     Log warning and continue
     """
-    msg = "%d [WARN] %s\n" % (int(time()), msg)
+    msg = "%d [WARN] %s" % (int(time()), msg)
     print(msg)
     if tofile:
-        logtofile('amprolla.txt', msg)
+        logtofile('amprolla.txt', msg+'\n')
 
 
 def info(msg, tofile=True):
     """
     Log informational message and continue
     """
-    msg = "%d [INFO] %s\n" % (int(time()), msg)
+    msg = "%d [INFO] %s" % (int(time()), msg)
     print(msg)
     if tofile:
-        logtofile('amprolla.txt', msg)
+        logtofile('amprolla.txt', msg+'\n')
 
 
 def logtofile(filename, text, redo=False):

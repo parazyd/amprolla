@@ -117,7 +117,7 @@ def gen_release(suite):
     """
 
     filelist = []
-    print('Crawling %s' % suite)
+    print('\nCrawling %s' % suite)
     rootdir = join(mergedir, mergesubdir, suite)
     for cat in categories:
         for arch in arches:
