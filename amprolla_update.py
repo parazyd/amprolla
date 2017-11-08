@@ -43,6 +43,7 @@ def perform_update(suite, paths):
     info('Checking for updates in %s' % suite)
     # print(paths)
     globalvars.suite = suite
+    globalvars.rehash = False
 
     needsmerge = {}
     needsmerge['downloads'] = []  # all files that have to be downloaded

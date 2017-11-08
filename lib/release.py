@@ -14,7 +14,7 @@ import lib.globalvars as globalvars
 from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
                         release_keys, signingkey)
 from lib.log import info
-from lib.parse import parse_release_head
+from lib.parse import parse_release_head, parse_release
 
 
 def rewrite_release_head(headers):
@@ -49,6 +49,10 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
     prettyt1 = t1.strftime('%a, %d %b %Y %H:%M:%S UTC')
     # prettyt2 = t2.strftime('%a, %d %b %Y %H:%M:%S UTC')
 
+    # this holds our local data in case we don't want to rehash files
+    local_rel = open(newrel).read()
+    local_rel = parse_release(local_rel)
+
     old = open(oldrel).read()
     new = open(newrel, 'w')
 
@@ -66,6 +70,10 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
 
     if globalvars.rehash:
         rehash_release(filelist, new, r)
+    else:
+        info('Reusing old checksums')
+        for i, j in local_rel.items():
+            new.write(' %s %8s %s\n' % (j[0], j[1], i))
 
     new.close()
 

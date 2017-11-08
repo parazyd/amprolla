@@ -33,7 +33,7 @@ def get_date(relfile):
 def parse_release(reltext):
     """
     Parses a Release file and returns a dict of the files we need
-    key = filename, value = sha256 checksum
+    key = filename, value = tuple of sha256sum and file size
     """
     hashes = {}
 
@@ -43,8 +43,9 @@ def parse_release(reltext):
     for line in contents:
         if sha256 is True and line != '':
             filename = line.split()[2]
+            filesize = line.split()[1]
             checksum = line.split()[0]
-            hashes[filename] = checksum
+            hashes[filename] = (checksum, filesize)
         elif line.startswith('SHA256:'):
             sha256 = True
 
