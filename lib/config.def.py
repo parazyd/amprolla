@@ -91,37 +91,18 @@ release_aliases = {
         'Codename': 'ascii',
         'Version': '2.0',
     },
-    # backports always has:
-    # Origin/Label: DISTRO Backports
-    # Suite/Codename: CODENAME-backports
     'ascii-backports': {
-        'Origin': 'Devuan Backports',
-        'Label': 'Devuan Backports',
-        'Suite': 'ascii-backports',
+        'Suite': 'testing-backports',
         'Codename': 'ascii-backports',
     },
-    # proposed-updates has:
-    # Suite: STABILITY-proposed-updates
-    # Codename: CODENAME-proposed-updates
-    # Except in stable where:
-    # Suite: proposed-updates
-    # Codename: CODENAME-proposed-updates
     'ascii-proposed-updates': {
         'Suite': 'testing-proposed-updates',
         'Codename': 'ascii-proposed-updates',
     },
-    # security always has:
-    # Label: DISTRO-Security
-    # Suite: STABILITY
-    # Codename: CODENAME
     'ascii-security': {
-        'Label': 'Devuan-Security',
-        'Suite': 'testing',
-        'Codename': 'ascii',
+        'Suite': 'testing-security',
+        'Codename': 'ascii-security',
     },
-    # updates has:
-    # Suite: STABILITY-updates
-    # Codename: CODENAME-updates
     'ascii-updates': {
         'Suite': 'testing-updates',
         'Codename': 'ascii-updates',
@@ -133,19 +114,16 @@ release_aliases = {
         'Version': '1.0',
     },
     'jessie-backports': {
-        'Origin': 'Devuan Backports',
-        'Label': 'Devuan Backports',
-        'Suite': 'jessie-backports',
+        'Suite': 'stable-backports',
         'Codename': 'jessie-backports',
     },
     'jessie-proposed-updates': {
-        'Suite': 'proposed-updates',
+        'Suite': 'stable-proposed-updates',
         'Codename': 'jessie-proposed-updates'
     },
     'jessie-security': {
-        'Label': 'Devuan-Security',
-        'Suite': 'stable',
-        'Codename': 'jessie',
+        'Suite': 'stable-security',
+        'Codename': 'jessie-security',
     },
     'jessie-updates': {
         'Suite': 'stable-updates',
