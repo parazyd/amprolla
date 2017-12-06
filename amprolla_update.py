@@ -12,7 +12,7 @@ import requests
 
 import lib.globalvars as globalvars
 from amprolla_merge import gen_release, merge, prepare_merge_dict
-from lib.config import aliases, cpunm, repos, repo_order, spooldir
+from lib.config import aliases, cpunm, repos, repo_order, spooldir, skips
 from lib.lock import check_lock, free_lock
 from lib.log import info, warn
 from lib.parse import compare_dict, get_date, get_time, parse_release
@@ -110,7 +110,6 @@ def perform_update(suite, paths):
                     sui = aliases[repos[j]['name']][suite]
                 elif repos[j]['skipmissing']:
                     sui = None
-                skips = ['jessie-security', 'ascii-security']  # hack
                 if j == 'debian' and suite in skips:
                     sui = None
 

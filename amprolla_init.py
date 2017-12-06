@@ -11,7 +11,7 @@ from multiprocessing import Pool
 from time import time
 
 from lib.config import (aliases, arches, categories, cpunm, mainrepofiles,
-                        repos, spooldir, suites)
+                        repos, spooldir, suites, skips)
 from lib.lock import check_lock, free_lock
 from lib.net import download
 from lib.parse import parse_release
@@ -41,7 +41,6 @@ def pop_dirs(repo):
                     suite = aliases[repodata['name']][j]
                 elif repodata['skipmissing'] is True:
                     continue
-                skips = ['jessie-security', 'ascii-security']  # hack
                 if repo == 'debian' and j in skips:
                     continue
             pair = (join(baseurl, suite),

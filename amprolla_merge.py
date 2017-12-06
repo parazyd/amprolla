@@ -13,7 +13,7 @@ from time import time
 import lib.globalvars as globalvars
 from lib.config import (aliases, arches, banpkgs, categories, cpunm, mergedir,
                         mergesubdir, pkgfiles, repos, repo_order, signrelease,
-                        spooldir, srcfiles, suites)
+                        spooldir, srcfiles, suites, skips)
 from lib.lock import check_lock, free_lock
 from lib.package import (load_packages_file, merge_packages_many,
                          write_packages)
@@ -42,7 +42,6 @@ def prepare_merge_dict():
                     tmpsuite = aliases[repos[repo]['name']][suite]
                 elif repos[repo]['skipmissing'] is True:
                     tmpsuite = None
-                skips = ['jessie-security', 'ascii-security']
                 if repo == 'debian' and suite in skips:
                     tmpsuite = None
             if tmpsuite:  # make it a proper path

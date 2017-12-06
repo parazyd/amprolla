@@ -25,6 +25,9 @@ checksums = [
 distrolabel = 'Devuan'
 repo_order = ['devuan', 'debian-security', 'debian']
 
+# used for a hacky way to skip certain suites when crawling Debian
+skips = ['jessie-security', 'ascii-security']
+
 repos = {
     'devuan': {
         'name': 'DEVUAN',
