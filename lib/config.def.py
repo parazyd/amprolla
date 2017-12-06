@@ -69,7 +69,7 @@ suites = {
     ],
     'unstable': [
         'unstable',
-    ]
+    ],
 }
 
 aliases = {
@@ -82,7 +82,7 @@ aliases = {
         'ascii-backports': 'stretch-backports',
         'ascii-proposed-updates': 'stretch-proposed-updates',
         'ascii-updates': 'stretch-updates',
-    }
+    },
 }
 
 release_aliases = {
@@ -123,7 +123,7 @@ release_aliases = {
     },
     'jessie-proposed-updates': {
         'Suite': 'stable-proposed-updates',
-        'Codename': 'jessie-proposed-updates'
+        'Codename': 'jessie-proposed-updates',
     },
     'jessie-security': {
         'Suite': 'stable-security',
@@ -158,27 +158,27 @@ arches = [
     'binary-powerpc',
     'binary-ppc64el',
     'binary-s390x',
-    'binary-sparc'
+    'binary-sparc',
 ]
 
 mainrepofiles = [
     'InRelease',
     'Release',
-    'Release.gpg'
+    'Release.gpg',
 ]
 
 pkgfiles = [
     'Packages',
     'Packages.gz',
     'Packages.xz',
-    'Release'
+    'Release',
 ]
 
 srcfiles = [
     'Sources',
     'Sources.gz',
     'Sources.xz',
-    'Release'
+    'Release',
 ]
 
 release_keys = [
@@ -253,7 +253,7 @@ packages_keys = [
     'Size',
     'MD5sum',
     'SHA1',
-    'SHA256'
+    'SHA256',
 ]
 
 sources_keys = [
@@ -297,5 +297,5 @@ sources_keys = [
     'Origin',
     'Vcs-Arch',
     'Original-Maintainer',
-    'Python3-Version'
+    'Python3-Version',
 ]
