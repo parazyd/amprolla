@@ -11,15 +11,17 @@ import sys
 
 from lib.log import info
 
+lockpath = '/run/lock/amprolla.lock'
+
 def check_lock():
     """
     Checks if a lockfile is active, and creates one if not.
     """
-    if isfile('/tmp/amprolla.lock'):
+    if isfile(lockpath):
         info('Lockfile found. Defering operation.')
         sys.exit(1)
 
-    with open('/tmp/amprolla.lock', 'w') as lock:
+    with open(lockpath, 'w') as lock:
         lock.write(str(int(time())))
 
 
@@ -27,4 +29,5 @@ def free_lock():
     """
     Frees an active lockfile.
     """
-    remove('/tmp/amprolla.lock')
+    if isfile(lockpath):
+        remove(lockpath)
