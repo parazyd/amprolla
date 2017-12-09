@@ -14,7 +14,7 @@ import lib.globalvars as globalvars
 from amprolla_merge import gen_release, merge, prepare_merge_dict
 from lib.config import aliases, cpunm, repos, repo_order, spooldir, skips
 from lib.lock import check_lock, free_lock
-from lib.log import info, warn
+from lib.log import info, warn, die
 from lib.parse import compare_dict, get_date, get_time, parse_release
 from lib.net import download
 
@@ -143,9 +143,12 @@ def main():
 
 
 if __name__ == '__main__':
-    t1 = time()
-    check_lock()
-    main()
-    free_lock()
-    t2 = time()
-    print('total time: %s' % (t2 - t1))
+    try:
+        t1 = time()
+        check_lock()
+        main()
+        free_lock()
+        t2 = time()
+        print('total time: %s' % (t2 - t1))
+    except Exception as e:
+        die(e)
