@@ -136,7 +136,7 @@ release_aliases = {
     'jessie-updates': {
         'Suite': 'stable-updates',
         'Codename': 'jessie-updates',
-    }
+    },
 }
 
 categories = ['main', 'contrib', 'non-free']
