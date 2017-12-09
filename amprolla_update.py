@@ -149,6 +149,6 @@ if __name__ == '__main__':
         main()
         free_lock()
         t2 = time()
-        print('total time: %s' % (t2 - t1))
+        info('Total time: %s' % (t2 - t1))
     except Exception as e:
         die(e)

@@ -18,6 +18,7 @@ from lib.lock import check_lock, free_lock
 from lib.package import (load_packages_file, merge_packages_many,
                          write_packages)
 from lib.release import write_release
+from lib.log import info, die
 
 
 def prepare_merge_dict():
@@ -194,9 +195,12 @@ def main():
 
 
 if __name__ == '__main__':
-    t1 = time()
-    check_lock()
-    main()
-    free_lock()
-    t2 = time()
-    print('total time: %s' % (t2 - t1))
+    try:
+        t1 = time()
+        check_lock()
+        main()
+        free_lock()
+        t2 = time()
+        info('Total time: %s' % (t2 - t1))
+    except Exception as e:
+        die(e)

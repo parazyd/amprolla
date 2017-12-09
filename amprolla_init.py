@@ -15,6 +15,7 @@ from lib.config import (aliases, arches, categories, cpunm, mainrepofiles,
 from lib.lock import check_lock, free_lock
 from lib.net import download
 from lib.parse import parse_release
+from lib.log import die, info
 
 
 def pop_dirs(repo):
@@ -86,9 +87,12 @@ def main():
 
 
 if __name__ == '__main__':
-    t1 = time()
-    check_lock()
-    main()
-    free_lock()
-    t2 = time()
-    print('total time: %s' % (t2 - t1))
+    try
+        t1 = time()
+        check_lock()
+        main()
+        free_lock()
+        t2 = time()
+        info('Total time: %s' % (t2 - t1))
+    except Exception as e:
+        die(e)
