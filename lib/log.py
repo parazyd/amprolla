@@ -4,7 +4,7 @@
 Logging functions
 """
 
-from time import time
+from time import strftime
 from os import makedirs
 from os.path import join
 import sys
@@ -12,11 +12,18 @@ import sys
 from lib.config import logdir
 
 
+def timestamp():
+    """
+    Return current time in a certain format.
+    """
+    return strftime("%Y/%m/%d %H:%M:%S")
+
+
 def die(msg, tofile=True):
     """
     Log error and exit with exitcode 1
     """
-    msg = "%d [ERR] %s" % (int(time()), msg)
+    msg = "%s [ERR] %s" % (timestamp(), msg)
     print(msg)
     if tofile:
         logtofile('amprolla.txt', msg+'\n')
@@ -27,7 +34,7 @@ def warn(msg, tofile=True):
     """
     Log warning and continue
     """
-    msg = "%d [WARN] %s" % (int(time()), msg)
+    msg = "%s [WARN] %s" % (timestamp(), msg)
     print(msg)
     if tofile:
         logtofile('amprolla.txt', msg+'\n')
@@ -37,7 +44,7 @@ def info(msg, tofile=True):
     """
     Log informational message and continue
     """
-    msg = "%d [INFO] %s" % (int(time()), msg)
+    msg = "%s [INFO] %s" % (timestamp(), msg)
     print(msg)
     if tofile:
         logtofile('amprolla.txt', msg+'\n')
