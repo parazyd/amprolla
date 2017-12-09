@@ -13,8 +13,8 @@ def get_time(date):
     """
     if not date:
         # hardcode if something's amiss
-        date = 'Sun, 29 Oct 2017 10:00:00 +0200'
-    return mktime(strptime(date, "%a, %d %b %Y %H:%M:%S %Z"))
+        date = 'Sun, 29 Oct 2017 10:00:00 UTC'
+    return mktime(strptime(date, '%a, %d %b %Y %H:%M:%S %Z'))
 
 
 def get_date(relfile):
