@@ -87,7 +87,7 @@ def main():
 
 
 if __name__ == '__main__':
-    try
+    try:
         t1 = time()
         check_lock()
         main()
