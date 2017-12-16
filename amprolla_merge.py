@@ -201,6 +201,6 @@ if __name__ == '__main__':
         main()
         free_lock()
         t2 = time()
-        info('Total time: %s' % (t2 - t1))
+        info('Total full merge time: %s' % (t2 - t1), tofile=True)
     except Exception as e:
         die(e)

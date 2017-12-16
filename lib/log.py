@@ -40,7 +40,7 @@ def warn(msg, tofile=True):
         logtofile('amprolla.txt', msg+'\n')
 
 
-def info(msg, tofile=True):
+def info(msg, tofile=False):
     """
     Log informational message and continue
     """
