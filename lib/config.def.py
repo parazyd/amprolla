@@ -15,6 +15,7 @@ signingkey = 'CA608125'
 signrelease = True
 mergedir = './merged-volatile'
 mergesubdir = 'dists'
+lockpath = '/run/lock/amprolla.lock'
 banpkgs = {'systemd', 'systemd-sysv'}
 checksums = [
     # {'name': 'MD5Sum', 'f': md5},

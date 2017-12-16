@@ -9,9 +9,9 @@ from os import remove
 from os.path import isfile
 import sys
 
+from lib.config import lockpath
 from lib.log import info
 
-lockpath = '/run/lock/amprolla.lock'
 
 def check_lock():
     """
