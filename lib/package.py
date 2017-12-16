@@ -7,7 +7,7 @@ Package merging functions and helpers
 from os import makedirs
 from os.path import dirname, isfile, join
 from gzip import open as gzip_open
-# from lzma import open as lzma_open
+from lzma import open as lzma_open
 from shutil import copyfile
 
 import lib.globalvars as globalvars
@@ -33,7 +33,7 @@ def write_packages(packages, filename, sort=True, sources=False):
         copyfile(sprl, rl)
 
     gzf = gzip_open(filename, 'w')
-    # xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
+    xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
     # f = open(filename.replace('.gz', ''), 'wb')
 
     pkg_items = packages.items()
@@ -50,14 +50,14 @@ def write_packages(packages, filename, sort=True, sources=False):
             if key in pkg_contents:
                 s = '%s: %s\n' % (key, pkg_contents[key])
                 gzf.write(s.encode('utf-8'))
-                # xzf.write(s.encode('utf-8'))
+                xzf.write(s.encode('utf-8'))
                 # f.write(s.encode('utf-8'))
         gzf.write(b'\n')
-        # xzf.write(b'\n')
+        xzf.write(b'\n')
         # f.write(b'\n')
 
     gzf.close()
-    # xzf.close()
+    xzf.close()
     # f.close()
 
 
