@@ -69,9 +69,9 @@ def parse_release_head(reltext):
         elif line.startswith(splitter):
             md5sum = True
         else:
-            k = line.split(': ')[0]
-            v = line.split(': ')[1]
-            metadata[k] = v
+            key = line.split(': ')[0]
+            val = line.split(': ')[1]
+            metadata[key] = val
 
     return metadata
 
@@ -92,9 +92,9 @@ def parse_package(entry):
         else:
             pkgs[key] = value
 
-            v = line.split(':', 1)
-            key = v[0]
-            value = v[1][1:]
+            val = line.split(':', 1)
+            key = val[0]
+            value = val[1][1:]
 
     if key:
         pkgs[key] = value
@@ -133,41 +133,41 @@ def parse_dependencies(dependencies):
 
         {'lib6': '(>= 2.4)', 'libdbus-1-3': '(>= 1.0.2)', 'foo': None}
     """
-    r = {}
+    ret = {}
 
     for pkg_plus_version in dependencies.split(', '):
-        v = pkg_plus_version.split(' ', 1)
-        name = v[0]
+        ver = pkg_plus_version.split(' ', 1)
+        name = ver[0]
 
         # If we get passed an empty string, the name is '', and we just
         # outright stop
         if not name:
             return {}
 
-        if len(v) == 2:
-            version = v[1]
-            r[name] = version
+        if len(ver) == 2:
+            version = ver[1]
+            ret[name] = version
         else:
-            r[name] = None
+            ret[name] = None
 
-    return r
+    return ret
 
 
-def compare_dict(d1, d2):
+def compare_dict(dic1, dic2):
     """
     Compares two dicts
     Takes two dicts and returns a dict of tuples with the differences.
 
     Example input:
 
-        d1={'foo': 'bar'}, 22={'foo': 'baz'}
+        dic1={'foo': 'bar'}, dic2={'foo': 'baz'}
 
     Example output:
 
         {'foo': ('bar', 'baz')}
     """
-    d1_keys = set(d1.keys())
-    d2_keys = set(d2.keys())
+    d1_keys = set(dic1.keys())
+    d2_keys = set(dic2.keys())
     intersect_keys = d1_keys.intersection(d2_keys)
-    modified = {o: (d1[o], d2[o]) for o in intersect_keys if d1[o] != d2[o]}
-    return modified
+    mod = {o: (dic1[o], dic2[o]) for o in intersect_keys if dic1[o] != dic2[o]}
+    return mod

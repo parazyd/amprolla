@@ -12,11 +12,11 @@ from os.path import dirname, join, isfile
 from time import time
 
 import lib.globalvars as globalvars
-from amprolla_merge import prepare_merge_dict
 from lib.config import (arches, categories, cpunm, mergedir, mergesubdir,
                         repos, spooldir)
 from lib.lock import check_lock, free_lock
 from lib.log import die, info
+from amprolla_merge import prepare_merge_dict
 
 
 def merge_contents(filelist):

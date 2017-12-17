@@ -4,7 +4,7 @@
 Release file functions and helpers
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime  # , timedelta
 from gzip import decompress as gzip_decomp
 from lzma import compress as lzma_comp
 from os.path import getsize, isfile
@@ -12,7 +12,7 @@ from subprocess import Popen
 
 import lib.globalvars as globalvars
 from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
-                        release_keys, signingkey)
+                        release_keys, signingkey, signrelease)
 from lib.log import info
 from lib.parse import parse_release_head, parse_release
 
@@ -31,23 +31,23 @@ def rewrite_release_head(headers):
     return headers
 
 
-def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
+def write_release(oldrel, newrel, filelist, rmstr, rewrite=True):
     """
     Generates a valid Release file
     if sign=False: do not use gnupg to sign the file
     if rewrite=True: rewrite the Release headers as defined in the config
 
-    Arguments taken: oldrel, newrel, filelist, r
+    Arguments taken: oldrel, newrel, filelist, rmstr
         * location of the old Release file (used to take metadata)
         * location where to write the new Release file
         * list of files to make checksums
         * string to remove from the path of the hashed file
     """
-    t1 = datetime.utcnow()
-    # t2 = datetime.utcnow() + timedelta(days=7)
+    time1 = datetime.utcnow()
+    # time2 = datetime.utcnow() + timedelta(days=7)
 
-    prettyt1 = t1.strftime('%a, %d %b %Y %H:%M:%S UTC')
-    # prettyt2 = t2.strftime('%a, %d %b %Y %H:%M:%S UTC')
+    prettyt1 = time1.strftime('%a, %d %b %Y %H:%M:%S UTC')
+    # prettyt2 = time2.strftime('%a, %d %b %Y %H:%M:%S UTC')
 
     # this holds our local data in case we don't want to rehash files
     local_rel = open(newrel).read()
@@ -69,7 +69,7 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
             new.write('%s: %s\n' % (k, rel_cont[k]))
 
     if globalvars.rehash:
-        rehash_release(filelist, new, r)
+        rehash_release(filelist, new, rmstr)
     else:
         info('Reusing old checksums')
         for csum in checksums:
@@ -79,32 +79,35 @@ def write_release(oldrel, newrel, filelist, r, sign=True, rewrite=True):
 
     new.close()
 
-    if sign:
+    if signrelease:
         sign_release(newrel)
 
 
-def rehash_release(_filelist, fd, r):
+def rehash_release(_filelist, fdesc, rmstr):
     """
     Calculates checksums of a given filelist and writes them to the given
-    file descriptor. Takes r as the third argument, which is a string to
+    file descriptor. Takes rmstr as the third argument, which is a string to
     remove from the path of the hashed file when writing it to a file.
     """
     info('Hashing checksums')
     for csum in checksums:
-        fd.write('%s:\n' % csum['name'])
-        for f in _filelist:
-            if isfile(f):
-                cont = open(f, 'rb').read()
-                fd.write(' %s %8s %s\n' % (csum['f'](cont).hexdigest(),
-                                           getsize(f), f.replace(r+'/', '')))
-            elif f.endswith('.xz') and isfile(f.replace('.xz', '.gz')):
-                xzstr = lzma_comp(open(f.replace('.xz', '.gz'), 'rb').read())
-                fd.write(' %s %8s %s\n' % (csum['f'](xzstr).hexdigest(),
-                                           len(xzstr), f.replace(r+'/', '')))
-            elif not f.endswith('.gz') and isfile(f+'.gz'):
-                uncomp = gzip_decomp(open(f+'.gz', 'rb').read())
-                fd.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
-                                           len(uncomp), f.replace(r+'/', '')))
+        fdesc.write('%s:\n' % csum['name'])
+        for i in _filelist:
+            if isfile(i):
+                cont = open(i, 'rb').read()
+                fdesc.write(' %s %8s %s\n' % (csum['f'](cont).hexdigest(),
+                                              getsize(i),
+                                              i.replace(rmstr+'/', '')))
+            elif i.endswith('.xz') and isfile(i.replace('.xz', '.gz')):
+                xzstr = lzma_comp(open(i.replace('.xz', '.gz'), 'rb').read())
+                fdesc.write(' %s %8s %s\n' % (csum['f'](xzstr).hexdigest(),
+                                              len(xzstr),
+                                              i.replace(rmstr+'/', '')))
+            elif not i.endswith('.gz') and isfile(i+'.gz'):
+                uncomp = gzip_decomp(open(i+'.gz', 'rb').read())
+                fdesc.write(' %s %8s %s\n' % (csum['f'](uncomp).hexdigest(),
+                                              len(uncomp),
+                                              i.replace(rmstr+'/', '')))
     return
 
 

@@ -12,8 +12,8 @@ from time import time
 
 import lib.globalvars as globalvars
 from lib.config import (aliases, arches, banpkgs, categories, cpunm, mergedir,
-                        mergesubdir, pkgfiles, repos, repo_order, signrelease,
-                        spooldir, srcfiles, suites, skips)
+                        mergesubdir, pkgfiles, repos, repo_order, spooldir,
+                        srcfiles, suites, skips)
 from lib.lock import check_lock, free_lock
 from lib.package import (load_packages_file, merge_packages_many,
                          write_packages)
@@ -143,7 +143,7 @@ def gen_release(suite):
                             join(spooldir, repos['devuan']['dists']))
 
     print('Writing Release')
-    write_release(oldrfl, newrfl, filelist, rootdir, sign=signrelease)
+    write_release(oldrfl, newrfl, filelist, rootdir)
 
 
 def main_merge(packages_file):

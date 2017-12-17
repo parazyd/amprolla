@@ -27,10 +27,10 @@ def write_packages(packages, filename, sort=True, sources=False):
     bsnm = 'Packages.gz'
     if sources:
         bsnm = 'Sources.gz'
-    rl = filename.replace(bsnm, 'Release')
-    sprl = rl.replace(mergedir, join(spooldir, 'devuan'))
-    if not isfile(rl) and isfile(sprl):
-        copyfile(sprl, rl)
+    rel = filename.replace(bsnm, 'Release')
+    sprl = rel.replace(mergedir, join(spooldir, 'devuan'))
+    if not isfile(rel) and isfile(sprl):
+        copyfile(sprl, rel)
 
     gzf = gzip_open(filename, 'w')
     xzf = lzma_open(filename.replace('.gz', '.xz'), 'w')
@@ -48,10 +48,10 @@ def write_packages(packages, filename, sort=True, sources=False):
     for pkg_name, pkg_contents in pkg_items:
         for key in keylist:
             if key in pkg_contents:
-                s = '%s: %s\n' % (key, pkg_contents[key])
-                gzf.write(s.encode('utf-8'))
-                xzf.write(s.encode('utf-8'))
-                # f.write(s.encode('utf-8'))
+                sin = '%s: %s\n' % (key, pkg_contents[key])
+                gzf.write(sin.encode('utf-8'))
+                xzf.write(sin.encode('utf-8'))
+                # f.write(sin.encode('utf-8'))
         gzf.write(b'\n')
         xzf.write(b'\n')
         # f.write(b'\n')
