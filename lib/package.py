@@ -111,6 +111,11 @@ def package_newer(pkg1, pkg2):
 
     Ref: https://www.debian.org/doc/debian-policy/#version
     """
+    # Hardcoded list of packages we don't want to check
+    _skips = []
+    if pkg1.get('Package') in _skips:
+        return False
+
     # The choice of dropping [1:] is because we don't care for +deb or +devuan
     hi_prio = pkg1.get('Version').split('+')[0]
     lo_prio = pkg2.get('Version').split('+')[0]
@@ -136,6 +141,10 @@ def package_newer(pkg1, pkg2):
     if len(hi_prio) > 1 and len(lo_prio) > 1:
         hi_prio[1] = hi_prio[1].replace('.', '')
         lo_prio[1] = lo_prio[1].replace('.', '')
+        if '~' in hi_prio[1]:
+            hi_prio[1] = hi_prio[1].split('~')[0]
+        if '~' in lo_prio[1]:
+            lo_prio[1] = lo_prio[1].split('~')[0]
         if int(lo_prio[1]) > int(hi_prio[1]):
             return True
 
