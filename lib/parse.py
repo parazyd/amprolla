@@ -6,6 +6,8 @@ Parsing functions/helpers
 
 from time import mktime, strptime
 
+from lib.log import info
+
 
 def get_time(date):
     """
@@ -151,6 +153,159 @@ def parse_dependencies(dependencies):
             ret[name] = None
 
     return ret
+
+
+def compare_epochs(epo1, epo2):
+    """
+    Compares two given epochs and returns their difference.
+    """
+    return int(epo1) - int(epo2)
+
+
+def get_epoch(ver):
+    """
+    Parses and returns the epoch, and the rest, split of a version string.
+    """
+    if ':' in ver:
+        return ver.split(':', 1)
+    return "0", ver
+
+
+def get_upstream(rest):
+    """
+    Separate upstream_version from debian-version. The latter is whatever is
+    found after the last "-" (hyphen)
+    """
+    split_s = rest.rsplit('-', 1)
+    if len(split_s) < 2:
+        return split_s[0], ""
+    return split_s
+
+
+def get_non_digit(s):
+    """
+    Get a string and return the longest leading substring consisting exclusively
+    of non-digits (or an empty string), and the remaining substring.
+    """
+    if not s:
+        return "", ""
+    head = ""
+    tail = s
+    N = len(s)
+    i = 0
+    while i < N and not s[i].isdigit():
+        head += s[i]
+        tail = tail[1:]
+        i += 1
+    return head, tail
+
+
+def get_digit(s):
+    """
+    Get a string and return the integer value of the longest leading substring
+    consisting exclusively of digit characters (or zero otherwise), and the
+    remaining substring.
+    """
+    if not s:
+        return 0, ""
+    head = ""
+    tail = s
+    N = len(s)
+    i = 0
+    while i < N and s[i].isdigit():
+        head += s[i]
+        tail = tail[1:]
+        i += 1
+    return int(head), tail
+
+
+def char_val(c):
+    """
+    Returns an integer value of a given unicode character. Returns 0 on ~ (since
+    this is in Debian's policy)
+    """
+    if c == '~':
+        return 0
+    elif not c.isalpha():
+        return 256 + ord(c)
+    return ord(c)
+
+
+def compare_deb_str(a1, a2):
+    while len(a1) > 0 and len(a2) > 0:
+        char_diff = char_val(a1[0]) - char_val(a2[0])
+        if char_diff != 0:
+            return char_diff
+        a1 = a1[1:]
+        a2 = a2[1:]
+    if len(a1) == 0:
+        if len(a2) == 0:
+            return 0
+        else:
+            if a2[0] == '~':
+                return 512
+            else:
+                return -ord(a2[0])
+    else:
+        if a1[0] == '~':
+            return -512
+        else:
+            return ord(a1[0])
+
+
+def compare_non_epoch(s1, s2):
+    cont = True
+    while cont:
+        alpha1, tail1 = get_non_digit(s1)
+        alpha2, tail2 = get_non_digit(s2)
+        if alpha1 == alpha2:
+            num1, s1 = get_digit(tail1)
+            num2, s2 = get_digit(tail2)
+            if num1 == num2:
+                cont = True
+            else:
+                diff = num1 - num2
+                cont = False
+        else:
+            cont = False
+            diff = compare_deb_str(alpha1, alpha2)
+
+    return diff
+
+
+def cmppkgver(ver1, ver2):
+    """
+    Main function to compare two package versions. Wraps around other functions
+    to provide a result. It returns an integer < 0 if ver1 is earlier than ver2,
+    0 if ver1 is the same as ver2, and an integer > 0 if ver2 is earlier than
+    ver2.
+
+    WARNING: The function does not induce a total order (i.e., return values
+    MUST NOT be added or subtracted)
+
+    https://www.debian.org/doc/debian-policy/#version
+    """
+    epoch1, rest1 = get_epoch(ver1)
+    epoch2, rest2 = get_epoch(ver2)
+
+    ec = compare_epochs(epoch1, epoch2)
+    if ec != 0:
+        # The two versions differ on epoch
+        info('differing epochs: %d\n' % ec)
+        return ec
+    else:
+        info('equal epochs')
+
+    upst1, rev1 = get_upstream(rest1)
+    upst2, rev2 = get_upstream(rest2)
+
+    info('v1: up: %s deb: %s' % (upst1, rev1))
+    info('v2: up: %s deb: %s' % (upst2, rev2))
+
+    up_diff = compare_deb_str(upst1, upst2)
+    if up_diff == 0:
+        return compare_deb_str(rev1, rev2)
+    return up_diff
 
 
 def compare_dict(dic1, dic2):

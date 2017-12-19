@@ -13,7 +13,7 @@ from shutil import copyfile
 import lib.globalvars as globalvars
 from lib.config import mergedir, packages_keys, sources_keys, spooldir
 from lib.log import logtofile
-from lib.parse import parse_dependencies, parse_packages
+from lib.parse import parse_dependencies, parse_packages, cmppkgver
 
 
 def write_packages(packages, filename, sort=True, sources=False):
@@ -116,37 +116,8 @@ def package_newer(pkg1, pkg2):
     if pkg1.get('Package') in _skips:
         return False
 
-    # The choice of dropping [1:] is because we don't care for +deb or +devuan
-    hi_prio = pkg1.get('Version').split('+')[0]
-    lo_prio = pkg2.get('Version').split('+')[0]
-
-    # Epoch check
-    hi_ep = 0
-    lo_ep = 0
-    if ':' in hi_prio:
-        hi_ep = int(hi_prio.split(':')[0])
-        hi_prio = hi_prio.split(':')[1]
-    if ':' in lo_prio:
-        lo_ep = int(lo_prio.split(':')[0])
-        lo_prio = lo_prio.split(':')[1]
-    if lo_ep > hi_ep:
+    if cmppkgver(pkg1.get('Version'), pkg2.get('Version')) < 1:
         return True
-
-    # [0] will be upstream, [1] should be the package build
-    hi_prio = hi_prio.split('-')
-    lo_prio = lo_prio.split('-')
-    if lo_prio[0] > hi_prio[0]:
-        return True
-
-    if len(hi_prio) > 1 and len(lo_prio) > 1:
-        hi_prio[1] = hi_prio[1].replace('.', '')
-        lo_prio[1] = lo_prio[1].replace('.', '')
-        if '~' in hi_prio[1]:
-            hi_prio[1] = hi_prio[1].split('~')[0]
-        if '~' in lo_prio[1]:
-            lo_prio[1] = lo_prio[1].split('~')[0]
-        if int(lo_prio[1]) > int(hi_prio[1]):
-            return True
 
     return False
 
