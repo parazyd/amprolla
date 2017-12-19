@@ -6,8 +6,6 @@ Parsing functions/helpers
 
 from time import mktime, strptime
 
-from lib.log import info
-
 
 def get_time(date):
     """
@@ -259,6 +257,9 @@ def compare_non_epoch(s1, s2):
         alpha1, tail1 = get_non_digit(s1)
         alpha2, tail2 = get_non_digit(s2)
         if alpha1 == alpha2:
+            if not tail1 and not tail2:
+                diff = 0
+                break
             num1, s1 = get_digit(tail1)
             num2, s2 = get_digit(tail2)
             if num1 == num2:
@@ -291,20 +292,14 @@ def cmppkgver(ver1, ver2):
     ec = compare_epochs(epoch1, epoch2)
     if ec != 0:
         # The two versions differ on epoch
-        info('differing epochs: %d\n' % ec)
         return ec
-    else:
-        info('equal epochs')
 
     upst1, rev1 = get_upstream(rest1)
     upst2, rev2 = get_upstream(rest2)
 
-    info('v1: up: %s deb: %s' % (upst1, rev1))
-    info('v2: up: %s deb: %s' % (upst2, rev2))
-
-    up_diff = compare_deb_str(upst1, upst2)
+    up_diff = compare_non_epoch(upst1, upst2)
     if up_diff == 0:
-        return compare_deb_str(rev1, rev2)
+        return compare_non_epoch(rev1, rev2)
     return up_diff
 
 

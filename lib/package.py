@@ -116,7 +116,7 @@ def package_newer(pkg1, pkg2):
     if pkg1.get('Package') in _skips:
         return False
 
-    if cmppkgver(pkg1.get('Version'), pkg2.get('Version')) < 1:
+    if cmppkgver(pkg1.get('Version'), pkg2.get('Version')) < 0:
         return True
 
     return False
@@ -162,7 +162,7 @@ def merge_packages(pkg1, pkg2, name1, name2, banned_packages=set(),
     if obsoletepkgs:
         obsoletepkgs = '\n'.join(obsoletepkgs) + '\n'
         logtofile('%s-oldpackages.txt' % globalvars.suite, obsoletepkgs,
-                  redo=True)
+                  redo=False)
 
     return new_pkgs
 
