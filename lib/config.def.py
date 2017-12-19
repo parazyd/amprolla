@@ -7,13 +7,13 @@ amprolla configuration file
 # from hashlib import md5, sha1, sha256
 from hashlib import sha256
 
-cpunm = 4  # number of cpus you want to use for multiprocessing
-logdir = './log'
-spooldir = './spool'
-gpgdir = './gnupg'
-signingkey = 'CA608125'
+cpunm = 2  # number of cpus you want to use for multiprocessing
+logdir = '/home/amprolla/amprolla/log'
+spooldir = '/home/amprolla/amprolla/spool'
+gpgdir = '/home/amprolla/amprolla/gnupg'
+signingkey = 'E032601B7CA10BC3EA53FA81BB23C00C61FC752C'
 signrelease = True
-mergedir = './merged-volatile'
+mergedir = '/home/amprolla/amprolla/merged-volatile'
 mergesubdir = 'dists'
 lockpath = '/run/lock/amprolla.lock'
 banpkgs = {'systemd', 'systemd-sysv'}
@@ -32,7 +32,7 @@ skips = ['jessie-security', 'ascii-security']
 repos = {
     'devuan': {
         'name': 'DEVUAN',
-        'host': 'http://auto.mirror.devuan.org',
+        'host': 'http://pkgmaster.devuan.org',
         'dists': 'devuan/dists',
         'pool': 'devuan/pool',
         'aliases': False,
@@ -145,24 +145,24 @@ categories = ['main', 'contrib', 'non-free']
 arches = [
     'source',
     'binary-all',
-    'binary-alpha',
+    #'binary-alpha',
     'binary-amd64',
     'binary-arm64',
     'binary-armel',
     'binary-armhf',
-    'binary-hppa',
-    'binary-hurd-i386',
+    #'binary-hppa',
+    #'binary-hurd-i386',
     'binary-i386',
-    'binary-ia64',
-    'binary-kfreebsd-amd64',
-    'binary-kfreebsd-i386',
-    'binary-mips',
-    'binary-mips64el',
-    'binary-mipsel',
-    'binary-powerpc',
-    'binary-ppc64el',
-    'binary-s390x',
-    'binary-sparc',
+    #'binary-ia64',
+    #'binary-kfreebsd-amd64',
+    #'binary-kfreebsd-i386',
+    #'binary-mips',
+    #'binary-mips64el',
+    #'binary-mipsel',
+    #'binary-powerpc',
+    #'binary-ppc64el',
+    #'binary-s390x',
+    #'binary-sparc',
 ]
 
 mainrepofiles = [
