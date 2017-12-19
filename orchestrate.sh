@@ -4,8 +4,8 @@
 # Orchestration of incremental updates
 
 # Make sure these correlate to lib/config.py
-AMPROLLA_UPDATE="${AMPROLLA_UPDATE:-/srv/amprolla/amprolla_update.py}"
-REPO_ROOT="${REPO_ROOT:-/srv/amprolla}"
+AMPROLLA_UPDATE="${AMPROLLA_UPDATE:-/home/amprolla/amprolla/amprolla_update.py}"
+REPO_ROOT="${REPO_ROOT:-/home/amprolla/amprolla}"
 
 [ -f "/run/lock/amprolla.lock" ] || {
 ln -snf "$REPO_ROOT"/merged-staging "$REPO_ROOT"/merged
