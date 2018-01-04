@@ -12,7 +12,7 @@ from subprocess import Popen
 
 import lib.globalvars as globalvars
 from lib.config import (checksums, distrolabel, gpgdir, release_aliases,
-                        release_keys, signingkey, signrelease)
+                        release_keys, signingkey, signrelease, arches)
 from lib.log import info
 from lib.parse import parse_release_head, parse_release
 
@@ -60,6 +60,14 @@ def write_release(oldrel, newrel, filelist, rmstr, rewrite=True):
 
     rel_cont['Date'] = prettyt1
     # rel_cont['Valid-Until'] = prettyt2
+
+    _archlist = ''
+    for i in arches:
+        if i == 'source': continue
+        if i == 'binary-all': continue
+        i = i.replace('binary-', ' ')
+        _archlist += i
+    rel_cont['Architectures'] = _archlist
 
     if rewrite:
         rel_cont = rewrite_release_head(rel_cont)
