@@ -203,6 +203,7 @@ release_keys = [
 packages_keys = [
     'Package',
     'Version',
+    'Kernel-Version',
     'Essential',
     'Installed-Size',
     'Maintainer',
