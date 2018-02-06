@@ -204,6 +204,7 @@ packages_keys = [
     'Package',
     'Version',
     'Kernel-Version',
+    'Installer-Menu-Item',
     'Essential',
     'Installed-Size',
     'Maintainer',
