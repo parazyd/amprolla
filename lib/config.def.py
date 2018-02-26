@@ -16,7 +16,7 @@ signrelease = True
 mergedir = '/home/amprolla/amprolla/merged-volatile'
 mergesubdir = 'dists'
 lockpath = '/run/lock/amprolla.lock'
-banpkgs = {'systemd', 'systemd-sysv'}
+banpkgs = {'systemd', 'systemd-sysv', 'file-rc'}
 checksums = [
     # {'name': 'MD5Sum', 'f': md5},
     # {'name': 'SHA1', 'f': sha1},
