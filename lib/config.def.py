@@ -27,7 +27,7 @@ distrolabel = 'Devuan'
 repo_order = ['devuan', 'debian-security', 'debian']
 
 # used for a hacky way to skip certain suites when crawling Debian
-skips = ['jessie-security', 'ascii-security']
+skips = ['jessie-security', 'ascii-security', 'beowulf-security']
 
 repos = {
     'devuan': {
@@ -71,6 +71,13 @@ suites = {
         'ascii-security',
         'ascii-updates',
     ],
+    'beowulf': [
+        'beowulf',
+        # 'beowulf-backports',
+        'beowulf-proposed-updates',
+        'beowulf-security',
+        'beowulf-updates',
+    ],
     'unstable': [
         'unstable',
     ],
@@ -78,10 +85,16 @@ suites = {
 
 aliases = {
     'DEBIAN-SECURITY': {
+        'beowulf-security': 'buster/updates',
         'ascii-security': 'stretch/updates',
         'jessie-security': 'jessie/updates',
     },
     'DEBIAN': {
+        'beowulf': 'buster',
+        'beowulf-backports': 'buster-backports',
+        'beowulf-proposed-updates': 'buster-proposed-updates',
+        'beowulf-updates': 'buster-updates',
+
         'ascii': 'stretch',
         'ascii-backports': 'stretch-backports',
         'ascii-proposed-updates': 'stretch-proposed-updates',
@@ -90,6 +103,31 @@ aliases = {
 }
 
 release_aliases = {
+    'beowulf': {
+        'Suite': 'testing',
+        'Codename': 'beowulf',
+        'Version': '3.0',
+    },
+    'beowulf-backports': {
+        'Suite': 'testing-backports',
+        'Codename': 'beowulf-backports',
+        'Origin': 'Devuan Backports',
+        'Label': 'Devuan Backports',
+    },
+    'beowulf-proposed-updates': {
+        'Suite': 'testing-proposed-updates',
+        'Codename': 'beowulf-proposed-updates',
+    },
+    'beowulf-security': {
+        'Suite': 'testing-security',
+        'Codename': 'beowulf-security',
+        'Label': 'Devuan-Security',
+    },
+    'beowulf-updates': {
+        'Suite': 'testing-updates',
+        'Codename': 'beowulf-updates',
+    },
+
     'ascii': {
         'Suite': 'testing',
         'Codename': 'ascii',
