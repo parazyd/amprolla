@@ -50,8 +50,9 @@ def write_release(oldrel, newrel, filelist, rmstr, rewrite=True):
     # prettyt2 = time2.strftime('%a, %d %b %Y %H:%M:%S UTC')
 
     # this holds our local data in case we don't want to rehash files
-    local_rel = open(newrel).read()
-    local_rel = parse_release(local_rel)
+    if isfile(newrel):
+        local_rel = open(newrel).read()
+        local_rel = parse_release(local_rel)
 
     old = open(oldrel).read()
     new = open(newrel, 'w')
