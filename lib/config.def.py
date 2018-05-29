@@ -73,7 +73,7 @@ suites = {
     ],
     'beowulf': [
         'beowulf',
-        # 'beowulf-backports',
+        #'beowulf-backports',
         'beowulf-proposed-updates',
         'beowulf-security',
         'beowulf-updates',
@@ -107,6 +107,7 @@ release_aliases = {
         'Suite': 'testing',
         'Codename': 'beowulf',
         'Version': '3.0',
+        'Origin': 'Devuan',
     },
     'beowulf-backports': {
         'Suite': 'testing-backports',
@@ -122,16 +123,19 @@ release_aliases = {
         'Suite': 'testing-security',
         'Codename': 'beowulf-security',
         'Label': 'Devuan-Security',
+        'Origin': 'Devuan',
     },
     'beowulf-updates': {
         'Suite': 'testing-updates',
         'Codename': 'beowulf-updates',
+        'Origin': 'Devuan',
     },
 
     'ascii': {
         'Suite': 'testing',
         'Codename': 'ascii',
         'Version': '2.0',
+        'Origin': 'Devuan',
     },
     'ascii-backports': {
         'Suite': 'testing-backports',
@@ -147,16 +151,19 @@ release_aliases = {
         'Suite': 'testing-security',
         'Codename': 'ascii-security',
         'Label': 'Devuan-Security',
+        'Origin': 'Devuan',
     },
     'ascii-updates': {
         'Suite': 'testing-updates',
         'Codename': 'ascii-updates',
+        'Origin': 'Devuan',
     },
 
     'jessie': {
         'Suite': 'stable',
         'Codename': 'jessie',
         'Version': '1.0',
+        'Origin': 'Devuan',
     },
     'jessie-backports': {
         'Suite': 'stable-backports',
@@ -171,10 +178,12 @@ release_aliases = {
         'Suite': 'stable-security',
         'Codename': 'jessie-security',
         'Label': 'Devuan-Security',
+        'Origin': 'Devuan',
     },
     'jessie-updates': {
         'Suite': 'stable-updates',
         'Codename': 'jessie-updates',
+        'Origin': 'Devuan',
     },
 }
 
@@ -224,7 +233,7 @@ srcfiles = [
 ]
 
 release_keys = [
-    # 'Origin',
+    'Origin',
     'Label',
     'Suite',
     'Version',
