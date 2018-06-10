@@ -132,56 +132,56 @@ release_aliases = {
     },
 
     'ascii': {
-        'Suite': 'testing',
+        'Suite': 'stable',
         'Codename': 'ascii',
         'Version': '2.0',
         'Origin': 'Devuan',
     },
     'ascii-backports': {
-        'Suite': 'testing-backports',
+        'Suite': 'stable-backports',
         'Codename': 'ascii-backports',
         'Origin': 'Devuan Backports',
         'Label': 'Devuan Backports',
     },
     'ascii-proposed-updates': {
-        'Suite': 'testing-proposed-updates',
+        'Suite': 'stable-proposed-updates',
         'Codename': 'ascii-proposed-updates',
     },
     'ascii-security': {
-        'Suite': 'testing-security',
+        'Suite': 'stable-security',
         'Codename': 'ascii-security',
         'Label': 'Devuan-Security',
         'Origin': 'Devuan',
     },
     'ascii-updates': {
-        'Suite': 'testing-updates',
+        'Suite': 'stable-updates',
         'Codename': 'ascii-updates',
         'Origin': 'Devuan',
     },
 
     'jessie': {
-        'Suite': 'stable',
+        'Suite': 'oldstable',
         'Codename': 'jessie',
         'Version': '1.0',
         'Origin': 'Devuan',
     },
     'jessie-backports': {
-        'Suite': 'stable-backports',
+        'Suite': 'oldstable-backports',
         'Codename': 'jessie-backports',
         'Origin': 'Devuan Backports',
     },
     'jessie-proposed-updates': {
-        'Suite': 'stable-proposed-updates',
+        'Suite': 'oldstable-proposed-updates',
         'Codename': 'jessie-proposed-updates',
     },
     'jessie-security': {
-        'Suite': 'stable-security',
+        'Suite': 'oldstable-security',
         'Codename': 'jessie-security',
         'Label': 'Devuan-Security',
         'Origin': 'Devuan',
     },
     'jessie-updates': {
-        'Suite': 'stable-updates',
+        'Suite': 'oldstable-updates',
         'Codename': 'jessie-updates',
         'Origin': 'Devuan',
     },
