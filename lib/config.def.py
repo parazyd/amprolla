@@ -207,7 +207,7 @@ arches = [
     #'binary-mips64el',
     #'binary-mipsel',
     #'binary-powerpc',
-    #'binary-ppc64el',
+    'binary-ppc64el',
     #'binary-s390x',
     #'binary-sparc',
 ]
