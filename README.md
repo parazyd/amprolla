@@ -50,10 +50,6 @@ you set the correct paths and names in the script.
 To perform incremental updates, run `orchestrate.sh` with a cron job
 in your desired intervals. Edit the script to set the correct paths.
 
-**NOTE:** in the current testing phase, `orchestrate.sh` contains a while
-loop in order to be ran in tmux to catch unhandled exceptions and fix
-the codebase.
-
 `nginx` and `lighttpd` configurations can be found in `contrib`.
 
 More documentation should be found in the `doc` directory.
