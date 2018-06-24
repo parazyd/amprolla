@@ -64,8 +64,10 @@ def write_release(oldrel, newrel, filelist, rmstr, rewrite=True):
 
     _archlist = ''
     for i in arches:
-        if i == 'source': continue
-        if i == 'binary-all': continue
+        if i == 'source':
+            continue
+        if i == 'binary-all':
+            continue
         i = i.replace('binary-', ' ')
         _archlist += i
     rel_cont['Architectures'] = _archlist

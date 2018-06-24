@@ -37,8 +37,10 @@ PAIRS="
 
 $dryrun cd "$REPO_ROOT" || exit 1
 
-echo "$PAIRS" | while read codename suite; do
-	[ -n "$codename" ] && [ -n "$suite" ] && [ $(echo "$codename" | grep -v '^#') ] && {
-		$dryrun ln -snfv "$codename" "$suite"
-	} || continue
+echo "$PAIRS" | while read -r codename suite; do
+	if [ -n "$codename" ] && [ -n "$suite" ]; then
+		if echo "$codename" | grep -qv '^#'; then
+			$dryrun ln -snfv "$codename" "$suite"
+		fi
+	fi
 done

@@ -187,8 +187,9 @@ def get_upstream(rest):
 
 def get_non_digit(s):
     """
-    Get a string and return the longest leading substring consisting exclusively
-    of non-digits (or an empty string), and the remaining substring.
+    Get a string and return the longest leading substring consisting
+    exclusively of non-digits (or an empty string), and the remaining
+    substring.
     """
     if not s:
         return "", ""
@@ -224,8 +225,8 @@ def get_digit(s):
 
 def char_val(c):
     """
-    Returns an integer value of a given unicode character. Returns 0 on ~ (since
-    this is in Debian's policy)
+    Returns an integer value of a given unicode character. Returns 0 on ~
+    (since this is in Debian's policy)
     """
     if c == '~':
         return 0
@@ -281,10 +282,10 @@ def compare_non_epoch(s1, s2):
 
 def cmppkgver(ver1, ver2):
     """
-    Main function to compare two package versions. Wraps around other functions
-    to provide a result. It returns an integer < 0 if ver1 is earlier than ver2,
-    0 if ver1 is the same as ver2, and an integer > 0 if ver2 is earlier than
-    ver2.
+    Main function to compare two package versions. Wraps around other
+    functions to provide a result. It returns an integer < 0 if ver1 is
+    earlier than ver2, 0 if ver1 is the same as ver2, and an integer > 0
+    if ver2 is earlier than ver2.
 
     WARNING: The function does not induce a total order (i.e., return values
     MUST NOT be added or subtracted)

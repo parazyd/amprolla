@@ -16,19 +16,19 @@ python3 "$AMPROLLA_UPDATE" || {
 
 printf "rsyncing volatile to production... "
 rsync --delete -raX "$REPO_ROOT"/merged-volatile/* "$REPO_ROOT"/merged-production
-printf "done!\n"
+echo "done!"
 
 ln -snf "$REPO_ROOT"/merged-production "$REPO_ROOT"/merged
 
 printf "rsyncing volatile to staging... "
 rsync --delete -raX "$REPO_ROOT"/merged-volatile/* "$REPO_ROOT"/merged-staging
-printf "done!\n"
+echo "done!"
 
 printf "rsyncing production to pkgmaster... "
 rsync --delete -raX \
 	"$REPO_ROOT"/merged-production/ \
 	mirror@pkgmaster.devuan.org:/home/mirror/devuan/merged
-printf "done!\n"
+echo "done!"
 
 # handle obsolete package logs
 cat "$REPO_ROOT"/log/*-oldpackages.txt | sort | uniq > "$REPO_ROOT"/log/oldpackages.txt
@@ -36,7 +36,7 @@ cat "$REPO_ROOT"/log/*-oldpackages.txt | sort | uniq > "$REPO_ROOT"/log/oldpacka
 _logfiles="libsystemd bannedpackages"
 mkdir -p "$REPO_ROOT"/log/t
 for i in $_logfiles; do
-	sort "$REPO_ROOT"/log/${i}.txt | uniq > "$REPO_ROOT"/log/t/${i}.txt
+	sort "$REPO_ROOT/log/${i}.txt" | uniq > "$REPO_ROOT/log/t/${i}.txt"
 done
 cp -f "$REPO_ROOT"/log/t/*.txt "$REPO_ROOT"/log/
 
