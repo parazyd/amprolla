@@ -75,6 +75,33 @@ def load_packages_file(filename):
     return None
 
 
+def depends_on_all_banned(deps, banned_pkgs):
+    """
+    Gets a list of dicts of dep alternatives and a set of banned packages and
+    returns True if any of the dicts consist exclusively of banned_pkgs.
+    """
+    for dep in deps:
+        alt = set(dep.keys())
+        if len(alt.intersection(banned_pkgs)) == len(alt):
+            # All the alternatives are banned
+            return True
+    return False
+
+
+def depends_on(deps, package_set):
+    """
+    Gets a list of dicts of dep alternatives and a set of packages and returns
+    True if any of the dicts include at least one of the elements in
+    package_set.
+    """
+    for dep in deps:
+        alt = set(dep.keys())
+        if alt.intersection(package_set):
+            # At least one alternative is in package_set
+            return True
+    return False
+
+
 def package_banned(pkg, banned_pkgs):
     """
     Returns True is the package contains a banned dependency.
@@ -89,19 +116,17 @@ def package_banned(pkg, banned_pkgs):
     depends = parse_dependencies(pkg.get('Depends', ''))
     pre_depends = parse_dependencies(pkg.get('Pre-Depends', ''))
 
-    depends = [v for v in depends]
-    pre_depends = [v for v in pre_depends]
+    depends.extend(pre_depends)
 
-    deps = set(depends).union(set(pre_depends))
-
-    if 'libsystemd0' in deps:
+    if depends_on(depends, set(['libsystemd0'])):
         logtofile('libsystemd.txt', '%s,%s\n' % (globalvars.suite,
                                                  pkg.get('Package')))
 
-    if bool(deps.intersection(banned_pkgs)):
+    isbanned = depends_on_all_banned(depends, banned_pkgs)
+    if isbanned:
         logtofile('bannedpackages.txt', '%s,%s\n' % (globalvars.suite,
                                                      pkg.get('Package')))
-    return bool(deps.intersection(banned_pkgs))
+    return isbanned
 
 
 def package_newer(pkg1, pkg2):

@@ -127,28 +127,33 @@ def parse_dependencies(dependencies):
 
     Example line::
 
-        'lib6 (>= 2.4), libdbus-1-3 (>= 1.0.2), foo'
+        'lib6 (>= 2.4), libdbus-1-3 (>= 1.0.2), foo | bar (>= 4.5.6)'
 
     Output::
 
-        {'lib6': '(>= 2.4)', 'libdbus-1-3': '(>= 1.0.2)', 'foo': None}
+        A list of dep alternatives, whose elements are dicts, in the form:
+
+        [{'lib6': '(>= 2.4)'}, {'libdbus-1-3': '(>= 1.0.2)'},
+         {'foo': None, 'bar': '(>= 4.5.6)'}]
     """
-    ret = {}
+    ret = []
 
-    for pkg_plus_version in dependencies.split(', '):
-        ver = pkg_plus_version.split(' ', 1)
-        name = ver[0]
+    for alternatives in dependencies.split(', '):
+        depset = {}
+        for pkg_plus_version in alternatives.split('|'):
+            ver = pkg_plus_version.strip(' ').split(' ', 1)
+            name = ver[0]
 
-        # If we get passed an empty string, the name is '', and we just
-        # outright stop
-        if not name:
-            return {}
-
-        if len(ver) == 2:
-            version = ver[1]
-            ret[name] = version
-        else:
-            ret[name] = None
+            # If we get passed an empty string, the name is '', and we just
+            # outright stop.
+            if not name:
+                return []
+            if len(ver) == 2:
+                version = ver[1]
+                depset[name] = version
+            else:
+                depset[name] = None
+        ret.append(depset)
 
     return ret
 
