@@ -6,8 +6,15 @@
 # Make sure these correlate to lib/config.py
 AMPROLLA_UPDATE="${AMPROLLA_UPDATE:-/home/amprolla/amprolla/amprolla_update.py}"
 REPO_ROOT="${REPO_ROOT:-/home/amprolla/amprolla}"
+AMPROLLA_LOCK="/run/lock/amprolla.lock"
+RSYNC_URL="mirror@pkgmaster.devuan.org:/home/mirror/"
 
-[ -f "/run/lock/amprolla.lock" ] || {
+[ -f "${AMPROLLA_LOCK}" ] || {
+
+[ -d "${REPO_ROOT}/merged-staging" ] || mkdir "${REPO_ROOT}/merged-staging"
+[ -d "${REPO_ROOT}/merged-production" ] || mkdir "${REPO_ROOT}/merged-production"
+
+
 ln -snf "$REPO_ROOT"/merged-staging "$REPO_ROOT"/merged
 # The break call is temporary to catch unhandled exceptions in the testing phase
 python3 "$AMPROLLA_UPDATE" || {
@@ -26,8 +33,7 @@ echo "done!"
 
 printf "rsyncing production to pkgmaster... "
 rsync --delete -raX \
-	"$REPO_ROOT"/merged-production/ \
-	mirror@pkgmaster.devuan.org:/home/mirror/devuan/merged
+	"$REPO_ROOT"/merged-production/ "${RSYNC_URL}/merged"
 echo "done!"
 
 # handle obsolete package logs
@@ -40,7 +46,6 @@ for i in $_logfiles; do
 done
 cp -f "$REPO_ROOT"/log/t/*.txt "$REPO_ROOT"/log/
 
-rsync "$REPO_ROOT"/log/t/*.txt mirror@pkgmaster.devuan.org:/home/mirror/devuan/
-rsync "$REPO_ROOT"/log/oldpackages.txt "$REPO_ROOT"/log/amprolla.txt \
-	mirror@pkgmaster.devuan.org:/home/mirror/devuan/
+rsync "$REPO_ROOT"/log/t/*.txt ${RSYNC_URL}
+rsync "$REPO_ROOT"/log/oldpackages.txt "$REPO_ROOT"/log/amprolla.txt ${RSYNC_URL}
 }
