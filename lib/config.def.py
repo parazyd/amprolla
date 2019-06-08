@@ -24,7 +24,7 @@ checksums = [
 ]
 
 distrolabel = 'Devuan'
-repo_order = ['devuan', 'debian-security', 'debian']
+repo_order = ['devuan', 'debian-security', 'debian', 'debian-archive']
 
 # used for a hacky way to skip certain suites when crawling Debian
 skips = ['jessie-security', 'ascii-security', 'beowulf-security']
@@ -32,37 +32,47 @@ skips = ['jessie-security', 'ascii-security', 'beowulf-security']
 repos = {
     'devuan': {
         'name': 'DEVUAN',
-        'host': 'http://pkgmaster.devuan.org',
+        'host': 'https://pkgmaster.devuan.org',
         'dists': 'devuan/dists',
         'pool': 'devuan/pool',
         'aliases': False,
         'skipmissing': False,
+        'suites': ['jessie', 'ascii', 'beowulf', 'unstable'],
     },
     'debian-security': {
         'name': 'DEBIAN-SECURITY',
-        'host': 'http://security.debian.org',
-        'dists': 'dists',
-        'pool': 'pool',
+        'host': 'https://deb.debian.org',
+        'dists': 'debian-security/dists',
+        'pool': 'debian-security/pool',
         'aliases': True,
         'skipmissing': True,
+        'suites': ['jessie', 'ascii', 'beowulf'],
     },
     'debian': {
         'name': 'DEBIAN',
-        'host': 'http://deb.debian.org',
+        'host': 'https://deb.debian.org',
         'dists': 'debian/dists',
         'pool': 'debian/pool',
         'aliases': True,
         'skipmissing': False,
+        'suites': ['ascii', 'beowulf', 'unstable'],
+    },
+    'debian-archive': {
+        'name': 'DEBIAN-ARCHIVE',
+        'host': 'http://archive.debian.org',
+        'dists': 'debian/dists',
+        'pool': 'debian/pool',
+        'aliases': True,
+        'skipmissing': True,
+        'suites': ['jessie'],
     },
 }
 
 suites = {
     'jessie': [
         'jessie',
-        'jessie-backports',
-        'jessie-proposed-updates',
         'jessie-security',
-        'jessie-updates',
+        'jessie-backports',
     ],
     'ascii': [
         'ascii',
@@ -99,6 +109,10 @@ aliases = {
         'ascii-backports': 'stretch-backports',
         'ascii-proposed-updates': 'stretch-proposed-updates',
         'ascii-updates': 'stretch-updates',
+    },
+    'DEBIAN-ARCHIVE': {
+        'jessie': 'jessie',
+        'jessie-backports': 'jessie-backports',
     },
 }
 
@@ -170,19 +184,10 @@ release_aliases = {
         'Codename': 'jessie-backports',
         'Origin': 'Devuan Backports',
     },
-    'jessie-proposed-updates': {
-        'Suite': 'oldstable-proposed-updates',
-        'Codename': 'jessie-proposed-updates',
-    },
     'jessie-security': {
         'Suite': 'oldstable-security',
         'Codename': 'jessie-security',
         'Label': 'Devuan-Security',
-        'Origin': 'Devuan',
-    },
-    'jessie-updates': {
-        'Suite': 'oldstable-updates',
-        'Codename': 'jessie-updates',
         'Origin': 'Devuan',
     },
 }

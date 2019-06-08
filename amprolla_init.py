@@ -33,7 +33,7 @@ def pop_dirs(repo):
 
     urls = []
 
-    for i in suites:
+    for i in repodata['suites']:
         for j in suites[i]:
             baseurl = join(repodata['host'], repodata['dists'])
             suite = j
@@ -44,9 +44,10 @@ def pop_dirs(repo):
                     continue
                 if repo == 'debian' and j in skips:
                     continue
-            pair = (join(baseurl, suite),
-                    join(baseurl.replace(repodata['host'],
-                                         spooldir), suite))
+            rep = repodata['host'].replace('http://', '')
+            rep = rep.replace('https://', '')
+            pair = (join(baseurl, suite), join(spooldir, rep,
+                                               repodata['dists'], suite))
             urls.append(pair)
 
     return urls
