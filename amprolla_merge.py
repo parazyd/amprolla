@@ -35,8 +35,13 @@ def prepare_merge_dict():
         for i in suites[suite]:
             merge_dict[i] = []
 
+    from pprint import pprint
+    pprint(merge_dict)
+
     for suite in merge_dict:
+        print(suite)
         for repo in repo_order:
+            print(repo)
             tmpsuite = suite
             if repos[repo]['aliases'] is True:
                 if tmpsuite in aliases[repos[repo]['name']]:
@@ -46,7 +51,9 @@ def prepare_merge_dict():
                 if repo == 'debian' and suite in skips:
                     tmpsuite = None
             if tmpsuite:  # make it a proper path
-                tmpsuite = join(spooldir, repos[repo]['dists'], tmpsuite)
+                rep = repos[repo]['host'].replace('http://', '')
+                rep = rep.replace('https://', '')
+                tmpsuite = join(spooldir, rep, repos[repo]['dists'], tmpsuite)
             merge_dict[suite].append(tmpsuite)
 
     return merge_dict
@@ -75,6 +82,7 @@ def merge(packages_list):
     ['path/to/devuan/Packages.gz', None, 'path/to/debian/Packages.gz']
     """
     all_repos = []
+    src = False
     print('Loading packages: %s' % packages_list)
 
     for i in range(len(repo_order)):
@@ -100,15 +108,14 @@ def merge(packages_list):
     print('Writing packages')
     for i in range(len(repo_order)):
         if packages_list[i]:
-            new_out = packages_list[i].replace(join(spooldir,
+            rep = repos[repo_order[i]]['host'].replace('http://', '')
+            rep = rep.replace('https://', '')
+            new_out = packages_list[i].replace(join(spooldir, rep,
                                                     repos[repo_order[i]]['dists']),
                                                join(mergedir, mergesubdir))
             break
 
-    if src:
-        write_packages(new_pkgs, new_out, sources=True)
-    else:
-        write_packages(new_pkgs, new_out)
+    write_packages(new_pkgs, new_out, sources=src)
 
 
 def gen_release(suite):
@@ -139,8 +146,10 @@ def gen_release(suite):
                                          'debian-installer', arch, i))
 
     newrfl = join(rootdir, 'Release')
+    rep = repos['devuan']['host'].replace('http://', '')
+    rep = rep.replace('https://', '')
     oldrfl = newrfl.replace(join(mergedir, mergesubdir),
-                            join(spooldir, repos['devuan']['dists']))
+                            join(spooldir, rep, repos['devuan']['dists']))
 
     print('Writing Release')
     write_release(oldrfl, newrfl, filelist, rootdir)

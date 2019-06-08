@@ -56,7 +56,9 @@ def perform_update(suite, paths):
 
         if paths[cnt]:
             info('Working on %s repo' % i)
-            remote_path = paths[cnt].replace(spooldir, repos[i]['host'])
+            rep = repos[i]['host'].replace('http://', '')
+            rep = rep.replace('https://', '')
+            remote_path = paths[cnt].replace(join(spooldir, rep), repos[i]['host'])
             try:
                 remote_rel = requests.get(join(remote_path, 'Release'))
             except requests.exceptions.ConnectionError as err:
@@ -137,6 +139,8 @@ def main():
     Do the update for all repos
     """
     roots = prepare_merge_dict()
+    from pprint import pprint
+    pprint(roots)
     for suite, paths in roots.items():
         perform_update(suite, paths)
         # break

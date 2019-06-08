@@ -81,7 +81,9 @@ def main_merge(contents_file):
         print("Merging contents: %s" % cont_list)
         contents_dict = merge_contents(cont_list)
 
-        outfile = cont_list[0].replace(join(spooldir,
+        rep = repos['devuan']['host'].replace('http://', '')
+        rep = rep.replace('https://', '')
+        outfile = cont_list[0].replace(join(spooldir, rep,
                                             repos['devuan']['dists']),
                                        join(mergedir, mergesubdir))
         print("Writing contents: %s" % outfile)
