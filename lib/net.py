@@ -22,7 +22,8 @@ def download(uris):
     try:
         rfile = requests.get(url, stream=True, timeout=20)
     except (requests.exceptions.ConnectionError,
-            requests.exceptions.ReadTimeout) as err:
+            requests.exceptions.ReadTimeout,
+            ConnectionResetError) as err:
         warn('Caught exception: "%s". Retrying...' % err)
         return download(uris)
 
